@@ -1,19 +1,19 @@
 var Represent = {
-    boundarySets: function(boundary){
+    boundarySets: function(boundary, callback){
         // TODO
     },
-    boundaries: function(boundary){
+    boundaries: function(boundary, callback){
         // TODO
     },
-    boundariesLatLon: function(lat, lon){
+    boundariesLatLon: function(lat, lon, callback){
         // TODO
     },
-    postalCode: function(postalCode){
+    postalCode: function(postalCode, callback){
         $.get('/represent/postcode/' + postalCode.toUpperCase(), function(data){
-            console.log(data);
+            callback(data);
         });
     },
-    representativesLatLon: function(lat, lon){
+    representativesLatLon: function(lat, lon, callback){
         // TODO
     }
 };
