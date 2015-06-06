@@ -5,10 +5,11 @@ var Index = {
             var callback = function(data){
                 console.log(data);
                 var $reps = $('#reps');
-                var candidateList = '';
+                var candidateList = '<ul>';
                 $.each(data.candidates_centroid, function(){
-                    candidateList += 'Name: ' + this.name + '<br />';
+                    candidateList += '<li>Name: ' + this.name + '</li>';
                 });
+                candidateList += "</ul>";
 
                 $reps.html(candidateList);
             };
