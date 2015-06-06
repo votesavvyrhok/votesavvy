@@ -88,10 +88,16 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+.surveyBackground{
+    background:#242424;   
+}
 
-
-
-
+.surveyLogo{
+    padding:20px;
+    width:120px;
+    height:93px;
+    margin-bottom: 20px;
+}
 
 
 
