@@ -24,9 +24,11 @@ router.get('/', function(req, res) {
 
 // more routes for our API will happen here
 
-router.post('/', function(req,res){
-    res.json({message: req});
-}
+router.post('/vote', function(req,res){
+    res.json(req.body);
+    //res.body(req.body);
+    console.log(req.body);
+});
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
@@ -35,4 +37,5 @@ app.use('/api', router);
 // START THE SERVER
 // =============================================================================
 app.listen(port);
+
 console.log('Magic happens on port ' + port);
