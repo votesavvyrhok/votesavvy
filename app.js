@@ -25,7 +25,7 @@ require('./router/represent')(app);
 
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
-app.set('views', __dirname + '/public/views');
+app.set('views', __dirname + '/public');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
