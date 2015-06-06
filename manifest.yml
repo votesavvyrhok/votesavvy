@@ -1,7 +1,7 @@
 applications:
 - disk_quota: 1024M
-  host: rhoktest
-  name: rhoktest
+  host: votesavvy
+  name: votesavvy
   path: .
   domain: mybluemix.net
   instances: 1
