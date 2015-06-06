@@ -15,13 +15,6 @@
         
         <link rel="stylesheet" href="css/index.css">
         
-        <script>
-            function visitPage(){
-                var redirect = "postcode/" + document.getElementById("postalcode").value;
-                window.location=(redirect);
-            }
-        </script>
-        
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,9 +43,9 @@
         <div class="col-lg-6" id="left">
             <h1>Where do I vote?</h1>
             <p>Enter your zip code and we'll show you where to vote and who your options are</p>
-            <div class="input-group">
-                <input id="postalcode" type="text" class="form-control" placeholder="Enter Zip Code..." aria-describedby="basic-addon1">
-                <input id="submit" type="button" class="btn btn-primary btn-lg" value="Submit" onclick="visitPage();">
+            <div class="input-group" id="postalcode">
+                <input type="text" class="form-control" placeholder="Enter Zip Code..." aria-describedby="basic-addon1">
+                <input type="button" class="btn btn-primary btn-lg" value="Submit">
             </div>
         </div>
         <div class="col-lg-6" id="right">
@@ -67,6 +60,7 @@
         <script src="js/plugins.js"></script>
         <script src="css/vendor/bootstrap/js/bootstrap.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/represent.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
@@ -76,6 +70,15 @@
         e.src='https://www.google-analytics.com/analytics.js';
         r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
         ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+
+        <script>
+            $(document).ready(function(){
+                $('#postalcode').on('click', 'input[type=button]', function() {
+                    var code = $(this).parent().find('input[type=text]').val();
+                    Represent.postalCode(code);
+                });
+            });
         </script>
     </body>
 </html>

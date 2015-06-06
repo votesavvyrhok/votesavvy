@@ -1,4 +1,3 @@
-// For OpenNorth Represent API calls
 module.exports = function (app) {
     app.get('/', function (req, res) {
         res.render('index.html');

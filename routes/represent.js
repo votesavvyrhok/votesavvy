@@ -1,6 +1,5 @@
 // For OpenNorth Represent API calls
 module.exports = function (app) {
-    var https = require('https');
     var represent = require('represent');
 
     app.get('/represent', function (req, res) {
