@@ -12,6 +12,8 @@ var express = require('express');
 // for more info, see: https://www.npmjs.com/package/cfenv
 var cfenv = require('cfenv');
 
+require('dotenv').load();
+
 // create a new express server
 var app = express();
 
@@ -26,4 +28,15 @@ app.listen(appEnv.port, appEnv.bind, function() {
 
 	// print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
+});
+
+
+var hostname = process.env.cloudant_hostname;
+var me = process.env.cloudant_username;
+var password = process.env.cloudant_password;
+
+var cloudant = require('cloudant')({hostname: hostname, account: me, password: password});
+
+cloudant.db.list(function (err, all_dbs) {
+    console.log('All my databases: %s', all_dbs.join(', '))
 });
