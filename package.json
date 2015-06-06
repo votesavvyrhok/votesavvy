@@ -2,15 +2,21 @@
   "name": "Votesavvy",
   "version": "0.0.1",
   "description": "A tool to help people vote",
+  "license": "MIT",
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
+    "JSON": "^1.0.0",
     "cfenv": "1.0.x",
     "cloudant": "^1.0.0",
     "dotenv": "^1.1.0",
+    "ejs": "^2.3.1",
     "express": "4.12.x",
-    "jquery": "2.1.*"
+    "https": "^1.0.0",
+    "jquery": "2.1.*",
+    "represent": "^0.2.2",
+    "request": "^2.57.0"
   },
   "repository": {}
 }
