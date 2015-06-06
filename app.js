@@ -16,6 +16,8 @@ var cfenv = require('cfenv');
 var https = require('https');
 var JSON = require('JSON');
 
+var database;
+
 // create a new express server
 var app = express();
 
@@ -39,13 +41,61 @@ app.listen(appEnv.port, appEnv.bind, function() {
   console.log('server starting on ' + appEnv.url);
 });
 
+var dbCredentials = {
+	databaseName : 'voters'
+};
 
-var hostname = process.env.cloudant_hostname;
-var me = process.env.cloudant_username;
-var password = process.env.cloudant_password;
+var cloudant;
 
-var cloudant = require('cloudant')({hostname: hostname, account: me, password: password});
+function useDatabase(){
+ 
+    cloudant.db.create(dbCredentials.databaseName, function (err, res) {
+		if (err) { 
+            console.log( 'database already created' ); 
+        }
+    });
+    
+    cloudant.db.list(function (err, all_dbs) {
+        console.log('All my databases: %s', all_dbs.join(', '))
+    });
+    
+    database = cloudant.use(dbCredentials.databaseName);
+}
 
-cloudant.db.list(function (err, all_dbs) {
-    console.log('All my databases: %s', all_dbs.join(', '))
-});
+function initializeDatabase() {
+	
+	if(process.env.VCAP_SERVICES) {
+		var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+		
+        if(vcapServices.cloudantNoSQLDB) {
+                                    
+            var credentials = vcapServices.cloudantNoSQLDB[0].credentials;
+            
+			dbCredentials.host = credentials.host;
+			dbCredentials.port = credentials.port;
+			dbCredentials.user = credentials.username;
+			dbCredentials.password = credentials.password;
+			dbCredentials.url = credentials.url;
+		}        
+          
+        cloudant = require('cloudant')( dbCredentials.url );
+        
+        useDatabase();
+	}
+    else{
+        
+        if( process.env.cloudant_hostname && process.env.cloudant_username && process.env.cloudant_password ){
+            dbCredentials.host = process.env.cloudant_hostname;
+            dbCredentials.user = process.env.cloudant_username;
+            dbCredentials.password = process.env.cloudant_password;
+            
+            cloudant = require('cloudant')( {hostname: dbCredentials.host, account: dbCredentials.user, password: dbCredentials.password} );
+            
+            useDatabase();   
+        }   
+    }
+}
+
+initializeDatabase();
+
+console.log( 'votesavvy application running' );
