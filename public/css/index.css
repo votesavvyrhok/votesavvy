@@ -1,0 +1,15 @@
+/* Move down content because we have a fixed navbar that is 200px tall */
+body {
+  padding-top: 140px;
+  padding-bottom: 20px;
+}
+
+#left {
+    padding: 40pt 40pt 40pt 40pt;
+    background-color: #CCCCCC;
+}
+
+#right {
+    padding: 40pt 40pt 40pt 40pt;
+    background-color: #FDDF2F;
+}
