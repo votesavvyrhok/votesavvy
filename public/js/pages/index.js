@@ -17,6 +17,18 @@ var Index = {
             $("#map-canvas").css('left', '0px');
             google.maps.event.addDomListener(window, 'load', Map.init());
             $(".useMap").hide();
+            $("#postalCode").hide();
+            $(".dontUseMap").show();
+            $("#latLonSubmit").show();
+        });
+        $(".dontUseMap").click(function () {
+            $("#map-canvas").css('position', 'absolute');
+            $("#map-canvas").css('left', '-100%');
+            google.maps.event.addDomListener(window, 'load', Map.init());
+            $(".useMap").show();
+            $("#postalCode").show();
+            $(".dontUseMap").hide();
+            $("#latLonSubmit").hide();
         });
 
     },
@@ -28,7 +40,7 @@ var Index = {
             $.each(data, function(){
                 candidateList += '<div class=".col-xs-6 .col-md-4"><div class="thumbnail media">';
                 candidateList += '<div class="media-left"><img id="img-candidate" alt="candidate" src="' + this.photo_url + '"></div>';
-                candidateList += '<div class="media-body">Name: <strong>' + this.name + '</strong><br />'
+                candidateList += '<div class="media-body text-candidate">Name: <strong>' + this.name + '</strong><br />'
                 candidateList += 'Party: ' + this.party_name + '<br />';
                 candidateList += 'Website: <a href="' + this.personal_url + '">' + this.personal_url + '</a></div></div>';
 
