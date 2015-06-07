@@ -25,6 +25,8 @@ var app = express();
 require('./routes/represent')(app);
 
 
+require('./routes/api')(app);
+
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/public');
