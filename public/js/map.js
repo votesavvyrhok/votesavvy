@@ -8,10 +8,15 @@ var Map = {
             scrollwheel: false
         };
         Map.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        $('#map-canvas').toggle();
 
         google.maps.event.addListener(Map.map, 'click', function(event) {
             Map.placeMarker(event.latLng, Map.map);
         });
+    },
+    toggle: function(){
+        $('#map-canvas').toggle();
+        google.maps.event.trigger(Map.map, 'resize');
     },
     placeMarker: function(location, map) {
         if (Map.marker !== undefined){
@@ -22,7 +27,7 @@ var Map = {
             map: map
         });
     },
-    getPostcodeLocation: function(postcode, map, callback) {
+    goToAddress: function(postcode, map, callback) {
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode( { 'address': postcode }, function(results, status) {
             if (status == 'OK') {

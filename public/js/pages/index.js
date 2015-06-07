@@ -1,43 +1,24 @@
 var Index = {
-    bind: function(){
-        $('#postalCode').on('click', 'input[type=button]', function() {
+    init: function(){
+        $('#address').on('click', 'input[type=button]', function() {
             var code = $(this).parent().find('input[type=text]').val();
-            $(".useMap").click();
-            var callback = function(){
-                var marker = Map.marker;
-                if (marker !== undefined){
-                    Represent.candidatesLatLon(marker.position.lat(), marker.position.lng(), Index.addToReps);
-                    Represent.boundariesLatLon(marker.position.lat(), marker.position.lng(), Index.addBoundary);
-                }
-            };
-            Map.getPostcodeLocation(code, Map.map, callback);
+            Map.goToAddress(code, Map.map, Index.loadFromMarker);
         });
 
-        $('#latLonSubmit').on('click', function() {
-            var marker = Map.marker;
-            if (marker !== undefined){
-                Represent.candidatesLatLon(marker.position.lat(), marker.position.lng(), Index.addToReps);
-                Represent.boundariesLatLon(marker.position.lat(), marker.position.lng(), Index.addBoundary);
-            }
-        });
-        $(".useMap").click(function () {
-            $("#map-canvas").css('position', 'relative');
-            $("#map-canvas").css('left', '0px');
-            google.maps.event.addDomListener(window, 'load', Map.init());
-            $(".useMap").hide();
-            $("#postalCode").hide();
-            $(".dontUseMap").show();
-            $("#latLonSubmit").show();
-        });
-        $(".dontUseMap").click(function () {
-            $("#map-canvas").css('position', 'absolute');
-            $("#map-canvas").css('left', '-100%');
-            $(".useMap").show();
-            $("#postalCode").show();
-            $(".dontUseMap").hide();
-            $("#latLonSubmit").hide();
+        $('#mapButton').on('click', function() {
+            Map.toggle();
+            $(this).val('Submit');
+            $(this).off('click').on('click', Index.loadFromMarker);
         });
 
+        google.maps.event.addDomListener(window, 'load', Map.init());
+    },
+    loadFromMarker: function(){
+        var marker = Map.marker;
+        if (marker !== undefined){
+            Represent.candidatesLatLon(marker.position.lat(), marker.position.lng(), Index.addToReps);
+            Represent.boundariesLatLon(marker.position.lat(), marker.position.lng(), Index.addBoundary);
+        }
     },
     addToReps: function(data){
         console.log(data);
