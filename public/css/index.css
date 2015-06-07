@@ -28,32 +28,16 @@ nav h1{
   color: #fff;
 }
 
-@media (min-width: @screen-md-min) { 
-
-  nav h1{
-    display: inline-block;
-    color: #fff;
-    padding: 20px;
-  }
-
-
+div#map-canvas{
+  margin: 15px 0;
+  display: none;
 }
 
-@media (min-width: @screen-lg-min) {
-
-  nav h1{
-    display: inline-block;
-    color: #fff;
-    padding: 20px;
-  }
-
+.useMap{
+  cursor: pointer;
 }
 
-
-/* Small devices (tablets, 768px and up) */
-@media (min-width: @screen-sm-min) { ... }
-
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: @screen-md-min) { ... }
-
-/* Large devices (large desktops, 1200px and up) */
+#postalcodeSubmit{
+  display: block;
+  margin: 10px 0 0 0;
+}
