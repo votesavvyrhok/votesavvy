@@ -2,7 +2,15 @@ var Index = {
     bind: function(){
         $('#postalCode').on('click', 'input[type=button]', function() {
             var code = $(this).parent().find('input[type=text]').val();
-            Represent.postalCode(code, Index.addToReps, Index.addBoundary);
+            $(".useMap").click();
+            var callback = function(){
+                var marker = Map.marker;
+                if (marker !== undefined){
+                    Represent.candidatesLatLon(marker.position.lat(), marker.position.lng(), Index.addToReps);
+                    Represent.boundariesLatLon(marker.position.lat(), marker.position.lng(), Index.addBoundary);
+                }
+            };
+            Map.getPostcodeLocation(code, Map.map, callback);
         });
 
         $('#latLonSubmit').on('click', function() {
