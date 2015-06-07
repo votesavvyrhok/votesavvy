@@ -29,9 +29,9 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/vendor/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="css/main.css">
-        
+
         <link rel="stylesheet" href="css/index.css">
-        
+
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,12 +40,11 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
         <style type="text/css">
-            html, body, #map-canvas { height: 200px; margin: 0; padding: 0;}
         </style>
 
     </head>
 
-    
+
     <body class="mainbody">
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -73,28 +72,22 @@
 
         <div class=".col-xs-12 col-md-8">
           <h4><span class="glyphicon glyphicon-user gap" aria-hidden="true"></span>Who can I vote for?</h4>
-          
- <div id="postalCode">
-                <input type="text" class="form-control vsform-control myblock" placeholder="Enter Postal Code..." aria-describedby="basic-addon1">
-                <input type="button" id="#postalCodeSubmit" class="btn btn-primary btn-lg myblock" value="Submit">
-            </div><p>
-            <span><a class="useMap">Select location with Map</a></span>
-             <span><a class="dontUseMap">Select location with Postal Code</a></span>
-
+            <div id="address">
+                <input type="text" class="form-control vsform-control myblock" placeholder="Enter Address..." aria-describedby="basic-addon1" />
+                <input type="button" class="btn btn-primary btn-lg myblock" value="Submit" />
+            </div>
             <div id="map-canvas"></div>
-            <input type="button" id="latLonSubmit" class="btn btn-primary btn-lg" value="Submit">
+            <input type="button" id="mapButton" class="btn btn-primary btn-lg" value="Show Map" />
 
             <div class="container-fluid">
                 <div class="row" id="reps"></div>
-            </div></p>
+            </div>
         </div>
 
         <div class=".col-xs-6 .col-md-4">
           <h4>What matters to me!?</h4>
           <p>Take a quiz to learn more about your choices</p>
           <p><a class="btn btn-primary btn-lg" href="survey.html" role="button">Learn more</a></p>
-
-        
         </div>
         
         <footer class=".col-xs-12 col-md-12 footer">
@@ -102,9 +95,11 @@
         </footer>
 
     </div>
-    
-            
-            
+    <footer class="footer">
+        <p>© VoteSavvy 2015</p>
+    </footer>
+
+
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-2.1.4.min.js"><\/script>')</script>
@@ -120,7 +115,7 @@
         <script>
             (function($, window, document) {
                 $(function() {
-                    Index.bind();
+                    Index.init();
                 });
             }(window.jQuery, window, document));
         </script>

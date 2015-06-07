@@ -33,7 +33,7 @@ img#img-candidate {
 /* Header */
 
 nav.navbar{
-  margin: 0px;
+  margin: 0;
 }
 
 nav img{
@@ -48,27 +48,11 @@ nav h1{
 }
 
 div#map-canvas{
+  height: 200px;
   margin: 15px 0;
-  position: absolute;
-  left: -100%;
 }
 
-.useMap{
-  cursor: pointer;
-        margin-top: 20px;
-}
-
-.dontUseMap{
-    cursor: pointer;
-    margin-top: 20px;
-    display:none;
-}
-
-#latLonSubmit {
-    display: none;
-}
-
-div#postalCode{
+div#address{
   display: block;
   margin: 10px 0 0 0;
 }
