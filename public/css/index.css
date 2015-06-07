@@ -14,10 +14,12 @@ body {
 }
 
 /* Candidates */
+#reps {
+    padding: 20px;
+}
 img#img-candidate {
     max-height: 100px;
 }
-
 
 /* Header */
 
@@ -38,7 +40,8 @@ nav h1{
 
 div#map-canvas{
   margin: 15px 0;
-  display: none;
+  position: absolute;
+  left: -100%;
 }
 
 .useMap{

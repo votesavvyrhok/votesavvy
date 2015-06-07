@@ -25,8 +25,6 @@ var app = express();
 require('./routes/represent')(app);
 
 
-require('./routes/api')(app);
-
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/public');
@@ -49,12 +47,13 @@ var dbCredentials = {
 
 var cloudant;
 
-function useDatabase() {
+function useDatabase(callback) {
 
     cloudant.db.create(dbCredentials.databaseName, function (err, res) {
         if (err) {
             console.log('database already created');
         }
+
     });
 
     cloudant.db.list(function (err, all_dbs) {
@@ -62,9 +61,11 @@ function useDatabase() {
     });
 
     database = cloudant.use(dbCredentials.databaseName);
+
+    callback();
 }
 
-function initializeDatabase() {
+function initializeDatabase(callback) {
 
     if (process.env.VCAP_SERVICES) {
         var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
@@ -82,7 +83,7 @@ function initializeDatabase() {
 
         cloudant = require('cloudant')(dbCredentials.url);
 
-        useDatabase();
+        useDatabase(callback);
     }
     else {
 
@@ -97,11 +98,17 @@ function initializeDatabase() {
                 password: dbCredentials.password
             });
 
-            useDatabase();
+            useDatabase(callback);
         }
     }
+
+}
+var apiRequire=function(){
+    require('./routes/api')(app,cloudant);
 }
 
-initializeDatabase();
+
+initializeDatabase(apiRequire);
+
 
 console.log('votesavvy application running');

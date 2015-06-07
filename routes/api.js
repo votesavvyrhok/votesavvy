@@ -2,11 +2,14 @@
  * Created by a on 6/6/2015.
  */
 
-module.exports=function(app) {
+module.exports=function(app,cloudant) {
 
+    var bodyParser = require('body-parser');
 
-
-
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
     // ROUTES FOR OUR API
     // =============================================================================
     //var router = express.Router();              // get an instance of the express Router
@@ -19,9 +22,22 @@ module.exports=function(app) {
     // more routes for our API will happen here
 
     app.post('/api/vote', function (req, res) {
-        res.json(req.body);
-        //res.body(req.body);
+
         console.log(req.body);
+
+        var voters =cloudant.use('voters');
+
+
+        voters.insert(req.body, req.body[0], function(err, body){
+
+            if (!err)
+                console.log(body);
+        });
+
+        res.json(req.body);
+
+
+
     });
 
     // REGISTER OUR ROUTES -------------------------------
