@@ -47,7 +47,7 @@ var Index = {
             $.each(data, function(){
                 candidateList += '<div class="thumbnail media .col-xs-4 .col-sm-3">';
                 candidateList += '<div class="media-left"><img id="img-candidate" alt="candidate" src="' + this.photo_url + '"></div>';
-                candidateList += '<div class="media-body text-candidate">Name: <strong>' + this.name + '</strong><br />'
+                candidateList += '<div class="media-body text-candidate"><h2><strong>' + this.name + '</strong></h2>'
                 candidateList += 'Party: ' + this.party_name + '<br />';
                 candidateList += 'Website: <a href="' + this.personal_url + '">' + this.personal_url + '</a></div></div>';
 
