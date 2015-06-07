@@ -21,6 +21,10 @@ img#img-candidate {
     max-height: 100px;
 }
 
+.text-candidate {
+    color: #ffffff;
+}
+
 /* Header */
 
 nav.navbar{
