@@ -15,7 +15,7 @@ var Map = {
         });
     },
     show: function(){
-        var button = $('#mapButton')
+        var button = $('#mapButton');
         button.val('Submit Map');
         $('#map-canvas').show();
         google.maps.event.trigger(Map.map, 'resize');
@@ -35,7 +35,7 @@ var Map = {
     },
     goToAddress: function(postcode, map, callback) {
         var geocoder = new google.maps.Geocoder();
-        geocoder.geocode( { 'address': postcode }, function(results, status) {
+        geocoder.geocode( { 'address': postcode + ' canada' }, function(results, status) {
             if (status == 'OK') {
                 Map.placeMarker(results[0].geometry.location, map);
                 Map.show();
