@@ -12,6 +12,18 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/represent/boundariesLatLon/:lat/:lon', function (req, res) {
+        represent.boundariesLatLon(req.params.lat, req.params.lon, function(err, data){
+            res.send(data);
+        });
+    });
+
+    app.get('/represent/representativesLatLon/:lat/:lon', function (req, res) {
+        represent.representativesLatLon(req.params.lat, req.params.lon, function(err, data){
+            res.send(data);
+        });
+    });
+
     app.get('/represent/candidatesLatLon/:lat/:lon', function (req, res) {
         represent.candidatesLatLon(req.params.lat, req.params.lon, function(err, data){
             res.send(data);

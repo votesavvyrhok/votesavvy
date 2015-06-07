@@ -2,13 +2,14 @@ var Index = {
     bind: function(){
         $('#postalcode').on('click', 'input[type=button]', function() {
             var code = $(this).parent().find('input[type=text]').val();
-            Represent.postalCode(code, Index.addToReps);
+            Represent.postalCode(code, Index.addToReps, Index.addBoundary);
         });
 
         $('#latLonSubmit').on('click', function() {
             var marker = Map.marker;
             if (marker !== undefined){
                 Represent.candidatesLatLon(marker.position.lat(), marker.position.lng(), Index.addToReps);
+                Represent.boundariesLatLon(marker.position.lat(), marker.position.lng(), Index.addBoundary);
             }
         });
         $(".useMap").click(function () {
@@ -22,7 +23,6 @@ var Index = {
     addToReps: function(data){
         console.log(data);
         var $reps = $('#reps');
-        var addToReps = '';
         var candidateList = '';
         try {
             $.each(data, function(){
@@ -38,8 +38,20 @@ var Index = {
         } catch(err) {
             candidateList = '<li>No candidates found</li>';
         }
-        addToReps += candidateList;
-        $reps.html(addToReps);
+        $reps.html(candidateList);
+    },
+    addBoundary: function(data){
+        console.log(data);
+        var $boundary = $('#boundary');
+        var boundaryContent = '';
+        try {
+            $.each(data, function(){
+                boundaryContent += '</div></div>';
+            });
+        } catch(err) {
+            boundaryContent = '<li>No boundary</li>';
+        }
+        $boundary.html(boundaryContent);
     }
 };
 
