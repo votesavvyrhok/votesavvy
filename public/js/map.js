@@ -18,6 +18,10 @@ var Map = {
             position: location,
             map: map
         });
+        Map.getCandidates(Map.marker.position.lat(), Map.marker.position.lng());
     },
-    marker: undefined
+    marker: undefined,
+    getCandidates: function(lat, lon){
+        Represent.candidatesLatLon(lat, lon, function(data){});
+    }
 };

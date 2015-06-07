@@ -11,4 +11,14 @@ module.exports = function (app) {
             res.send(data);
         });
     });
+
+    app.get('/represent/candidatesLatLon/:lat/:lon', function (req, res) {
+        represent.candidatesLatLon(req.params.lat, req.params.lon, function(err, data){
+            res.send(data);
+        });
+    });
+
+    represent.candidatesLatLon = function(lat, lon, callback){
+        represent.get("/candidates/?point=" + lat + "," + lon, callback);
+    }
 };

@@ -15,6 +15,11 @@ var Represent = {
     },
     representativesLatLon: function(lat, lon, callback){
         // TODO
+    },
+    candidatesLatLon: function(lat, lon, callback){
+        $.get('/represent/candidatesLatLon/' + lat + '/' + lon, function(data){
+            callback(data);
+        });
     }
 };
 
