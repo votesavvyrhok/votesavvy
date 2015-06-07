@@ -13,6 +13,14 @@ body {
     background-color: #FDDF2F;
 }
 
+/* Candidates */
+img#img-candidate {
+    max-height: 100px;
+}
+
+
+/* Header */
+
 nav.navbar{
   margin: 0px;
 }
