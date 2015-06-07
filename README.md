@@ -3,11 +3,11 @@
 Need and independent account for:
 
 - [x] Gmail
-- [ ] Twitter API 
+- [x] Twitter API (they already have twitter so it should be fine)
 - [x] Bluemix
 - [x] Typeform
 - [x] Github
-- [ ] Zapier
+- [x] Zapier
 
 Current features of APIs
 
