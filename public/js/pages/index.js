@@ -5,12 +5,20 @@ var Index = {
             var callback = function(data){
                 console.log(data);
                 var $reps = $('#reps');
+                var addToReps = '<ul>';
                 var candidateList = '';
-                $.each(data.candidates_centroid, function(){
-                    candidateList += 'Name: ' + this.name + '<br />';
-                });
+                try {
+                    $.each(data.candidates_centroid, function(){
+                        candidateList += '<li>Name: ' + this.name + '</li>';
+                    });
+                } catch(err) {
+                    candidateList = '<li>No candidates found</li>';
+                }
+                    
+                addToReps += candidateList
+                addToReps += '</ul>';
 
-                $reps.html(candidateList);
+                $reps.html(addToReps);
             };
             Represent.postalCode(code, callback);
         });
