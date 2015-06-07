@@ -50,12 +50,12 @@ div#map-canvas{
 
 .useMap{
   cursor: pointer;
-        padding-top: 20px;
+        margin-top: 20px;
 }
 
 .dontUseMap{
     cursor: pointer;
-    padding-top: 20px;
+    margin-top: 20px;
     display:none;
 }
 

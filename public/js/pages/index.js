@@ -24,7 +24,6 @@ var Index = {
         $(".dontUseMap").click(function () {
             $("#map-canvas").css('position', 'absolute');
             $("#map-canvas").css('left', '-100%');
-            google.maps.event.addDomListener(window, 'load', Map.init());
             $(".useMap").show();
             $("#postalCode").show();
             $(".dontUseMap").hide();
