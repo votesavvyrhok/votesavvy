@@ -5,11 +5,7 @@ var Index = {
             Map.goToAddress(code, Map.map, Index.loadFromMarker);
         });
 
-        $('#mapButton').on('click', function() {
-            $(this).val('Submit Map');
-            Map.show();
-            $(this).off('click').on('click', Index.loadFromMarker);
-        });
+        $('#mapButton').on('click', Map.show);
 
         google.maps.event.addDomListener(window, 'load', Map.init());
     },

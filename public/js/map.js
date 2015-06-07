@@ -15,8 +15,11 @@ var Map = {
         });
     },
     show: function(){
+        var button = $('#mapButton')
+        button.val('Submit Map');
         $('#map-canvas').show();
         google.maps.event.trigger(Map.map, 'resize');
+        button.off('click').on('click', Index.loadFromMarker);
     },
     hide: function(){
         $('#map-canvas').hide();
