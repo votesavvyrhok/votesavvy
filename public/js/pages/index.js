@@ -3,11 +3,10 @@ var Index = {
         $('#address').on('click', 'input[type=button]', function() {
             var code = $(this).parent().find('input[type=text]').val();
             Map.goToAddress(code, Map.map, Index.loadFromMarker);
-            $('#mapButton').hide();
         });
 
         $('#mapButton').on('click', function() {
-            $(this).val('Submit');
+            $(this).val('Submit Map');
             Map.show();
             $(this).off('click').on('click', Index.loadFromMarker);
         });
