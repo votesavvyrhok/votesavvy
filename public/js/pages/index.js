@@ -11,6 +11,12 @@ var Index = {
                 Represent.candidatesLatLon(marker.position.lat(), marker.position.lng(), Index.addToReps);
             }
         });
+        $(".useMap").click(function () {
+            $("#map-canvas").css('position', 'relative');
+            $("#map-canvas").css('left', '0px');
+            google.maps.event.addDomListener(window, 'load', Map.init());
+            $(".useMap").hide();
+        });
 
     },
     addToReps: function(data){
