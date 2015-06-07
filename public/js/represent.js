@@ -10,7 +10,7 @@ var Represent = {
     },
     postalCode: function(postalCode, callback){
         $.get('/represent/postcode/' + postalCode.toUpperCase(), function(data){
-            callback(data);
+            callback(data.candidates_centroid);
         });
     },
     representativesLatLon: function(lat, lon, callback){
@@ -18,7 +18,7 @@ var Represent = {
     },
     candidatesLatLon: function(lat, lon, callback){
         $.get('/represent/candidatesLatLon/' + lat + '/' + lon, function(data){
-            callback(data);
+            callback(data.objects);
         });
     }
 };
