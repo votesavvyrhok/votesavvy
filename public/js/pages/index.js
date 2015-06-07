@@ -3,9 +3,13 @@ var Index = {
         $('#address').on('click', 'input[type=button]', function() {
             var code = $(this).parent().find('input[type=text]').val();
             Map.goToAddress(code, Map.map, Index.loadFromMarker);
+            $('#nada').hide();
         });
 
-        $('#mapButton').on('click', Map.show);
+        $('#mapButton').on('click', function() {
+            Map.show();
+            $('#nada').hide();
+        });
 
         google.maps.event.addDomListener(window, 'load', Map.init());
     },
