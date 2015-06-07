@@ -11,11 +11,13 @@ var Map = {
         });
     },
     placeMarker: function(location, map) {
-        var marker = new google.maps.Marker({
+        if (Map.marker !== undefined){
+            Map.marker.setMap(null);
+        }
+        Map.marker = new google.maps.Marker({
             position: location,
             map: map
         });
-
-        map.setCenter(location);
-    }
+    },
+    marker: undefined
 };
