@@ -36,28 +36,32 @@
         <!-- Include all compiled plugins (below), or include individual files as needed -->
 
         <!-- Header -->
-        <nav class="navbar navbar-inverse navbar-fixed-top">
+        <nav class="navbar navbar-inverse">
             <div class="container">
                 <div class="navbar-header">
                     <img src="images/vs-logo-200px.png" />
+                    <h1 class="text-uppercase">Learn. Choose. Vote Savvy.</h1>
                 </div><!--/.navbar-collapse -->
             </div>
         </nav>
         
-        <div class="col-lg-6" id="left">
-            <h1>Where do I vote?</h1>
+        <div class="col-lg-12" id="left">
+            <h2>Where do I vote?</h2>
             <p>Enter your zip code and we'll show you where to vote and who your options are</p>
-            <div class="input-group" id="postalcode">
-                <input type="text" class="form-control" placeholder="Enter Zip Code..." aria-describedby="basic-addon1">
-                <input type="button" class="btn btn-primary btn-lg" value="Submit">
+            <div  id="postalcode">
+                <input type="text" class="form-control" placeholder="Enter Postal Code..." aria-describedby="basic-addon1">
+                <span><a class="useMap">Or show us using a map</a></span>
+
+                <div id="map-canvas"></div>
+
+                <input type="button" id="postalcodeSubmit" class="btn btn-primary btn-lg" value="Submit">
             </div>
-
-            <div id="map-canvas"></div>
-
-            <div id="reps"></div>
+            <div class="container-fluid">
+                <div class="row" id="reps"></div>
+            </div>
         </div>
-        <div class="col-lg-6" id="right">
-            <h1>Hey there</h1>
+        <div class="col-lg-12" id="right">
+            <h2>Hey there</h2>
             <p>We would like to get to know you and help you get informed for the upcoming vote.</p>
             <p><a class="btn btn-primary btn-lg" href="survey.html" role="button">Learn more</a></p>
         </div>

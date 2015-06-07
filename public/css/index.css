@@ -1,6 +1,5 @@
 /* Move down content because we have a fixed navbar that is 200px tall */
 body {
-  padding-top: 140px;
   padding-bottom: 20px;
 }
 
@@ -12,4 +11,44 @@ body {
 #right {
     padding: 40pt 40pt 40pt 40pt;
     background-color: #FDDF2F;
+}
+
+/* Candidates */
+#reps {
+    padding: 20px;
+}
+img#img-candidate {
+    max-height: 100px;
+}
+
+/* Header */
+
+nav.navbar{
+  margin: 0px;
+}
+
+nav img{
+  height: 100px;
+  padding: 15px;
+  display: inline-block;
+}
+
+nav h1{
+  display: inline-block;
+  color: #fff;
+}
+
+div#map-canvas{
+  margin: 15px 0;
+  position: absolute;
+  left: -100%;
+}
+
+.useMap{
+  cursor: pointer;
+}
+
+#postalcodeSubmit{
+  display: block;
+  margin: 10px 0 0 0;
 }
