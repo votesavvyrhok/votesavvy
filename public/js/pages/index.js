@@ -6,7 +6,6 @@ var Index = {
         });
 
         $('#mapButton').on('click', function() {
-            Map.toggle();
             $(this).val('Submit');
             $(this).off('click').on('click', Index.loadFromMarker);
         });
@@ -21,7 +20,6 @@ var Index = {
         }
     },
     addToReps: function(data){
-        console.log(data);
         var $reps = $('#reps');
         var candidateList = '';
         try {
@@ -43,7 +41,6 @@ var Index = {
         $reps.html(candidateList);
     },
     addBoundary: function(data){
-        console.log(data);
         var $boundary = $('#boundary');
         var boundaryContent = '';
         try {
