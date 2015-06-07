@@ -16,6 +16,18 @@ var Index = {
             $("#map-canvas").css('left', '0px');
             google.maps.event.addDomListener(window, 'load', Map.init());
             $(".useMap").hide();
+            $("#postalCode").hide();
+            $(".dontUseMap").show();
+            $("#latLonSubmit").show();
+        });
+        $(".dontUseMap").click(function () {
+            $("#map-canvas").css('position', 'absolute');
+            $("#map-canvas").css('left', '-100%');
+            google.maps.event.addDomListener(window, 'load', Map.init());
+            $(".useMap").show();
+            $("#postalCode").show();
+            $(".dontUseMap").hide();
+            $("#latLonSubmit").hide();
         });
 
     },

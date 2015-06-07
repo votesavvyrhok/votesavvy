@@ -59,15 +59,15 @@
         <div class="col-lg-6">
           <h4><span class="glyphicon glyphicon-map-marker gap" aria-hidden="true"></span>Where do I vote?</h4>
           
- <div id="postalcode">
+ <div id="postalCode">
                 <input type="text" class="form-control vsform-control myblock" placeholder="Enter Postal Code..." aria-describedby="basic-addon1">
-               
-
-                <input type="button" class="btn btn-primary btn-lg myblock" value="Submit">
+                <input type="button" id="#postalCodeSubmit" class="btn btn-primary btn-lg myblock" value="Submit">
             </div><p>
- <span><a class="useMap">Or show us using a map</a></span>
+            <span><a class="useMap">Select location with Map</a></span>
+             <span><a class="dontUseMap">Select location with Postal Code</a></span>
+
             <div id="map-canvas"></div>
-            <input type="button" id="latLonSubmit" class="btn btn-primary btn-lg" value="Submit Map">
+            <input type="button" id="latLonSubmit" class="btn btn-primary btn-lg" value="Submit">
 
             <div class="container-fluid">
                 <div class="row" id="reps"></div>

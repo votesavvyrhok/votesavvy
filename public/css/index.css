@@ -53,7 +53,17 @@ div#map-canvas{
         padding-top: 20px;
 }
 
-#postalcodeSubmit{
+.dontUseMap{
+    cursor: pointer;
+    padding-top: 20px;
+    display:none;
+}
+
+#latLonSubmit {
+    display: none;
+}
+
+div#postalCode{
   display: block;
   margin: 10px 0 0 0;
 }
