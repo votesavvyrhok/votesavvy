@@ -37,17 +37,19 @@ var Index = {
         var candidateList = '';
         try {
             $.each(data, function(){
-                candidateList += '<div class=".col-xs-6 .col-md-4"><div class="thumbnail media">';
+                candidateList += '<div class="thumbnail media .col-xs-4 .col-sm-3">';
                 candidateList += '<div class="media-left"><img id="img-candidate" alt="candidate" src="' + this.photo_url + '"></div>';
                 candidateList += '<div class="media-body text-candidate">Name: <strong>' + this.name + '</strong><br />'
                 candidateList += 'Party: ' + this.party_name + '<br />';
                 candidateList += 'Website: <a href="' + this.personal_url + '">' + this.personal_url + '</a></div></div>';
 
-                candidateList += '</div></div>';
+                candidateList += '</div>';
 
             });
         } catch(err) {
-            candidateList = '<li>No candidates found</li>';
+            candidateList += '<div class=".col-xs-6 .col-md-4"><div class="thumbnail media">';
+            candidateList += '<div class="media-body text-candidate">No candidates found<br />'
+            candidateList += '</div></div>';
         }
         $reps.html(candidateList);
     },

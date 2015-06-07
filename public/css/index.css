@@ -15,8 +15,9 @@ body {
 
 /* Candidates */
 #reps {
-    padding: 20px;
+    margin: 20px;
 }
+
 img#img-candidate {
     max-height: 100px;
 }
