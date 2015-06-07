@@ -1,5 +1,12 @@
 # votesavvy
 
+Need and independent account for:
+
+- [x] Gmail
+- [ ] Twitter API 
+- [ ] Bluemix
+- [ ] Typeform
+- [ ] Zapier
 
 Current features of APIs
 
@@ -18,3 +25,5 @@ Current features of APIs
       "voter": "kitten",
       "postcode": "k2n"
   }
+  
+  
