@@ -1,6 +1,6 @@
 var Index = {
     bind: function(){
-        $('#postalcode').on('click', 'input[type=button]', function() {
+        $('#postalCode').on('click', 'input[type=button]', function() {
             var code = $(this).parent().find('input[type=text]').val();
             Represent.postalCode(code, Index.addToReps, Index.addBoundary);
         });
