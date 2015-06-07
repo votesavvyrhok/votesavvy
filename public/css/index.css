@@ -5,7 +5,7 @@ body {
 
 #left {
     padding: 40pt 40pt 40pt 40pt;
-    background-color: #CCCCCC;
+    background-color: #282828;
 }
 
 #right {
@@ -46,6 +46,7 @@ div#map-canvas{
 
 .useMap{
   cursor: pointer;
+        padding-top: 20px;
 }
 
 #postalcodeSubmit{

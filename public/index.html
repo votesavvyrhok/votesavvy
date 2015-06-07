@@ -3,7 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
+      <link href='http://fonts.googleapis.com/css?family=Cabin|Muli|Nunito' rel='stylesheet' type='text/css'>
+        <title>VoteSavvy - voting intelligence for Canada's youth</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -29,45 +30,66 @@
     </head>
 
     
-    <body>
+    <body class="mainbody">
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <!-- Include all compiled plugins (below), or include individual files as needed -->
 
-        <!-- Header -->
-        <nav class="navbar navbar-inverse">
-            <div class="container">
-                <div class="navbar-header">
-                    <img src="images/vs-logo-200px.png" />
-                    <h1 class="text-uppercase">Learn. Choose. Vote Savvy.</h1>
-                </div><!--/.navbar-collapse -->
-            </div>
+            
+ <div class="container">
+      <div class="header clearfix">         
+        <nav>
+          <ul class="nav nav-pills pull-right mytop">
+            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation"><a href="#">About</a></li>
+            <li role="presentation"><a href="#">Contact</a></li>
+          </ul>
         </nav>
-        
-        <div class="col-lg-12" id="left">
-            <h2>Where do I vote?</h2>
-            <p>Enter your zip code and we'll show you where to vote and who your options are</p>
-            <div id="postalcode">
-                <input type="text" class="form-control" placeholder="Enter Postal Code..." aria-describedby="basic-addon1">
-                <span><a class="useMap">Or show us using a map</a></span>
 
-                <input type="button" class="btn btn-primary btn-lg" value="Submit">
-            </div>
+        <h3 class="text-muted"> <img class="mainlogo pull-left" src="images/vs-logo-200px.png" /></h3>
+      </div>
 
+      <div class="jumbotron">
+        <h1>Learn, choose, and use your vote!</h1>
+        <p class="lead">Guide Yourself to Social Insight.</p>
+      </div>
+
+      <div class="row marketing">
+        <div class="col-lg-6">
+          <h4><span class="glyphicon glyphicon-map-marker gap" aria-hidden="true"></span>Where do I vote?</h4>
+          
+ <div id="postalcode">
+                <input type="text" class="form-control vsform-control myblock" placeholder="Enter Postal Code..." aria-describedby="basic-addon1">
+               
+
+                <input type="button" class="btn btn-primary btn-lg myblock" value="Submit">
+            </div><p>
+ <span><a class="useMap">Or show us using a map</a></span>
             <div id="map-canvas"></div>
             <input type="button" id="latLonSubmit" class="btn btn-primary btn-lg" value="Submit Map">
 
             <div class="container-fluid">
                 <div class="row" id="reps"></div>
-            </div>
-        </div>
-        <div class="col-lg-12" id="right">
-            <h2>Hey there</h2>
-            <p>We would like to get to know you and help you get informed for the upcoming vote.</p>
-            <p><a class="btn btn-primary btn-lg" href="survey.html" role="button">Learn more</a></p>
+            </div></p>
         </div>
 
+        <div class="col-lg-6">
+          <h4>What matters to me!?</h4>
+          <p>Take a quiz to learn more about your choices</p>
+             <p><a class="btn btn-primary btn-lg" href="survey.html" role="button">Learn more</a></p>
+
+        
+        </div>
+      </div>
+
+      <footer class="footer">
+        <p>© VoteSavvy 2015</p>
+      </footer>
+
+    </div>
+            
+            
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-2.1.4.min.js"><\/script>')</script>

@@ -99,16 +99,93 @@ textarea {
     margin-bottom: 20px;
 }
 
+.mainlogo{
+    height: 100px;
+    margin: 20px;
+}
 
+.mainbody{
+    font-family: 'Nunito', sans-serif;  
+    background: #424242;
+}
 
+.title{
+    padding-top: 4px;
+    font-size: 30px;
+    color:#ddd;
+}
 
+.subtitle{
+    color:#ddd !important;   
+}
 
+.jumbotron{
+    background:#343434;
+    color: #ddd;
+}
 
+h2, .h2 {
+  font-size: 30px;
+    color: #ddd !important;
+}
 
+p {
+  margin: 0 0 10px;
+    color:#ddd;
+}
 
+.vsform-control {
+  background-color: #666;
+  color: #FFF !important;
+  border: none;
+  width: 200px;
+}
 
+.gap{
+    padding-right:10px;  
+    height: 20px;
+}
 
+.btn-primary {
+  color: #343434;
+  background-color: #FDDF2F;
+  border-color: #FDDF2F;
+}
 
+h4, .h4 {
+  font-size: 18px;
+  color: #FFF;
+}
+
+.mytop{
+    margin-top:62px;   
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+ color: #343434;
+  background-color: #FDDF2F;
+}
+
+a {
+  color: #FDDF2F;
+  text-decoration: none;
+}
+
+.media, .media-body {
+  overflow: hidden;
+  zoom: 1;
+  background-color: #343434;
+  border: none;
+}
+
+.col-lg-6{
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.myblock{
+    display: inline-block;   
+}
 
 /* ==========================================================================
    Helper classes
