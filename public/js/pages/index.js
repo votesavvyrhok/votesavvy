@@ -7,6 +7,7 @@ var Index = {
 
         $('#mapButton').on('click', function() {
             $(this).val('Submit');
+            Map.show();
             $(this).off('click').on('click', Index.loadFromMarker);
         });
 
