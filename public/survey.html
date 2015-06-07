@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/vendor/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/index.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     
@@ -25,23 +26,32 @@
   </head>
 
 
-  <body class="surveyBackground">
+  <body class="mainbody">
     <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <div class="container">       
-          <div class="row">
-            <div class="col-md-12">
-              <div class="jumbotron text-center surveyBackground">
-                  <a href="/"><img class="surveyLogo" src="images/vs-logo-200px.png" /></a>
-                  <!-- Change the width and height values to suit you best -->
-<div class="typeform-widget" data-url="https://votesavvy.typeform.com/to/fta9qj" data-text="VoteSavvy" style="width:100%;height:600px;"></div>
-<script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'widget.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}})()</script>
-    <div style="font-family: Sans-Serif;font-size: 12px;color: #999;opacity: 0.5; padding-top: 5px;">Powered by <a href="http://www.typeform.com/?utm_campaign=typeform_fta9qj&amp;utm_source=website&amp;utm_medium=typeform&amp;utm_content=typeform-embedded&amp;utm_term=English" style="color: #999" target="_blank">Typeform</a></div>
-              </div>
+         <div class="container-fluid" style="max-width: 1000px;"> 
+            <div class="header clearfix">         
+                <nav>
+                  <ul class="nav nav-pills pull-right mytop">
+            <li role="presentation"><a href="/">Home</a></li>
+            <li role="presentation"><a href="/about.html">Who is Votesavvy?</a></li>
+            <li role="presentation" class="active"><a href="/survey.html">Quiz</a></li>
+                  </ul>
+                </nav>
+                <h3 class="text-muted"> <a href="/"><img class="mainlogo pull-left" src="images/vs-logo-200px.png" /></a></h3>
             </div>
-          </div>  
+            
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="jumbotron text-center surveyBackground">
+                      <!-- Change the width and height values to suit you best -->
+    <div class="typeform-widget" data-url="https://votesavvy.typeform.com/to/fta9qj" data-text="VoteSavvy" style="width:100%;height:600px;"></div>
+    <script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'widget.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}})()</script>
+                  </div>
+                </div>
+              </div>  
         </div>
 
 

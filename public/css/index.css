@@ -19,11 +19,15 @@ body {
 }
 
 img#img-candidate {
-    max-height: 100px;
+    max-height: 120px;
 }
 
 .text-candidate {
     color: #ffffff;
+}
+
+#name {
+    font-size: 24px;
 }
 
 /* Header */
