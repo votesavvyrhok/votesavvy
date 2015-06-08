@@ -2,9 +2,6 @@
 
 A resource for young voters to explore voting options, through data and social media.
 
-![personas](personas.png)
-
-
 Need and independent account for:
 
 - [x] Gmail
