@@ -1,5 +1,7 @@
 # votesavvy
 
+A resource for young voters to explore voting options, through data and social media.
+
 Need and independent account for:
 
 - [x] Gmail
