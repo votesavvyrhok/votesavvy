@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/votesavvyrhok/votesavvy.png?label=ready&title=Ready)](https://waffle.io/votesavvyrhok/votesavvy)
 # votesavvy
 
 A resource for young voters to explore voting options, through data and social media.
