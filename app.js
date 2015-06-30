@@ -42,18 +42,29 @@ app.listen(appEnv.port, appEnv.bind, function () {
     console.log('server starting on ' + appEnv.url);
 });
 
+//for session management
+var session = require('express-session');
+
+app.use(session({
+    secret: "thisisasecret",
+    name: "votesavvycookie",
+    resave: true,
+    saveUninitialized: true
+}));
+
 var dbCredentials = {
     dbNames: {
-     //   voters: "voters",  //store the original answers of samplers in a survey
-        signintwitters: "signintwitters", //store the samplers' information collected from twitter
+        //   voters: "voters",  //store the original answers of samplers in a survey
+        signintwitters: "twitterusers", //store the samplers' information collected from twitter
+        survey: "answers",
         //tweets: 'tweets'            //store the tweets collected from twitter
+        preferences: "preferences"
     },
     dbs: {},
-    dbAPIs: {}
 };
 
-var cloudant;
 
+var cloudant;
 
 function useDatabase(next) {
 
@@ -83,12 +94,13 @@ function useDatabase(next) {
             else {
                 console.log('database ' + dbCredentials.dbNames[name] + ' is created');
             }
+
+            dbCredentials.dbs[name]=cloudant.use(dbCredentials.dbNames[name]);
             callback();
         });
     }, function (err) {
 
-        for (i in dbCredentials.dbNames)
-            next(dbCredentials.dbNames[i]);
+        next();
 
         cloudant.db.list(function (err, all_dbs) {
             console.log('All my databases: %s', all_dbs.join(', '));
@@ -135,14 +147,30 @@ function initializeDatabase(callback) {
 
 }
 
-function apiMappingDB(dbName){
 
-    dbCredentials.dbs[dbName]=cloudant.use(dbName);
 
-    dbCredentials.dbAPIs[dbName]=require('./routes/'+dbName)(app,dbCredentials.dbs[dbName]);
+function apiMappingDB(){
 
-    dbCredentials.dbAPIs[dbName];
+    var apis={
+        signintwitters:{
+            name:"signintwitters",
+            db: [dbCredentials.dbs.signintwitters]
+        },
 
+        survey: {
+            name: "surveymanager",
+            db: [dbCredentials.dbs.survey,dbCredentials.dbs.preferences]
+        },
+
+        preferences: {
+            name: "preferencemanager",
+            db: [dbCredentials.dbs.preferences]
+        }
+    }
+
+    for (i in apis){
+        require('./routes/'+apis[i].name)(app,apis[i].db);
+    };
 }
 
 initializeDatabase(apiMappingDB);
