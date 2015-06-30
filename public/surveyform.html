@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Survey form</title>
+</head>
+<body>
+
+<p> This is the data input form of <%=screen_name%></p>
+
+<form enctype='application/json'>
+
+    <section>
+        <fieldset>
+            <legend> Issues: </legend>
+            <p>
+                Health <input type="text" name='issues[health]' id="issue_health" />
+            </p>
+            <p>
+                Justice <input type="text" name='issues[justice]' id="issue_justice" />
+            </p>
+        </fieldset>
+    </section>
+
+    <section>
+        <fieldset>
+            <legend> Sources: </legend>
+            <p>
+               Television <input type="text" name='sources[television]' id="source_television" />
+            </p>
+            <p>
+               Radio <input type="text" name='sources[radio]' id="source_radio" />
+            </p>
+        </fieldset>
+    </section>
+
+    <section>
+        <fieldset>
+            <legend>Gender</legend>
+            <ul>
+                <li>
+                    <label for="title_1">
+                        <input type="radio" id="title_1" name='gender' value="Male" />
+                        Male
+                    </label>
+                </li>
+                <li>
+                    <label for="title_2">
+                        <input type="radio" id="title_2" name='gender' value="Female" />
+                        Female
+                    </label>
+                </li>
+            </ul>
+        </fieldset>
+    </section>
+
+    <section>
+        <p>
+            <button formaction="/survey/inprogress" formmethod="post" id="inprogress_button">In Progress</button>
+        </p>
+        <p>
+            <button formaction="/survey/submit" formmethod="post" id="submit_button">Submit</button>
+        </p>
+    </section>
+</form>
+
+</body>
+</html>
