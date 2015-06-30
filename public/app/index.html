@@ -58,13 +58,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body unresolved class="fullbleed layout vertical">
     <span id="browser-sync-binding"></span>
     <template is="dom-bind" id="app">
-
-
-        <paper-header-panel main mode="waterfall-tall">
-
+        <paper-header-panel main mode="standard">
             <!-- Main Toolbar -->
-            <paper-toolbar id="mainToolbar">
-                <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+            <paper-toolbar class="standard" id="mainToolbar">
+                <!-- paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button -->
                 <span class="flex"></span>
 
                 <!-- Toolbar icons -->
@@ -77,6 +74,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <!-- Application sub title -->
                 <div class="bottom title"></div>
 
+                <!-- paper-tabs selected="0" class="bottom horizontal self-end" style="width: 100%; margin-bottom:10px;">
+
+                    <paper-tab>MY SURVEY</paper-tab>
+                    <paper-tab>MY INFO PACK</paper-tab>
+
+                </paper-tabs -->
+
+                <!--                <div class="bottom flex self-start"></div>-->
             </paper-toolbar>
 
 
@@ -84,192 +89,238 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div class="content">
                 <iron-pages attr-for-selected="data-route" selected="home">
 
-                    <section data-route="home">
+                    <section data-route="home" animateInitialSelection="true">
                         <paper-material elevation="2">
                             <!-- my-greeting></my-greeting -->
 
                             <!-- p class="paper-font-subhead">You now have:</p -->
                             <!-- my-list></my-list -->
                             <h3 class="card__title">Create a custom VoteSavvy info kit</h3>
-                            <p class="paper-font-body2">
-                                Sign in to speed up the process, and to return to your data. To get notifications you need to sign in and enable notifications. Notifications will be provided via Twitter [ this is just filler text/thinking out loud for now ]. All device notifications can be turned on/off at any time in the settings panel.</p>
+                            <p class="paper-font-body2">Oh hey, thanks for dropping by. Let's get Vote Savvy. This quiz helps the Vote Savvy team get a better sense of how we can help you (and young people like you) get informed about the politics. It only takes a few minutes. After you are done we help you figure out what the politicians are saying about the issues that mater to you.</p>
+                            <p class="paper-font-body2">Optionally sign in to speed up the process, and to return to your data later.</p>
+                            <input type="image" src="../images/sign-in-with-twitter-gray.png" onclick="location.href='/signintwitters/step1'" />
                         </paper-material>
 
                         <paper-material elevation="2">
                             I consent to participate in this study.*
                             <BR/>
                             <BR/>
-                            <paper-checkbox>I Consent</paper-checkbox>
+                            <paper-checkbox id="consentCheckbox">I Consent</paper-checkbox>
                         </paper-material>
+                        <paper-fab id="consentButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                        <paper-toast id="toaster" text="We need your consent to continue!"></paper-toast>
+
+                    </section>
+
+                    <section data-route="issues" animateInitialSelection="true">
 
                         <!-- SECTION 1 -->
 
-                        <div class="subject"> Below is a list of political issues, please give each a rating based on how important the issues is.</div>
-                        <div class="ratinginfo">( where 1 is unimportant, and 5 is very important )</div>
-                        <paper-material elevation="2">
-
+                        <div class=" subject "> Below is a list of political issues, please give each a rating based on how important the issues is.</div>
+                        <div class="ratinginfo ">( where 1 is unimportant, and 5 is very important )</div>
+                        <paper-material elevation="2 ">
                             <paper-item>
                                 <paper-item-body two-line>
-                                    <span class="rate question">a: Crime and Justice</span>
-                                    <paper-radio-group selected="cj_three">
-                                        <paper-radio-button class="rate" name="cj_one" label="Small">1</paper-radio-button>
-                                        <paper-radio-button class="rate" name="cj_two" label="Medium">2</paper-radio-button>
-                                        <paper-radio-button class="rate" name="cj_three" label="Large">3</paper-radio-button>
-                                        <paper-radio-button class="rate" name="cj_four" label="Medium">4</paper-radio-button>
-                                        <paper-radio-button class="rate" name="cj_five" label="Large">5</paper-radio-button>
+                                    <span class="rate question ">a: Crime and Justice</span>
+                                    <paper-radio-group id="cjgroup" selected="cj_three ">
+                                        <paper-radio-button class="rate " name="cj_one " label="Small ">1</paper-radio-button>
+                                        <paper-radio-button class="rate " name="cj_two " label="Medium ">2</paper-radio-button>
+                                        <paper-radio-button class="rate " name="cj_three " label="Large ">3</paper-radio-button>
+                                        <paper-radio-button class="rate " name="cj_four " label="Medium ">4</paper-radio-button>
+                                        <paper-radio-button class="rate " name="cj_five " label="Large ">5</paper-radio-button>
                                     </paper-radio-group>
-                                    <span class="rate question">b: Welfare</span>
-                                    <paper-radio-group selected="w_three">
-                                        <paper-radio-button class="rate" name="w_one" label="Small">1</paper-radio-button>
-                                        <paper-radio-button class="rate" name="w_two" label="Medium">2</paper-radio-button>
-                                        <paper-radio-button class="rate" name="w_three" label="Large">3</paper-radio-button>
-                                        <paper-radio-button class="rate" name="w_four" label="Medium">4</paper-radio-button>
-                                        <paper-radio-button class="rate" name="w_five" label="Large">5</paper-radio-button>
+                                    <span class="rate question ">b: Welfare</span>
+                                    <paper-radio-group selected="w_three ">
+                                        <paper-radio-button class="rate " name="w_one " label="Small ">1</paper-radio-button>
+                                        <paper-radio-button class="rate " name="w_two " label="Medium ">2</paper-radio-button>
+                                        <paper-radio-button class="rate " name="w_three " label="Large ">3</paper-radio-button>
+                                        <paper-radio-button class="rate " name="w_four " label="Medium ">4</paper-radio-button>
+                                        <paper-radio-button class="rate " name="w_five " label="Large ">5</paper-radio-button>
                                     </paper-radio-group>
-                                    <span class="rate question">c: Defense and International Affairs</span>
-                                    <paper-radio-group selected="ia_three">
-                                        <paper-radio-button class="rate" name="ia_one" label="Small">1</paper-radio-button>
-                                        <paper-radio-button class="rate" name="ia_two" label="Medium">2</paper-radio-button>
-                                        <paper-radio-button class="rate" name="ia_three" label="Large">3</paper-radio-button>
-                                        <paper-radio-button class="rate" name="ia_four" label="Medium">4</paper-radio-button>
-                                        <paper-radio-button class="rate" name="ia_five" label="Large">5</paper-radio-button>
+                                    <span class="rate question ">c: Defense and International Affairs</span>
+                                    <paper-radio-group selected="ia_three ">
+                                        <paper-radio-button class="rate " name="ia_one " label="Small ">1</paper-radio-button>
+                                        <paper-radio-button class="rate " name="ia_two " label="Medium ">2</paper-radio-button>
+                                        <paper-radio-button class="rate " name="ia_three " label="Large ">3</paper-radio-button>
+                                        <paper-radio-button class="rate " name="ia_four " label="Medium ">4</paper-radio-button>
+                                        <paper-radio-button class="rate " name="ia_five " label="Large ">5</paper-radio-button>
                                     </paper-radio-group>
-                                    <span class="rate question">d: Environment </span>
-                                    <paper-radio-group selected="e_three">
-                                        <paper-radio-button class="rate" name="e_one" label="Small">1</paper-radio-button>
-                                        <paper-radio-button class="rate" name="e_two" label="Medium">2</paper-radio-button>
-                                        <paper-radio-button class="rate" name="e_three" label="Large">3</paper-radio-button>
-                                        <paper-radio-button class="rate" name="e_four" label="Medium">4</paper-radio-button>
-                                        <paper-radio-button class="rate" name="e_five" label="Large">5</paper-radio-button>
+                                    <span class="rate question ">d: Environment </span>
+                                    <paper-radio-group selected="e_three ">
+                                        <paper-radio-button class="rate " name="e_one " label="Small ">1</paper-radio-button>
+                                        <paper-radio-button class="rate " name="e_two " label="Medium ">2</paper-radio-button>
+                                        <paper-radio-button class="rate " name="e_three " label="Large ">3</paper-radio-button>
+                                        <paper-radio-button class="rate " name="e_four " label="Medium ">4</paper-radio-button>
+                                        <paper-radio-button class="rate " name="e_five " label="Large ">5</paper-radio-button>
                                     </paper-radio-group>
-                                    <span class="rate question">e: Economy</span>
-                                    <paper-radio-group selected="eco_three">
-                                        <paper-radio-button class="rate" name="eco_one" label="Small">1</paper-radio-button>
-                                        <paper-radio-button class="rate" name="eco_two" label="Medium">2</paper-radio-button>
-                                        <paper-radio-button class="rate" name="eco_three" label="Large">3</paper-radio-button>
-                                        <paper-radio-button class="rate" name="eco_four" label="Medium">4</paper-radio-button>
-                                        <paper-radio-button class="rate" name="eco_five" label="Large">5</paper-radio-button>
+                                    <span class="rate question ">e: Economy</span>
+                                    <paper-radio-group selected="eco_three ">
+                                        <paper-radio-button class="rate " name="eco_one " label="Small ">1</paper-radio-button>
+                                        <paper-radio-button class="rate " name="eco_two " label="Medium ">2</paper-radio-button>
+                                        <paper-radio-button class="rate " name="eco_three " label="Large ">3</paper-radio-button>
+                                        <paper-radio-button class="rate " name="eco_four " label="Medium ">4</paper-radio-button>
+                                        <paper-radio-button class="rate " name="eco_five " label="Large ">5</paper-radio-button>
                                     </paper-radio-group>
-                                    <span class="rate question">f: Healthcare</span>
-                                    <paper-radio-group selected="h_three">
-                                        <paper-radio-button class="rate" name="h_one" label="Small">1</paper-radio-button>
-                                        <paper-radio-button class="rate" name="h_two" label="Medium">2</paper-radio-button>
-                                        <paper-radio-button class="rate" name="h_three" label="Large">3</paper-radio-button>
-                                        <paper-radio-button class="rate" name="h_four" label="Medium">4</paper-radio-button>
-                                        <paper-radio-button class="rate" name="h_five" label="Large">5</paper-radio-button>
+                                    <span class="rate question ">f: Healthcare</span>
+                                    <paper-radio-group selected="h_three ">
+                                        <paper-radio-button class="rate " name="h_one " label="Small ">1</paper-radio-button>
+                                        <paper-radio-button class="rate " name="h_two " label="Medium ">2</paper-radio-button>
+                                        <paper-radio-button class="rate " name="h_three " label="Large ">3</paper-radio-button>
+                                        <paper-radio-button class="rate " name="h_four " label="Medium ">4</paper-radio-button>
+                                        <paper-radio-button class="rate " name="h_five " label="Large ">5</paper-radio-button>
                                     </paper-radio-group>
-                                    <span class="rate question">g: Education</span>
-                                    <paper-radio-group selected="edu_three">
-                                        <paper-radio-button class="rate" name="edu_one" label="Small">1</paper-radio-button>
-                                        <paper-radio-button class="rate" name="edu_two" label="Medium">2</paper-radio-button>
-                                        <paper-radio-button class="rate" name="edu_three" label="Large">3</paper-radio-button>
-                                        <paper-radio-button class="rate" name="edu_four" label="Medium">4</paper-radio-button>
-                                        <paper-radio-button class="rate" name="edu_five" label="Large">5</paper-radio-button>
+                                    <span class="rate question ">g: Education</span>
+                                    <paper-radio-group selected="edu_three ">
+                                        <paper-radio-button class="rate " name="edu_one " label="Small ">1</paper-radio-button>
+                                        <paper-radio-button class="rate " name="edu_two " label="Medium ">2</paper-radio-button>
+                                        <paper-radio-button class="rate " name="edu_three " label="Large ">3</paper-radio-button>
+                                        <paper-radio-button class="rate " name="edu_four " label="Medium ">4</paper-radio-button>
+                                        <paper-radio-button class="rate " name="edu_five " label="Large ">5</paper-radio-button>
                                     </paper-radio-group>
                                 </paper-item-body>
                             </paper-item>
 
                         </paper-material>
+                        <paper-fab id="issuesButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
 
-
-                        <div class="subject"> Have you looked for information on any political issues in the past month?</div>
-                        <paper-material elevation="2">
+                    <section data-route="information" animateInitialSelection="true">
+                        <div class="subject "> Have you looked for information on any political issues in the past month?</div>
+                        <paper-material elevation="2 ">
 
                             <paper-item>
                                 <paper-item-body two-line>
-                                    <paper-radio-group selected="info_one">
-                                        <paper-radio-button class="choice" name="info_one" label="Small">No ( zero times )</paper-radio-button>
-                                        <paper-radio-button class="choice" name="info_two" label="Medium">A Little ( less than weekly )</paper-radio-button>
-                                        <paper-radio-button class="choice" name="info_three" label="Large">Frequently ( weekly to several times a week )</paper-radio-button>
-                                        <paper-radio-button class="choice" name="info_four" label="Medium">Very Frequently ( daily or more )</paper-radio-button>
+                                    <paper-radio-group selected="info_one ">
+                                        <paper-radio-button class="choice " name="info_one " label="Small ">No ( zero times )</paper-radio-button>
+                                        <paper-radio-button class="choice " name="info_two " label="Medium ">A Little ( less than weekly )</paper-radio-button>
+                                        <paper-radio-button class="choice " name="info_three " label="Large ">Frequently ( weekly to several times a week )</paper-radio-button>
+                                        <paper-radio-button class="choice " name="info_four " label="Medium ">Very Frequently ( daily or more )</paper-radio-button>
                                     </paper-radio-group>
                                 </paper-item-body>
                             </paper-item>
 
                         </paper-material>
+                        <paper-fab id="informationButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+                    <section data-route="encounter">
 
+                        <div class="subject ">Regardless of whether or not you look for political information, how often do you encounter information about political issues from each of the following channels/sources?</div>
+                        <div class="ratinginfo ">Think specifically about this election period starting August 2015.</div>
+                        <paper-material elevation="2 ">
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <div class="mediaitem ">Television</div>
+                                    <paper-slider snaps="true " pin min="0 " max="10 " step="1 "></paper-slider>
+                                    <div class="mediaitem ">Radio Newspaper (physical or online)</div>
+                                    <paper-slider snaps="true " pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <div class="mediaitem ">Social Media Sites (Twitter, Facebook etc.)</div>
+                                    <paper-slider snaps="true " pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <div class="mediaitem ">Other Online Sources (Blogs, Websites etc.)</div>
+                                    <paper-slider snaps="true " pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <div class="mediaitem ">Family and Friends</div>
+                                    <paper-slider snaps="true " pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <div class="mediaitem ">Political Parties</div>
+                                    <paper-slider snaps="true " pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <div class="mediaitem ">Elected Officials</div>
+                                    <paper-slider snaps="true " pin min="1 " max="10 " step="1 "></paper-slider>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+                        <paper-fab id="encounterButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+                    <section data-route="months">
 
-                        <div class="subject">Regardless of whether or not you look for political information, how often do you encounter information about political issues from each of the following channels/sources?</div>
-                        <div class="ratinginfo">Think specifically about this election period starting August 2015.</div>
-                        <paper-material elevation="2">
+                        <div class="subject ">During the past 12 months I have:</div>
+                        <paper-material elevation="2 ">
                             <paper-item>
                                 <paper-item-body two-line>
 
-                                    <div class="mediaitem">Television</div>
-                                    <paper-slider snaps="true" pin min="0" max="10" step="1"></paper-slider>
-                                    <div class="mediaitem">Radio Newspaper (physical or online)</div>
-                                    <paper-slider snaps="true" pin min="1" max="10" step="1"></paper-slider>
-                                    <div class="mediaitem">Social Media Sites (Twitter, Facebook etc.)</div>
-                                    <paper-slider snaps="true" pin min="1" max="10" step="1"></paper-slider>
-                                    <div class="mediaitem">Other Online Sources (Blogs, Websites etc.)</div>
-                                    <paper-slider snaps="true" pin min="1" max="10" step="1"></paper-slider>
-                                    <div class="mediaitem">Family and Friends</div>
-                                    <paper-slider snaps="true" pin min="1" max="10" step="1"></paper-slider>
-                                    <div class="mediaitem">Political Parties</div>
-                                    <paper-slider snaps="true" pin min="1" max="10" step="1"></paper-slider>
-                                    <div class="mediaitem">Elected Officials</div>
-                                    <paper-slider snaps="true" pin min="1" max="10" step="1"></paper-slider>
-
-
+                                    <paper-checkbox>Used email or instant messaging to discuss a political or societal issue Circulated</paper-checkbox>
+                                    <paper-checkbox>(re)posted or embedded political information or content on social media such as Facebook, Twitter, Google+, Blogging site</paper-checkbox>
+                                    <paper-checkbox> Signed a petition</paper-checkbox>
+                                    <paper-checkbox> Taken part in a protest or demonstration Volunteered for a political party</paper-checkbox>
+                                    <paper-checkbox> Donated to a political party Volunteered for a charity, community organization or cause Donated to a charity, community organization or cause</paper-checkbox>
 
                                 </paper-item-body>
                             </paper-item>
                         </paper-material>
-
-
-
-
-
-
-                        <paper-material elevation="2" class="paper-font-body2">
-                            <h1 id="license">License</h1>
-                            <p>Everything in this repo is BSD style license unless otherwise specified.</p>
-                            <p>Copyright (c) 2015 The Polymer Authors. All rights reserved.</p>
-                            <p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
-                            <ul>
-                                <li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
-                                <li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-                                </li>
-                                <li>Neither the name of Google Inc. nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</li>
-                            </ul>
-                            <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
-                        </paper-material>
-
+                        <paper-fab id="monthsButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="users">
-                        <paper-material elevation="2">
-                            <h2 class="paper-font-display2">Users</h2>
-                            <p>This is the users section</p>
-                            <a href="/users/Rob">Rob</a>
+                    <section data-route="gender">
+                        <div class="subject ">Gender( self identified ):</div>
+                        <paper-material elevation="2 ">
+                            <paper-item>
+                                <paper-radio-group selected="gender_unknown ">
+                                    <paper-radio-button class="choice " name="gender_female " label="Small ">Female</paper-radio-button>
+                                    <paper-radio-button class="choice " name="gender_male " label="Medium ">Male</paper-radio-button>
+                                    <paper-radio-button class="choice " name="gender_unknown " label="Large ">Prefer not to state</paper-radio-button>
+                                </paper-radio-group>
+                            </paper-item>
                         </paper-material>
+                        <paper-fab id="genderButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="user-info">
-                        <paper-material elevation="2">
-                            <h2 class="paper-font-display2">
-                User:<span>{{params.name}}</span>
-                </h2>
-                            <div>This is <span>{{params.name}}</span>'s section</div>
+                    <section data-route="birth">
+                        <div class="subject ">Birthdate:</div>
+                        <paper-material elevation="2 ">
+                            <paper-item>
+                                <input type="date " name="bday " max="1979-12-31 ">
+                                <br>
+                            </paper-item>
                         </paper-material>
+                        <paper-fab id="birthButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="contact">
-                        <paper-material elevation="2">
-                            <h2 class="paper-font-display2">Contact</h2>
-                            <p>This is the contact section</p>
+                    <section data-route="employment">
+
+                        <div class="subject ">What's your current working situation:</div>
+                        <paper-material elevation="2 ">
+                            <paper-item>
+                                <paper-radio-group selected="work_fulltime ">
+                                    <paper-radio-button class="choice " name="work_fulltime " label="Small ">Working Full Time ( 30+ hours per week )</paper-radio-button>
+                                    <paper-radio-button class="choice " name="work_parttime " label="Medium ">Working Part Time ( 8 - 29 hours per week )</paper-radio-button>
+                                    <paper-radio-button class="choice " name="work_unemployed " label="Large ">Unemployed</paper-radio-button>
+                                    <paper-radio-button class="choice " name="work_sick " label="Large ">Permanently Sick or Disabled</paper-radio-button>
+                                    <paper-radio-button class="choice " name="work_undergrad " label="Large ">Undergraduate Student</paper-radio-button>
+                                    <paper-radio-button class="choice " name="work_masters " label="Large ">Masters Student</paper-radio-button>
+                                    <paper-radio-button class="choice " name="work_postdoc " label="Large ">PhD/Post-Doctorate Student</paper-radio-button>
+                                    <paper-radio-button class="choice " name="work_fulledu " label="Large ">Full Time Education ( not a higher degree )</paper-radio-button>
+                                    <paper-radio-button class="choice " name="work_partedu " label="Large ">Part Time Education ( not a higher degree )</paper-radio-button>
+                                    <paper-radio-button class="choice " name="work_undisclosed " label="Large ">Prefer Not to disclose</paper-radio-button>
+                                    <paper-radio-button class="choice " name="work_other " label="Large ">Other</paper-radio-button>
+                                </paper-radio-group>
+                            </paper-item>
                         </paper-material>
+                        <paper-fab id="employmentButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="postcode">
+                        <div class="subject ">What's your postal code:</div>
+                        <paper-material elevation="2 ">
+                            <input type="text " name="email ">
+                        </paper-material>
+                        <paper-fab id="postcodeButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="email">
+
+                        <div class="subject ">What's your email address?</div>
+                        <div class="ratinginfo ">We will only send you emails for two reasons: 1. To give you voting information no more than twice during this election 2. To invite you to participate in a follow up study no more than twice following the election. You'll be able to unsubscribe at any time</div>
+                        <paper-material elevation="2 ">
+                            <input type="email " name="email ">
+                        </paper-material>
+                        <paper-fab id="emailButton" class="nextButton" icon="publish"></paper-fab>
                     </section>
 
                 </iron-pages>
             </div>
         </paper-header-panel>
-        </paper-drawer-panel>
 
     </template>
 
     <!-- build:js scripts/app.js -->
-    <script src="scripts/app.js"></script>
+    <script src="scripts/app.js "></script>
     <!-- endbuild-->
 </body>
 

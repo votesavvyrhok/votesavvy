@@ -23,14 +23,6 @@ body {
     font-weight: bold;
 }
 
-#mainToolbar {
-    /*  height: 300px;*/
-}
-
-.content {
-    /*    margin-top:-150px;*/
-}
-
 .subject {
     padding: 10px;
     font-weight: bold;
@@ -42,4 +34,9 @@ body {
 
 .choice {
     display: block;
+}
+
+.nextButton {
+    position: relative;
+    float: right;
 }
