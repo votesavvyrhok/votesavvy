@@ -58,9 +58,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body unresolved class="fullbleed layout vertical">
     <span id="browser-sync-binding"></span>
     <template is="dom-bind" id="app">
-        <paper-header-panel main mode="waterfall-tall">
+        <paper-header-panel main mode="standard">
             <!-- Main Toolbar -->
-            <paper-toolbar class="tall" id="mainToolbar">
+            <paper-toolbar class="standard" id="mainToolbar">
                 <!-- paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button -->
                 <span class="flex"></span>
 
@@ -89,7 +89,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div class="content">
                 <iron-pages attr-for-selected="data-route" selected="home">
 
-                    <section data-route="home">
+                    <section data-route="home" animateInitialSelection="true">
                         <paper-material elevation="2">
                             <!-- my-greeting></my-greeting -->
 
@@ -105,13 +105,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             I consent to participate in this study.*
                             <BR/>
                             <BR/>
-                            <paper-checkbox>I Consent</paper-checkbox>
+                            <paper-checkbox id="consentCheckbox">I Consent</paper-checkbox>
                         </paper-material>
                         <paper-fab id="consentButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                        <paper-toast id="toaster" text="We need your consent to continue!"></paper-toast>
 
                     </section>
 
-                    <section data-route="issues">
+                    <section data-route="issues" animateInitialSelection="true">
 
                         <!-- SECTION 1 -->
 
@@ -121,7 +122,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <paper-item>
                                 <paper-item-body two-line>
                                     <span class="rate question ">a: Crime and Justice</span>
-                                    <paper-radio-group selected="cj_three ">
+                                    <paper-radio-group id="cjgroup" selected="cj_three ">
                                         <paper-radio-button class="rate " name="cj_one " label="Small ">1</paper-radio-button>
                                         <paper-radio-button class="rate " name="cj_two " label="Medium ">2</paper-radio-button>
                                         <paper-radio-button class="rate " name="cj_three " label="Large ">3</paper-radio-button>
@@ -183,7 +184,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-fab id="issuesButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="information">
+                    <section data-route="information" animateInitialSelection="true">
                         <div class="subject "> Have you looked for information on any political issues in the past month?</div>
                         <paper-material elevation="2 ">
 

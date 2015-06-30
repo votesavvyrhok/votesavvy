@@ -32,12 +32,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var consentButton = document.querySelector('#consentButton');
 
         consentButton.addEventListener('click', function () {
-            app.switch();
+
+            var consentCheckbox = document.querySelector('#consentCheckbox');
+
+            console.log(consentCheckbox.checked);
+
+            if (consentCheckbox.checked) {
+                app.switch();
+            } else {
+                var toast = document.querySelector('#toaster');
+                toast.show();
+            }
         });
 
         var issuesButton = document.querySelector('#issuesButton');
 
         issuesButton.addEventListener('click', function () {
+
+            var cjgroup = document.querySelector('#cjgroup');
+            var i = cjgroup.selectedItem;
+
             app.switch();
         });
 
