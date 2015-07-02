@@ -16,7 +16,7 @@ var cfenv = require('cfenv');
 var https = require('https');
 var JSON = require('JSON');
 
-var async= require('async');
+var async = require('async');
 
 var database;
 
@@ -42,9 +42,13 @@ app.listen(appEnv.port, appEnv.bind, function () {
     console.log('server starting on ' + appEnv.url);
 });
 
+app.get('/survey', function (req, res) {
+    res.render('app/index.html');
+});
+
 var dbCredentials = {
     dbNames: {
-     //   voters: "voters",  //store the original answers of samplers in a survey
+        //   voters: "voters",  //store the original answers of samplers in a survey
         signintwitters: "signintwitters", //store the samplers' information collected from twitter
         //tweets: 'tweets'            //store the tweets collected from twitter
     },
@@ -74,13 +78,12 @@ function useDatabase(next) {
     callback();
     */
 
-    async.forEach(Object.keys(dbCredentials.dbNames), function(name, callback) {
+    async.forEach(Object.keys(dbCredentials.dbNames), function (name, callback) {
 
         cloudant.db.create(dbCredentials.dbNames[name], function (err, res) {
             if (err) {
                 console.log('database ' + dbCredentials.dbNames[name] + ' already created');
-            }
-            else {
+            } else {
                 console.log('database ' + dbCredentials.dbNames[name] + ' is created');
             }
             callback();
@@ -115,8 +118,7 @@ function initializeDatabase(callback) {
         cloudant = require('cloudant')(dbCredentials.url);
 
         useDatabase(callback);
-    }
-    else {
+    } else {
 
         if (process.env.cloudant_hostname && process.env.cloudant_username && process.env.cloudant_password) {
             dbCredentials.host = process.env.cloudant_hostname;
@@ -135,11 +137,11 @@ function initializeDatabase(callback) {
 
 }
 
-function apiMappingDB(dbName){
+function apiMappingDB(dbName) {
 
-    dbCredentials.dbs[dbName]=cloudant.use(dbName);
+    dbCredentials.dbs[dbName] = cloudant.use(dbName);
 
-    dbCredentials.dbAPIs[dbName]=require('./routes/'+dbName)(app,dbCredentials.dbs[dbName]);
+    dbCredentials.dbAPIs[dbName] = require('./routes/' + dbName)(app, dbCredentials.dbs[dbName]);
 
     dbCredentials.dbAPIs[dbName];
 

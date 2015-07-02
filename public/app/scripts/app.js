@@ -7,6 +7,102 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 */
 
+
+var formdata = {
+    "token": "hash",
+    "timestamp": "YYYY-MM-DD'T'HH-MM-SS",
+    "issues": {
+        "Justice": null,
+        "Health": null,
+        "Welfare": null,
+        "Immigration": null,
+        "Economy": null,
+        "Environment": null,
+        "Other": null,
+        "Education": null,
+        "Defence": null
+    },
+    "sources": {
+        "Television": null,
+        "Radio": null,
+        "Newspaper": null,
+        "Social": null,
+        "Online": null,
+        "Family": null,
+        "Political": null,
+        "Elected": null
+    },
+    "activity": {
+        "face": null,
+        "message": null,
+        "social": null,
+        "petition": null,
+        "protest": null,
+        "volunteerPolitical": null,
+        "donatePolitical": null,
+        "volunteerCharity": null,
+        "donateCharity": null
+    },
+    "interest": {
+        "interest": null
+    },
+    "personal": {
+        "gender": null,
+        "birthDate": "YYYY-MM-DD",
+        "postalCode": "A1A1A1",
+        "twitter": "",
+        "email": "",
+        "work": null,
+        "other": ""
+    }
+};
+
+function hresponse() {}
+
+function setFormDataValue(category, subcategory) {
+
+    var element = document.querySelector('#' + subcategory);
+    var value;
+
+    if (element) {
+
+        /* For radio buttons */
+        if (element.selected) {
+            value = parseInt(element.selected);
+        }
+
+        /* For slider */
+        if (element.value) {
+            value = element.value;
+        }
+
+        /* For checkboxes */
+        if (element.checked) {
+            value = element.checked;
+        }
+
+        if (category) {
+            if (subcategory) {
+                formdata[category][subcategory] = value;
+            } else {
+                formdata[category] = value;
+            }
+        }
+    }
+}
+
+function getDataForCategory(category) {
+    for (var key in formdata[category]) {
+        setFormDataValue(category, key);
+    }
+}
+
+function sendData() {
+    var formSubmit = document.querySelector('#formSubmit');
+    formSubmit.parms = formdata;
+}
+
+
 (function (document) {
     'use strict';
 
@@ -35,8 +131,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             var consentCheckbox = document.querySelector('#consentCheckbox');
 
-            console.log(consentCheckbox.checked);
-
             if (consentCheckbox.checked) {
                 app.switch();
             } else {
@@ -48,61 +142,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var issuesButton = document.querySelector('#issuesButton');
 
         issuesButton.addEventListener('click', function () {
-
-            var cjgroup = document.querySelector('#cjgroup');
-            var i = cjgroup.selectedItem;
-
+            getDataForCategory("issues");
             app.switch();
         });
 
-        var infoButton = document.querySelector('#informationButton');
+        var interestButton = document.querySelector('#interestButton');
 
-        infoButton.addEventListener('click', function () {
+        interestButton.addEventListener('click', function () {
+            getDataForCategory("interest");
             app.switch();
         });
 
-        var encounterButton = document.querySelector('#encounterButton');
+        var sourcesButton = document.querySelector('#sourcesButton');
 
-        encounterButton.addEventListener('click', function () {
+        sourcesButton.addEventListener('click', function () {
+            getDataForCategory("sources");
             app.switch();
         });
 
-        var monthsButton = document.querySelector('#monthsButton');
+        var activityButton = document.querySelector('#activityButton');
 
-        monthsButton.addEventListener('click', function () {
+        activityButton.addEventListener('click', function () {
+            getDataForCategory("activity");
             app.switch();
         });
 
-        var genderButton = document.querySelector('#genderButton');
+        var personalButton = document.querySelector('#personalButton');
 
-        genderButton.addEventListener('click', function () {
+        personalButton.addEventListener('click', function () {
+            /* birthdate */
+            /* postcode */
+            setFormDataValue("personal", "gender");
             app.switch();
         });
 
-        var employmentButton = document.querySelector('#employmentButton');
+        var workButton = document.querySelector('#workButton');
 
-        employmentButton.addEventListener('click', function () {
+        workButton.addEventListener('click', function () {
+            setFormDataValue("personal", "work");
             app.switch();
         });
 
-        var birthButton = document.querySelector('#birthButton');
-
-        birthButton.addEventListener('click', function () {
-            app.switch();
-        });
-
-        var postcodeButton = document.querySelector('#postcodeButton');
-
-        postcodeButton.addEventListener('click', function () {
-            app.switch();
-        });
+        var formSubmit = document.querySelector('#formSubmit');
 
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
-            //            app.switch();
+            formdata.timestamp = Date.now();
+            formSubmit.params = formdata;
+            formSubmit.generateRequest();
         });
-
     });
 
     // Close drawer after menu item is selected if drawerPanel is narrow
@@ -123,11 +212,3 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     })
 
 })(document);
-
-//        var handleConsent = function () {
-//            var event = new Event('switcher');
-//            // Dispatch the event.
-//
-//            var app = document.querySelector('#app');
-//            app.dispatchEvent(event);
-//        }
