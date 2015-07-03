@@ -82,14 +82,14 @@ module.exports=function(app,db){
 
         if (!user_token)
         {
-            res.render('surveyform.html',{screen_name:"You"});
+            res.render('/app/index.html');
         }
         else
         {
           surveydb.get(user_token,{rev_info:true},function(err,results){
                 if (err)
                 {
-                    res.render('surveyform.html', {screen_name:screen_name});
+                    res.render('/app/index.html');
                 }
                 else
                 {
@@ -100,7 +100,7 @@ module.exports=function(app,db){
 
                         console.log("the survey results are " + JSON.stringify(data));
 
-                        res.render('surveyform.html', data);
+                        res.render('/app/index.html', data);
                     }
                     else
                     {
@@ -112,9 +112,10 @@ module.exports=function(app,db){
     });
 
     var storedoc = function(user_token, data, status,next){
-        var doc = {};
+
+        var doc = data;
         doc.status = status;
-        doc.data = data;
+        doc.token = user_token;
 
         //store the doc in db
         console.log('store the doc'+ JSON.stringify(doc));
@@ -156,10 +157,18 @@ module.exports=function(app,db){
         if (!user_token && status == 'submit')
             user_token = uuid.v4();
 
+        console.log("received form data is as " + JSON.stringify(req.body));
+
+        var data;
+        for (i in req.body)
+        {
+            data = JSON.parse(i);
+        }
+
         if (user_token)
-            storedoc(user_token, req.body, status,function(){
+            storedoc(user_token, data, status,function(){
                 if (status == "submit") {
-                    preference.generatepref(user_token, req.body,function(){
+                    preference.generatepref(user_token, data,function(){
                         if (req.session.session_token) {
                             res.redirect('/preference');
                         }
@@ -172,10 +181,10 @@ module.exports=function(app,db){
                 {
                     var results = req.body;
                     results.screen_name = req.session.screen_name;
-                    res.render('surveyform.html',results);
+                    res.render('/app/index.html');
                 }
 
         });
-        console.log("req data is" + JSON.stringify(req.body));
+
     });
 }

@@ -26,7 +26,6 @@ module.exports= function(app,db) {
     //the key of votesavvyrhok app under twitter account votesavvyrhok
     //in twitter application management
 
-
     var myConfig = {
         "consumerKey": "vf1TA6dx62BgDVIskWmILJKmb",
         "consumerSecret": "j54aUNcQWiWye5uR0QC6KfcTS3LNdDmj9PEfdQp9XwCIiO3tF5",
@@ -186,7 +185,7 @@ module.exports= function(app,db) {
         //if there is no survey data
 
         //if the user signning up just now
-        res.redirect("/");
+        res.redirect('/survey');
 
 
     });

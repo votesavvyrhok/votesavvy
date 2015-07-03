@@ -57,7 +57,7 @@ var formdata = {
     }
 };
 
-function hresponse() {}
+
 
 function setFormDataValue(category, subcategory) {
 
@@ -103,7 +103,7 @@ function sendData() {
 }
 
 
-(function (document) {
+(function () {
     'use strict';
 
     // Grab a reference to our auto-binding template
@@ -189,7 +189,9 @@ function sendData() {
 
         emailButton.addEventListener('click', function () {
             formdata.timestamp = Date.now();
-            formSubmit.params = formdata;
+            console.log(formdata);
+            formSubmit.body=JSON.stringify(formdata);
+            console.log(formSubmit.body);
             formSubmit.generateRequest();
         });
     });
@@ -211,4 +213,4 @@ function sendData() {
         app.switch();
     })
 
-})(document);
+})();
