@@ -306,7 +306,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
                         <paper-fab id="emailButton" class="nextButton" icon="file-upload"></paper-fab>
                     </section>
-                    <iron-ajax auto id="formSubmit" url="" handle-as="json" on-response="hresponse" debounce-duration="300">
+
+                    <iron-ajax method="POST" id="formSubmit" url="../survey/submit" contentType="application/json" handle-as="json" on-response="hresponse" debounce-duration="300">
                     </iron-ajax>
 
                 </iron-pages>
@@ -315,8 +316,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </template>
 
+    <script>
+        Polymer({
+             hresponse: function () {
+                    console.log("hresponse" + response);
+                }
+            });
+
+    </script>
+
     <!-- build:js scripts/app.js -->
     <script src="../app/scripts/app.js "></script>
+
+
     <!-- endbuild-->
 </body>
 
