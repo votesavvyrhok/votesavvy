@@ -185,6 +185,10 @@ function sendData() {
 
         var formSubmit = document.querySelector('#formSubmit');
 
+        formSubmit.addEventListener('response', function(e){
+            console.log("response from server" + JSON.stringify(e.detail.response));
+
+        })
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
@@ -194,6 +198,8 @@ function sendData() {
             console.log(formSubmit.body);
             formSubmit.generateRequest();
         });
+
+
     });
 
     // Close drawer after menu item is selected if drawerPanel is narrow
