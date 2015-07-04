@@ -100,11 +100,11 @@ module.exports=function(app,db){
 
                         console.log("the survey results are " + JSON.stringify(data));
 
-                        res.render('/app/index.html', data);
+                        res.send(data);
                     }
                     else
                     {
-                        res.redirect('/preference');
+                        res.send(results);
                     }
                 }
           });
@@ -168,12 +168,12 @@ module.exports=function(app,db){
         if (user_token)
             storedoc(user_token, data, status,function(){
                 if (status == "submit") {
-                    preference.generatepref(user_token, data,function(){
+                    preference.generatepref(user_token, data,function(preference){
                         if (req.session.session_token) {
-                            res.redirect('/preference');
+                            res.send(preference);
                         }
                         else
-                            res.redirect('/preference?token='+ user_token);
+                            res.send(preference);
 
                     });
                 }

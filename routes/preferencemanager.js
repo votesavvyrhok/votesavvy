@@ -34,7 +34,7 @@ module.exports=function(app,dbarray){
             if (!err)
             {
                 console.log("preference is stored for " + user_token);
-                next();
+                next(doc);
             }
         });
     }
