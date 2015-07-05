@@ -1,8 +1,4 @@
-/**
- * Created by a on 6/28/2015.
- */
-
-module.exports=function(app,db){
+module.exports = function (app, db) {
 
     var surveydb = db[0];
 
@@ -10,118 +6,240 @@ module.exports=function(app,db){
 
     var uuid = require('node-uuid');
     var bodyParser = require('body-parser');
+    var jsck = require('jsck');
+
+    var surveySchema = new jsck.draft4({
+        "type": "object",
+        "properties": {
+            "token": {
+                "type": "string"
+            },
+            "timestamp": {
+                "type": "string",
+                "format": "utc-millisec"
+            },
+            "issues": {
+                "properties": {
+                    "Justice": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "Health": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "Welfare": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "Immigration": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "Economy": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "Environment": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "Other": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "Education": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "Defence": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 5
+                    }
+                }
+            },
+            "sources": {
+                "properties": {
+                    "Television": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 10
+                    },
+                    "Radio": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 10
+                    },
+                    "Newspaper": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 10
+                    },
+                    "Social": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 10
+                    },
+                    "Online": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 10
+                    },
+                    "Family": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 10
+                    },
+                    "Political": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 10
+                    },
+                    "Elected": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 10
+                    }
+                }
+            },
+            "activity": {
+                "properties": {
+                    "face": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "boolean"
+                    },
+                    "social": {
+                        "type": "boolean"
+                    },
+                    "petition": {
+                        "type": "boolean"
+                    },
+                    "protest": {
+                        "type": "boolean"
+                    },
+                    "volunteerPolitical": {
+                        "type": "boolean"
+                    },
+                    "donatePolitical": {
+                        "type": "boolean"
+                    },
+                    "volunteerCharity": {
+                        "type": "boolean"
+                    },
+                    "donateCharity": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "interest": {
+                "properties": {
+                    "interest": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 4
+                    }
+                }
+            },
+            "personal": {
+                "properties": {
+                    "gender": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 2
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "postalCode": {
+                        "type": "string",
+                        "pattern": "[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ][0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]"
+                    },
+                    "twitter": {
+                        "type": "string",
+                        "pattern": "^(\\w){1,15}$"
+                    },
+                    email: {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    work: {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 10
+                    },
+                    "other": {
+                        "type": "string",
+                        "format": "email"
+                    }
+                }
+            }
+        }
+    });
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
-    //a function to retrieve survey data
-    //the format of survey data is as :
-    /*
-    {
-     user_token: uuid     //primary key, the user identifier in votesavvyrhok
-     status:  "inprogress"|"submitted"   //the status of the answers of the user
-     data: surveydata
-    }
 
-    surveydata: {
-        "token": "hash",
-        "timestamp": "YYYY-MM-DD'T'HH-MM-SS",
-        "issues":{
-            "Justice":0,
-            "Health":1,
-            "Welfare":2,
-            "Immigration":3,
-            "Economy":4,
-            "Environment":5,
-            "Other":6,
-            "Education":7,
-            "Defence":8
-        },
-        "sources":{
-            "Television":0,
-            "Radio":1,
-            "Newspaper":2,
-            "Social":0,
-            "Online":1,
-            "Family":2,
-            "Political":1,
-            "Elected":2
-        },
-        "activity":{
-            "face":0,
-            "message":0,
-            "social":0,
-            "petition":0,
-            "protest":1,
-            "volunteerPolitical":0,
-            "donatePolitical":0,
-            "volunteerCharity":1,
-            "donateCharity":1
-        },
-        "gender":"male/female/other",
-        "birthDate":"YYYY-MM-DD",
-        "work":"fullTime/partTime/student/etc..",
-        "postalCode":"A1A1A1",
-        "twitter":"",
-        "email":"",
-        "other":""}
-    }
-    */
+    var preference = require('./preferencemanager.js')(app, [preferencedb]);
 
-    var preference = require('./preferencemanager.js')(app,[preferencedb]);
-
-    app.get('/survey', function(req, res){
+    app.get('/survey', function (req, res) {
 
         //render the blank survey form in the case that no session has been defined
         var user_token = req.session.session_token;
         var screen_name = req.session.screen_name;
-        console.log("at survey manager, session_token is" + user_token)
+        console.log('at survey manager, session_token is' + user_token);
 
         var data = {};
 
-        if (!user_token)
-        {
-            res.render('/app/index.html');
+        if (!user_token) {
+            res.render('app/index.html');
         }
-        else
-        {
-          surveydb.get(user_token,{rev_info:true},function(err,results){
-                if (err)
-                {
+        else {
+            surveydb.get(user_token, {rev_info: true}, function (err, results) {
+                if (err) {
                     res.render('/app/index.html');
                 }
-                else
-                {
-                    if (results.status == "inprogress"){
+                else {
+                    if (results.status == "inprogress") {
                         data = results.data;
 
                         data.screen_name = screen_name;
 
-                        console.log("the survey results are " + JSON.stringify(data));
+                        console.log('the survey results are ' + JSON.stringify(data));
 
                         res.send(data);
                     }
-                    else
-                    {
+                    else {
                         res.send(results);
                     }
                 }
-          });
+            });
         }
     });
 
-    var storedoc = function(user_token, data, status,next){
-
+    var storedoc = function (user_token, data, status, next) {
         var doc = data;
         doc.status = status;
         doc.token = user_token;
 
         //store the doc in db
-        console.log('store the doc'+ JSON.stringify(doc));
-        console.log("at surveymanager, session_token is "+ user_token);
+        console.log('store the doc' + JSON.stringify(doc));
+        console.log('at surveymanager, session_token is ' + user_token);
 
-        surveydb.get(user_token,function(err,body) {
+        surveydb.get(user_token, function (err, body) {
             if (err) {
                 //There is no doc of the answer exists
                 surveydb.insert(doc, user_token, function (err, body) {
@@ -132,8 +250,7 @@ module.exports=function(app,db){
                     next();
                 });
 
-            }
-            else {
+            } else {
                 doc._id = body._id;
                 doc._rev = body._rev;
                 surveydb.insert(doc, function (err, body) {
@@ -145,11 +262,9 @@ module.exports=function(app,db){
                 });
             }
         });
+    };
 
-    }
-
-    app.post('/survey/:status',function(req,res){
-
+    app.post('/survey/:status', function (req, res) {
         var user_token = req.session.session_token;
         var status = req.params.status;
 
@@ -157,34 +272,39 @@ module.exports=function(app,db){
         if (!user_token && status == 'submit')
             user_token = uuid.v4();
 
-        console.log("received form data is as " + JSON.stringify(req.body));
+        console.log('received form data is as ' + JSON.stringify(req.body));
 
         var data;
-        for (i in req.body)
-        {
+        for (var i in req.body) {
             data = JSON.parse(i);
         }
+        var validationResults = surveySchema.validate(data);
 
-        if (user_token)
-            storedoc(user_token, data, status,function(){
-                if (status == "submit") {
-                    preference.generatepref(user_token, data,function(preference){
-                        if (req.session.session_token) {
-                            res.send(preference);
-                        }
-                        else
-                            res.send(preference);
+        if (validationResults.valid) {
+            if (user_token) {
+                storedoc(user_token, data, status, function () {
+                    if (status == 'finished') {
+                        preference.generatepref(user_token, data, function (preference) {
+                            if (req.session.session_token) {
+                                res.send(preference);
+                            }
+                            else
+                                res.send(preference);
 
-                    });
-                }
-                else
-                {
-                    var results = req.body;
-                    results.screen_name = req.session.screen_name;
-                    res.render('/app/index.html');
-                }
-
-        });
-
+                        });
+                    }
+                    else {
+                        var results = req.body;
+                        results.screen_name = req.session.screen_name;
+                        res.render('/app/index.html');
+                    }
+                });
+            }
+        } else {
+            console.log('errors: ');
+            for (var error in validationResults.errors){
+                console.log(validationResults.errors[error]);
+            }
+        }
     });
-}
+};

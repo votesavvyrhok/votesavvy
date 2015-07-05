@@ -26,10 +26,6 @@ var app = express();
 // routing
 require('./routes/represent')(app);
 
-app.get('/survey', function (req, res) {
-    res.render('app/index.html');
-});
-
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/public');
@@ -65,33 +61,14 @@ var dbCredentials = {
         preferences:"preferences"
 
     },
-    dbs: {},
+    dbs: {}
 };
 
 var cloudant;
 
 
 function useDatabase(next) {
-
-    /*
-    cloudant.db.create(dbCredentials.databaseName, function (err, res) {
-        if (err) {
-            console.log('database already created');
-        }
-
-    });
-
-    cloudant.db.list(function (err, all_dbs) {
-        console.log('All my databases: %s', all_dbs.join(', '))
-    });
-
-    database = cloudant.use(dbCredentials.databaseName);
-
-    callback();
-    */
-
     async.forEach(Object.keys(dbCredentials.dbNames), function (name, callback) {
-
         cloudant.db.create(dbCredentials.dbNames[name], function (err, res) {
             if (err) {
                 console.log('database ' + dbCredentials.dbNames[name] + ' already created');
@@ -103,7 +80,6 @@ function useDatabase(next) {
             callback();
         });
     }, function (err) {
-
         next();
 
         cloudant.db.list(function (err, all_dbs) {
@@ -166,10 +142,10 @@ function apiMapping() {
             name:"preferencemanager.js",
             dbs:[dbCredentials.dbs.preferences]
         }
-    }
+    };
 
 
-    for (api in apis)
+    for (var api in apis)
     {
         require('./routes/' + apis[api].name)(app, apis[api].dbs);
     }
