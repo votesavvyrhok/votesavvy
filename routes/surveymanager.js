@@ -12,56 +12,55 @@ module.exports = function (app, db) {
         "type": "object",
         "properties": {
             "token": {
-                "type": "string"
+                "type": ["string", "null"]
             },
             "timestamp": {
-                "type": "string",
-                "format": "utc-millisec"
+                "type": "number"
             },
             "issues": {
                 "properties": {
                     "Justice": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 5
                     },
                     "Health": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 5
                     },
                     "Welfare": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 5
                     },
                     "Immigration": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 5
                     },
                     "Economy": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 5
                     },
                     "Environment": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 5
                     },
                     "Other": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 5
                     },
                     "Education": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 5
                     },
                     "Defence": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 5
                     }
@@ -70,42 +69,42 @@ module.exports = function (app, db) {
             "sources": {
                 "properties": {
                     "Television": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 10
                     },
                     "Radio": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 10
                     },
                     "Newspaper": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 10
                     },
                     "Social": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 10
                     },
                     "Online": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 10
                     },
                     "Family": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 10
                     },
                     "Political": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 10
                     },
                     "Elected": {
-                        "type": "number",
+                        "type": ["number", "null"],
                         "minimum": 1,
                         "maximum": 10
                     }
@@ -159,19 +158,19 @@ module.exports = function (app, db) {
                         "maximum": 2
                     },
                     "birthDate": {
-                        "type": "string",
+                        "type": ["string", "null"],
                         "format": "date"
                     },
                     "postalCode": {
-                        "type": "string",
+                        "type": ["string", "null"],
                         "pattern": "[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ][0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]"
                     },
                     "twitter": {
-                        "type": "string",
+                        "type": ["string", "null"],
                         "pattern": "^(\\w){1,15}$"
                     },
                     email: {
-                        "type": "string",
+                        "type": ["string", "null"],
                         "format": "email"
                     },
                     work: {
@@ -180,7 +179,7 @@ module.exports = function (app, db) {
                         "maximum": 10
                     },
                     "other": {
-                        "type": "string",
+                        "type": ["string", "null"],
                         "format": "email"
                     }
                 }
@@ -296,7 +295,7 @@ module.exports = function (app, db) {
                     else {
                         var results = req.body;
                         results.screen_name = req.session.screen_name;
-                        res.render('/app/index.html');
+                        res.render('app/index.html');
                     }
                 });
             }
