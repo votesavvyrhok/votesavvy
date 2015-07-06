@@ -93,21 +93,10 @@ module.exports=function(app,db){
                 }
                 else
                 {
-                    if (results.status == "inprogress"){
-                        data = results.data;
-
-                        data.screen_name = screen_name;
-
-                        console.log("the survey results are " + JSON.stringify(data));
-
-                        res.send(data);
-                    }
-                    else
-                    {
+                        results.screen_name = screen_name;
 
                         res.send(results);
 
-                    }
                 }
           });
         }
