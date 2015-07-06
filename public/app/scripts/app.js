@@ -185,16 +185,16 @@ function sendData() {
 
         var formSubmit = document.querySelector('#formSubmit');
 
-        formSubmit.addEventListener('response', function(e){
+        formSubmit.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
-
+            app.switch();
         })
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
             formdata.timestamp = Date.now();
             console.log(formdata);
-            formSubmit.body=JSON.stringify(formdata);
+            formSubmit.body = JSON.stringify(formdata);
             console.log(formSubmit.body);
             formSubmit.generateRequest();
         });

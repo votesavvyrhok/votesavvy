@@ -307,6 +307,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     </section>
 
+                    <section data-route="confirmedSubmission">
+
+                        <paper-material>
+                            <paper-spinner alt="Loading contacts list" active></paper-spinner><span style="padding-left:10px;">Thanks for submitting ... preparing an information pack based on your answers :)</span>
+                        </paper-material>
+                    </section>
+
                     <iron-ajax method="POST" id="formSubmit" url="../survey/submit" contentType="application/json" handle-as="json" debounce-duration="300">
                     </iron-ajax>
 
