@@ -63,7 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-toolbar class="standard" id="mainToolbar">
                 <!-- paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button -->
                 <span class="flex"></span>
-                <span>antonmc</span>
+                <span id="screenName"><%= screen_name %></span>
                 <!-- Toolbar icons -->
                 <paper-icon-button icon="account-circle"></paper-icon-button>
 
@@ -96,8 +96,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <!-- my-list></my-list -->
                             <h3 class="card__title">Create a custom VoteSavvy info kit</h3>
                             <p class="paper-font-body2">Oh hey, thanks for dropping by. Let's get Vote Savvy. This quiz helps the Vote Savvy team get a better sense of how we can help you (and young people like you) get informed about the politics. It only takes a few minutes. After you are done we help you figure out what the politicians are saying about the issues that mater to you.</p>
-                            <p class="paper-font-body2">Optionally sign in to speed up the process, and to return to your data later.</p>
-                            <input type="image" src="../images/sign-in-with-twitter-gray.png" onclick="location.href='../signintwitters/step1'" />
+                            <template is='dom-if' id="twittersignin" if="{{visible}}">
+                                <p class="paper-font-body2">Optionally sign in to speed up the process, and to return to your data later.</p>
+                                <input type="image" src="../images/sign-in-with-twitter-gray.png" onclick="location.href='../signintwitters/step1'" />
+                            </template>
                         </paper-material>
 
                         <paper-material elevation="2">

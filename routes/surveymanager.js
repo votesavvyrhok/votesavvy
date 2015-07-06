@@ -82,14 +82,14 @@ module.exports=function(app,db){
 
         if (!user_token)
         {
-            res.render('/app/index.html');
+            res.render('../public/app/index.html', {screen_name: null});
         }
         else
         {
           surveydb.get(user_token,{rev_info:true},function(err,results){
                 if (err)
                 {
-                    res.render('/app/index.html');
+                    res.render('../public/app/index.html', {screen_name: screen_name});
                 }
                 else
                 {
@@ -104,7 +104,9 @@ module.exports=function(app,db){
                     }
                     else
                     {
+
                         res.send(results);
+
                     }
                 }
           });
