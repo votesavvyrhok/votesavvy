@@ -155,7 +155,7 @@ function apiMapping() {
         },
         signintwitters:{
             name:"signintwitters.js",
-            dbs:[dbCredentials.dbs.survey]
+            dbs:[dbCredentials.dbs.signintwitters]
 
         },
         preferences:{
