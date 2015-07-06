@@ -26,10 +26,6 @@ var app = express();
 // routing
 require('./routes/represent')(app);
 
-app.get('/survey', function (req, res) {
-    res.render('app/index.html');
-});
-
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/public');

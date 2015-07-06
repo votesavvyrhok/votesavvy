@@ -125,6 +125,15 @@ function sendData() {
     window.addEventListener('WebComponentsReady', function () {
         // imports are loaded and elements have been registered
 
+        var screenName= document.querySelector("#screenName");
+
+        app.visible = true;
+
+        if (screenName.textContent)
+        {
+            app.visible=false;
+        }
+
         var consentButton = document.querySelector('#consentButton');
 
         consentButton.addEventListener('click', function () {
