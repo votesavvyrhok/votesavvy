@@ -63,10 +63,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-toolbar class="standard" id="mainToolbar">
                 <!-- paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button -->
                 <span class="flex"></span>
-
+                <span id="screenName"><%= screen_name %></span>
                 <!-- Toolbar icons -->
-                <paper-icon-button icon="refresh"></paper-icon-button>
-                <paper-icon-button icon="search"></paper-icon-button>
+                <paper-icon-button icon="account-circle"></paper-icon-button>
 
                 <!-- Application name -->
                 <div class="middle paper-font-display2 app-name">VoteSavvy Survey</div>
@@ -97,8 +96,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <!-- my-list></my-list -->
                             <h3 class="card__title">Create a custom VoteSavvy info kit</h3>
                             <p class="paper-font-body2">Oh hey, thanks for dropping by. Let's get Vote Savvy. This quiz helps the Vote Savvy team get a better sense of how we can help you (and young people like you) get informed about the politics. It only takes a few minutes. After you are done we help you figure out what the politicians are saying about the issues that mater to you.</p>
-                            <p class="paper-font-body2">Optionally sign in to speed up the process, and to return to your data later.</p>
-                            <input type="image" src="../images/sign-in-with-twitter-gray.png" onclick="location.href='../signintwitters/step1'" />
+                            <template is='dom-if' id="twittersignin" if="{{visible}}">
+                                <p class="paper-font-body2">Optionally sign in to speed up the process, and to return to your data later.</p>
+                                <input type="image" src="../images/sign-in-with-twitter-gray.png" onclick="location.href='../signintwitters/step1'" />
+                            </template>
                         </paper-material>
 
                         <paper-material elevation="2">
@@ -305,6 +306,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
                         <paper-fab id="emailButton" class="nextButton" icon="file-upload"></paper-fab>
 
+                    </section>
+
+                    <section data-route="confirmedSubmission">
+
+                        <paper-material>
+                            <paper-spinner alt="Loading contacts list" active></paper-spinner><span style="padding-left:10px;">Thanks for submitting ... preparing an information pack based on your answers :)</span>
+                        </paper-material>
                     </section>
 
                     <iron-ajax method="POST" id="formSubmit" url="../survey/submit" contentType="application/json" handle-as="json" debounce-duration="300">

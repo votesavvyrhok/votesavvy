@@ -204,26 +204,15 @@ module.exports = function (app, db) {
         var data = {};
 
         if (!user_token) {
-            res.render('app/index.html');
+            res.render('app/index.html', {screen_name: null});
         }
         else {
             surveydb.get(user_token, {rev_info: true}, function (err, results) {
                 if (err) {
-                    res.render('/app/index.html');
-                }
-                else {
-                    if (results.status == "inprogress") {
-                        data = results.data;
-
-                        data.screen_name = screen_name;
-
-                        console.log('the survey results are ' + JSON.stringify(data));
-
-                        res.send(data);
-                    }
-                    else {
-                        res.send(results);
-                    }
+                    res.render('app/index.html', {screen_name: screen_name});
+                } else {
+                    results.screen_name = screen_name;
+                    res.send(results);
                 }
             });
         }
