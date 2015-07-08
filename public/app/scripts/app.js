@@ -81,6 +81,10 @@ function setFormDataValue(category, subcategory) {
             value = element.checked;
         }
 
+        if (element.text){
+            value=element.value;
+        }
+
         if (category) {
             if (subcategory) {
                 formdata[category][subcategory] = value;
@@ -181,7 +185,7 @@ function sendData() {
         personalButton.addEventListener('click', function () {
             /* birthdate */
             /* postcode */
-            setFormDataValue("personal", "gender");
+            getDataForCategory("personal");
             app.switch();
         });
 
@@ -198,14 +202,39 @@ function sendData() {
             console.log("response from server" + JSON.stringify(e.detail.response));
             app.switch();
         })
+
+        var emailInput = document.querySelector("#email");
+
+        emailInput.addEventListener('change', function(){
+            var err=document.querySelector("#emailErr");
+            if(emailInput.validity.typeMismatch) {
+                emailInput.setCustomValidity("error");
+                console.log("email error");
+                err.innerHTML="Please input a valid email";
+            }
+            else
+            {
+                emailInput.setCustomValidity("");
+                err.innerHTML="";
+            }
+        });
+
+
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
-            formdata.timestamp = Date.now();
-            console.log(formdata);
-            formSubmit.body = JSON.stringify(formdata);
-            console.log(formSubmit.body);
-            formSubmit.generateRequest();
+
+                setFormDataValue("personal", "email");
+
+                var currentTime = new Date();
+                formdata.timestamp = currentTime.getFullYear() + "-" + currentTime.getMonth() + "-" + currentTime.getDate()
+                    + " " +
+                    currentTime.getHours() + ":" + currentTime.getMinutes() + ":" + currentTime.getSeconds();
+                console.log(formdata);
+                formSubmit.body = JSON.stringify(formdata);
+                console.log(formSubmit.body);
+                formSubmit.generateRequest();
+
         });
 
 

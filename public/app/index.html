@@ -273,7 +273,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-fab id="workButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-
                     <section data-route="personal">
                         <div class="subject ">Gender( self identified ):</div>
                         <paper-material elevation="2 ">
@@ -287,14 +286,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
                         <div class="subject ">Birthdate:</div>
                         <paper-material elevation="2 ">
-                            <paper-item>
-                                <input type="date " name="bday " max="1979-12-31 ">
+                             <paper-item>
+                                <input type="date" id="birthDate" name="bdate" placeholder="01/01/1992" max="12/31/1990" min="01/01/1995">
+                                <div id="bdateErr" class="error"></div>
                                 <br>
-                            </paper-item>
+                             </paper-item>
                         </paper-material>
                         <div class="subject ">What's your postal code:</div>
                         <paper-material elevation="2 ">
-                            <input type="text " name="email ">
+                            <input type="text" id="postalCode" name="pcode" pattern="[A_Z]\d[A_Z] \d[A_Z]\d">
+                            <div id="pcodeErr" class="error"></div>
                         </paper-material>
                         <paper-fab id="personalButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
@@ -302,15 +303,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <section data-route="email">
                         <div class="subject ">What's your email address?</div>
                         <div class="ratinginfo ">We will only send you emails for two reasons: 1. To give you voting information no more than twice during this election 2. To invite you to participate in a follow up study no more than twice following the election. You'll be able to unsubscribe at any time</div>
-                        <paper-material elevation="2 ">
-                            <input type="email " name="email ">
+                        <paper-material elevation="2">
+                            <input type="email" id="email" name="emailInput">
+                            <div id="emailErr" class="error"></div>
                         </paper-material>
                         <paper-fab id="emailButton" class="nextButton" icon="file-upload"></paper-fab>
 
                     </section>
 
                     <section data-route="confirmedSubmission">
-
                         <paper-material>
                             <paper-spinner alt="Loading contacts list" active></paper-spinner><span style="padding-left:10px;">Thanks for submitting ... preparing an information pack based on your answers :)</span>
                         </paper-material>
