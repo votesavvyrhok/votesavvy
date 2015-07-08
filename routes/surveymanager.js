@@ -272,7 +272,7 @@ module.exports = function (app, db) {
         if (validationResults.valid) {
             if (user_token) {
                 storedoc(user_token, data, status, function () {
-                    if (status == 'finished') {
+                    if (status == 'submit') {
                         preference.generatepref(user_token, data, function (preference) {
                             if (req.session.session_token) {
                                 res.send(preference);
