@@ -201,7 +201,6 @@ function sendData() {
         formSubmit.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
             app.switch();
-<<<<<<< HEAD
         })
 
         var emailInput = document.querySelector("#email");
@@ -220,10 +219,8 @@ function sendData() {
             }
         });
 
-
-=======
         });
->>>>>>> 7c0ccf28097d9da6d6484d7956ff09e1a28f98b0
+
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
@@ -242,9 +239,7 @@ function sendData() {
         });
 
 
-    });
-
-    // Close drawer after menu item is selected if drawerPanel is narrow
+     // Close drawer after menu item is selected if drawerPanel is narrow
     app.onMenuSelect = function () {
         var drawerPanel = document.querySelector('#paperDrawerPanel');
         if (drawerPanel.narrow) {

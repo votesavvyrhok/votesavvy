@@ -286,7 +286,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <div class="subject ">Birthdate:</div>
                         <paper-material elevation="2 ">
                              <paper-item>
-                                <input type="date" id="birthDate" name="bdate" placeholder="01/01/1992" max="12/31/1990" min="01/01/1995">
+                                <input type="text" id="birthDate" name="bdate" placeholder="01/01/1992" max="12/31/1990" min="01/01/1995">
                                 <div id="bdateErr" class="error"></div>
                                 <br>
                              </paper-item>
@@ -295,6 +295,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-material elevation="2 ">
                             <input type="text" id="postalCode" name="pcode" pattern="[A_Z]\d[A_Z] \d[A_Z]\d">
                             <div id="pcodeErr" class="error"></div>
+                            <input type="number" name="quantity" min="1990" max="2000">
                         </paper-material>
                         <paper-fab id="personalButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
