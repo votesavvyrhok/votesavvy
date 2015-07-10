@@ -129,13 +129,12 @@ function sendData() {
     window.addEventListener('WebComponentsReady', function () {
         // imports are loaded and elements have been registered
 
-        var screenName= document.querySelector("#screenName");
+        var screenName = document.querySelector("#screenName");
 
         app.visible = true;
 
-        if (screenName.textContent)
-        {
-            app.visible=false;
+        if (screenName.textContent) {
+            app.visible = false;
         }
 
         var consentButton = document.querySelector('#consentButton');
@@ -201,44 +200,42 @@ function sendData() {
         formSubmit.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
             app.switch();
-        })
+        });
 
         var emailInput = document.querySelector("#email");
 
-        emailInput.addEventListener('change', function(){
-            var err=document.querySelector("#emailErr");
-            if(emailInput.validity.typeMismatch) {
+        emailInput.addEventListener('change', function () {
+            var err = document.querySelector("#emailErr");
+            if (emailInput.validity.typeMismatch) {
                 emailInput.setCustomValidity("error");
                 console.log("email error");
-                err.innerHTML="Please input a valid email";
+                err.innerHTML = "Please input a valid email";
             }
-            else
-            {
+            else {
                 emailInput.setCustomValidity("");
-                err.innerHTML="";
+                err.innerHTML = "";
             }
         });
 
-        });
 
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
 
-                setFormDataValue("personal", "email");
+            setFormDataValue("personal", "email");
 
-                var currentTime = new Date();
-                formdata.timestamp = currentTime.getFullYear() + "-" + currentTime.getMonth() + "-" + currentTime.getDate()
-                    + " " +
-                    currentTime.getHours() + ":" + currentTime.getMinutes() + ":" + currentTime.getSeconds();
-                console.log(formdata);
-                formSubmit.body = JSON.stringify(formdata);
-                console.log(formSubmit.body);
-                formSubmit.generateRequest();
+            var currentTime = new Date();
+            formdata.timestamp = currentTime.getFullYear() + "-" + currentTime.getMonth() + "-" + currentTime.getDate()
+                + " " +
+                currentTime.getHours() + ":" + currentTime.getMinutes() + ":" + currentTime.getSeconds();
+            console.log(formdata);
+            formSubmit.body = JSON.stringify(formdata);
+            console.log(formSubmit.body);
+            formSubmit.generateRequest();
 
         });
 
-
+    });
      // Close drawer after menu item is selected if drawerPanel is narrow
     app.onMenuSelect = function () {
         var drawerPanel = document.querySelector('#paperDrawerPanel');
