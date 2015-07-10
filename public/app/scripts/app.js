@@ -9,8 +9,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 var formdata = {
-    "token": "hash",
-    "timestamp": "YYYY-MM-DD'T'HH-MM-SS",
+    "token": null,
+    "timestamp": null,
     "issues": {
         "Justice": null,
         "Health": null,
@@ -48,12 +48,12 @@ var formdata = {
     },
     "personal": {
         "gender": null,
-        "birthDate": "YYYY-MM-DD",
-        "postalCode": "A1A1A1",
-        "twitter": "",
-        "email": "",
+        "birthDate": null,
+        "postalCode": null,
+        "twitter": null,
+        "email": null,
         "work": null,
-        "other": ""
+        "other": null
     }
 };
 
@@ -201,6 +201,7 @@ function sendData() {
         formSubmit.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
             app.switch();
+<<<<<<< HEAD
         })
 
         var emailInput = document.querySelector("#email");
@@ -220,6 +221,9 @@ function sendData() {
         });
 
 
+=======
+        });
+>>>>>>> 7c0ccf28097d9da6d6484d7956ff09e1a28f98b0
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
@@ -251,10 +255,10 @@ function sendData() {
     app.switch = function () {
         var pages = document.querySelector('iron-pages');
         pages.selectNext();
-    }
+    };
 
     app.addEventListener('switcher', function (e) {
         app.switch();
-    })
+    });
 
 })();
