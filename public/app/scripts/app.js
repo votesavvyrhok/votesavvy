@@ -188,12 +188,83 @@ function sendData() {
             app.switch();
         });
 
+       //initiate the options of the birthDate select
+        var birthDay = document.querySelector("#birthDate");
+
+        var years=[];
+
+        for (var year=1987;year<1997;year++){
+            years[year-1987]=year;
+        };
+
+        app.set("years", years);
+
+        console.log("app.years " + app.years);
+
+        years.forEach(function (item) {
+            var option = document.createElement('option');
+            option.textContent = item;
+            option.value = item;
+            birthDay.appendChild(option);
+        });
+
         var workButton = document.querySelector('#workButton');
 
         workButton.addEventListener('click', function () {
             setFormDataValue("personal", "work");
+
             app.switch();
         });
+
+       var gmap=document.querySelector('google-map');
+        //initiate the map location
+
+       gmap.addEventListener('api-load', function(e) {
+            app.lat = 45.387372,
+            app.lng = -75.695090;
+            app.markerlat= app.lat;
+            app.markerlng = app.lng;
+
+            navigator.geolocation.getCurrentPosition(function(position){
+                var location = position.coords;
+
+                app.lat=location.latitude;
+
+                app.lng=location.longitude;
+
+                app.markerlat= app.lat;
+                app.markerlng = app.lng;
+
+                console.log(location);
+
+            });
+
+       });
+
+       gmap.addEventListener('google-map-ready', function(){
+
+           gmap.mouseEvents=true;
+
+           gmap._mouseEventsChanged();
+
+           gmap.clickEvents=true;
+
+           gmap._clickEventsChanged();
+
+       });
+
+        gmap.addEventListener('google-map-click',function(event){
+            var location;
+            console.log(event);
+
+            app.markerlat = event.latLng.lat();
+
+            app.markerlng = event.latLng.lng();
+
+            console.log(app.markerlat + "," + app.markerlng);
+
+        });
+
 
         var formSubmit = document.querySelector('#formSubmit');
 

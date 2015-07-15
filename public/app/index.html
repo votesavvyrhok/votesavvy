@@ -53,6 +53,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!-- will be replaced with elements/elements.vulcanized.html -->
     <link rel="import" href="../app/elements/elements.html">
     <!-- endreplace-->
+
 </head>
 
 <body unresolved class="fullbleed layout vertical">
@@ -283,19 +284,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 </paper-radio-group>
                             </paper-item>
                         </paper-material>
-                        <div class="subject ">Birthdate:</div>
+                        <div class="subject ">Birthdate (Year):</div>
                         <paper-material elevation="2 ">
-                             <paper-item>
-                                <input type="text" id="birthDate" name="bdate" placeholder="01/01/1992" max="12/31/1990" min="01/01/1995">
-                                <div id="bdateErr" class="error"></div>
-                                <br>
-                             </paper-item>
+                            <paper-item >
+                                 <select id="birthDate"  selectedIndex="{{selectedIndex}}"  value="{{defaultYear}}">
+                                 </select>
+                                 <br>
+                            </paper-item>
                         </paper-material>
                         <div class="subject ">What's your postal code:</div>
                         <paper-material elevation="2 ">
                             <input type="text" id="postalCode" name="pcode" pattern="[A_Z]\d[A_Z] \d[A_Z]\d">
                             <div id="pcodeErr" class="error"></div>
-                            <input type="number" name="quantity" min="1990" max="2000">
+
+                            <p>Or, select a location with dragging and dropping the marker on the map: </p>
+
+                            <google-map clickEvents="true" mouseEvents="true" latitude="{{lat}}" longitude="{{lng}}" >
+                                <google-map-marker latitude="{{markerlat}}" longitude="{{markerlng}}"
+                                                   draggable="true">
+                                </google-map-marker>
+                            </google-map>
+
+
                         </paper-material>
                         <paper-fab id="personalButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>

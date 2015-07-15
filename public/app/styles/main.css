@@ -13,6 +13,10 @@ body {
     color: #333;
 }
 
+google-map {
+    height: 400px;
+}
+
 .rate {
     display: table-cell;
 }
@@ -40,7 +44,6 @@ body {
     position: relative;
     float: right;
 }
-
 input:invalid {
     border: 1px solid #900;
 }
