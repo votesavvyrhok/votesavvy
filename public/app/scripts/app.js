@@ -9,8 +9,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 var formdata = {
-    "token": null,
-    "timestamp": null,
+    "timestamp": {
+        "start": null,
+        "end": null,
+        "duration": null
+    },
     "issues": {
         "Justice": null,
         "Health": null,
@@ -48,8 +51,8 @@ var formdata = {
     },
     "personal": {
         "gender": null,
-        "birthDate": null,
-        "postalCode": null,
+        "bday": null,
+        "postcode": null,
         "twitter": null,
         "email": null,
         "work": null,
@@ -57,9 +60,7 @@ var formdata = {
     }
 };
 
-
-
-function setFormDataValue(category, subcategory) {
+function getDataForSubcategory(category, subcategory) {
 
     var element = document.querySelector('#' + subcategory);
     var value;
@@ -81,6 +82,10 @@ function setFormDataValue(category, subcategory) {
             value = element.checked;
         }
 
+        if (element.text){
+            value = element.value;
+        }
+
         if (category) {
             if (subcategory) {
                 formdata[category][subcategory] = value;
@@ -91,9 +96,45 @@ function setFormDataValue(category, subcategory) {
     }
 }
 
-function getDataForCategory(category) {
+function setDataForSubcategory(category, subcategory){
+    var element = document.querySelector('#' + subcategory);
+    var value;
+
+    if (category) {
+        if (subcategory) {
+            value = formdata[category][subcategory];
+        } else {
+            value = formdata[category];
+        }
+    }
+
+    if (element) {
+
+        /* For radio buttons */
+        if (element.localName==='paper-radio-group'){
+            element.selected = value;
+        }
+
+       /* For slider */
+        if (element.localName==='paper-slider') {
+            element.value = value;
+        }
+
+        /* For checkboxes */
+        if (element.localName==='paper-checkbox'){
+            element.checked = value;
+        }
+
+        /*for input */
+        if (element.localName==='input'){
+            element.value = value;
+        }
+    }
+}
+
+function getDataForCategory(category,operation) {
     for (var key in formdata[category]) {
-        setFormDataValue(category, key);
+        operation(category,key);
     }
 }
 
@@ -101,7 +142,6 @@ function sendData() {
     var formSubmit = document.querySelector('#formSubmit');
     formSubmit.parms = formdata;
 }
-
 
 (function () {
     'use strict';
@@ -123,24 +163,54 @@ function sendData() {
 
     // See https://github.com/Polymer/polymer/issues/1381
     window.addEventListener('WebComponentsReady', function () {
-        // imports are loaded and elements have been registered
 
+        // imports are loaded and elements have been registered
         var screenName= document.querySelector("#screenName");
 
-        app.visible = true;
+        app.signinvisible = true;
+
+        var formRetrieve = document.querySelector('#formRetrieve');
 
         if (screenName.textContent)
         {
-            app.visible=false;
+            app.signinvisible=false;
+
+            //fire the ajax call to retrieve the data stored
+            formRetrieve.generateRequest();
         }
+
+        var consentCheckbox = document.querySelector("#consentCheckbox");
+
+        formRetrieve.addEventListener('response',function(event){
+            if (event.detail.response) {
+                consentCheckbox.checked = true;
+
+                for (var category in formdata) {
+                   for (var subcategory in formdata[category]) {
+                       formdata[category][subcategory] = event.detail.response[category][subcategory];
+                   }
+                }
+            }
+        });
 
         var consentButton = document.querySelector('#consentButton');
 
+        var startingTime;
+        var endingTime;
+
         consentButton.addEventListener('click', function () {
 
-            var consentCheckbox = document.querySelector('#consentCheckbox');
-
             if (consentCheckbox.checked) {
+
+                startingTime = new Date();
+
+                var timestamp = formdata.timestamp;
+
+                timestamp.start = startingTime.getFullYear() + "-" + startingTime.getMonth() + "-" + startingTime.getDate()
+                    + " " + startingTime.getHours() + ":" + startingTime.getMinutes() + ":" + startingTime.getSeconds();
+
+                getDataForCategory("issues",setDataForSubcategory);
+
                 app.switch();
             } else {
                 var toast = document.querySelector('#toaster');
@@ -151,28 +221,40 @@ function sendData() {
         var issuesButton = document.querySelector('#issuesButton');
 
         issuesButton.addEventListener('click', function () {
-            getDataForCategory("issues");
+
+            getDataForCategory("issues",getDataForSubcategory);
+            getDataForCategory("interest",setDataForSubcategory);
+
             app.switch();
         });
 
         var interestButton = document.querySelector('#interestButton');
 
         interestButton.addEventListener('click', function () {
-            getDataForCategory("interest");
+
+            getDataForCategory("interest",getDataForSubcategory);
+            getDataForCategory("sources",setDataForSubcategory);
+
             app.switch();
         });
 
         var sourcesButton = document.querySelector('#sourcesButton');
 
         sourcesButton.addEventListener('click', function () {
-            getDataForCategory("sources");
+
+            getDataForCategory("sources",getDataForSubcategory);
+            getDataForCategory("activity",setDataForSubcategory);
+
             app.switch();
         });
 
         var activityButton = document.querySelector('#activityButton');
 
         activityButton.addEventListener('click', function () {
-            getDataForCategory("activity");
+
+            getDataForCategory("activity",getDataForSubcategory);
+            getDataForCategory("personal",setDataForSubcategory);
+
             app.switch();
         });
 
@@ -181,14 +263,16 @@ function sendData() {
         personalButton.addEventListener('click', function () {
             /* birthdate */
             /* postcode */
-            setFormDataValue("personal", "gender");
+            /*gender*/
+
             app.switch();
+
         });
 
         var workButton = document.querySelector('#workButton');
 
         workButton.addEventListener('click', function () {
-            setFormDataValue("personal", "work");
+
             app.switch();
         });
 
@@ -198,16 +282,26 @@ function sendData() {
             console.log("response from server" + JSON.stringify(e.detail.response));
             app.switch();
         });
+
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
-            formdata.timestamp = Date.now();
+
+            getDataForCategory("personal",getDataForSubcategory);
+
+            endingTime = new Date();
+
+            formdata.timestamp.end = endingTime.getFullYear() + "-" + endingTime.getMonth() + "-" + endingTime.getDate()
+                + " " +
+                endingTime.getHours() + ":" + endingTime.getMinutes() + ":" + endingTime.getSeconds();
+
+            formdata.timestamp.duration = endingTime-startingTime;
+
             console.log(formdata);
             formSubmit.body = JSON.stringify(formdata);
             console.log(formSubmit.body);
             formSubmit.generateRequest();
         });
-
 
     });
 
