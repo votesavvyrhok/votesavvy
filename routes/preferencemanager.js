@@ -7,7 +7,7 @@ module.exports=function(app,dbarray){
 
     var preferencedb = dbarray[0];
 
-    var generatepref= function(user_token, surveydata, next){
+    var generatepref= function(user_token, surveydata){
 
         var pref = {};
 
@@ -21,20 +21,20 @@ module.exports=function(app,dbarray){
 
         console.log("preference: " + JSON.stringify(pref));
 
-        store(user_token,pref,next);
+        store(user_token,pref);
 
         return pref;
 
     }
 
 
-    var store= function(user_token, doc,next){
+    var store= function(user_token, doc){
 
         preferencedb.insert(doc, user_token,function(err,body){
             if (!err)
             {
                 console.log("preference is stored for " + user_token);
-                next(doc);
+
             }
         });
     }
