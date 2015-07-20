@@ -199,30 +199,46 @@ module.exports = function (app, db) {
         //render the blank survey form in the case that no session has been defined
         var user_token = req.session.session_token;
         var screen_name = req.session.screen_name;
+        console.log('at survey manager, session_token is' + user_token);
+
+        res.render('app/index.html', {screen_name: screen_name});
+
+    });
+
+    app.get('/survey/data', function (req, res) {
+
+        var user_token = req.session.session_token;
+        var screen_name = req.session.screen_name;
+
+        console.log('at survey manager, session_token is' + user_token);
 
         var data = {};
 
-        if (!user_token) {
-            res.render('app/index.html', {screen_name: null});
-        }
-        else {
-            surveydb.get(user_token, {rev_info: true}, function (err, results) {
+        if (user_token) {
+           surveydb.get(user_token, {rev_info: true}, function (err, results) {
                 if (err) {
-                    res.render('app/index.html', {screen_name: screen_name});
+                    res.json(null);
                 } else {
-                    results.screen_name = screen_name;
-
-                    res.send(results);
+                    res.json(results.formdata);
                 }
-            });
+           });
         }
     });
 
-    var storedoc = function (user_token, data, status, next) {
+    var storedoc = function (user_token, data, status) {
         var doc = data;
         doc.status = status;
         doc.token = user_token;
 
+        /*the data is stored as
+        {
+        token:     //key
+        status:    //submit or inprogress
+        formdata: {    //the data received from client
+
+        }
+        }
+        */
         //store the doc in db
         console.log('store the doc' + JSON.stringify(doc));
         console.log('at surveymanager, session_token is ' + user_token);
@@ -235,7 +251,6 @@ module.exports = function (app, db) {
                         console.log(body);
                     else
                         console.log(err);
-                    next();
                 });
 
             } else {
@@ -246,7 +261,6 @@ module.exports = function (app, db) {
                         console.log(err);
                     else
                         console.log(body);
-                    next();
                 });
             }
         });
@@ -262,36 +276,35 @@ module.exports = function (app, db) {
 
         console.log('received form data is as ' + JSON.stringify(req.body));
 
-        var data;
+        var data={};
         for (var i in req.body) {
-            data = JSON.parse(i);
+            data.formdata = JSON.parse(i);
         }
         var validationResults = surveySchema.validate(data);
 
+        //the validation function is turned off temporarily
+        //will be turned on after the JSON format is determined
+        validationResults.valid = true
+
         if (validationResults.valid) {
             if (user_token) {
-                storedoc(user_token, data, status, function () {
-                    if (status == 'submit') {
-                        preference.generatepref(user_token, data, function (preference) {
-                            if (req.session.session_token) {
-                                res.send(preference);
-                            }
-                            else
-                                res.send(preference);
+                storedoc(user_token, data, status);
 
-                        });
-                    }
-                    else {
-                        var results = req.body;
-                        results.screen_name = req.session.screen_name;
-                        res.render('app/index.html');
-                    }
-                });
+                if (status == 'submit') {
+                        //the preference data is not sent back to the client
+                        //the preference is generated locally at client
+                        preference.generatepref(user_token, data.formdata);
+                }
+
+                //return ok
+                res.status(200).json({status:"ok"});
             }
         } else {
             console.log('errors: ');
+
             for (var error in validationResults.errors){
                 console.log(validationResults.errors[error]);
+                res.status(406).json({status:"validation error"});
             }
         }
     });

@@ -90,15 +90,6 @@ function getDataForSubcategory(category, subcategory) {
             value = element.value;
         }
 
-        if (category) {
-            if (subcategory) {
-                formdata[category][subcategory] = value;
-            } else {
-                formdata[category] = value;
-        if (element.text){
-            value=element.value;
-        }
-
         if (subcategory==='markedLocation')
         {
             formdata[category][subcategory].lat = element.latitude;
@@ -147,6 +138,11 @@ function setDataForSubcategory(category, subcategory){
         /*for input */
         if (element.localName==='input'){
             element.value = value;
+        }
+
+        if (element.localName==='google-map-marker'){
+            element.latitude = value.lat;
+            element.longitude = value.lng;
         }
     }
 }

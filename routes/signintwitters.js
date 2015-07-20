@@ -136,7 +136,6 @@ module.exports= function(app,db) {
 
                 var twitteruserinfo = {
                     user_id: results.user_id,
-                    screen_name: results.screen_name,
                     user_token: oauthStore[oauth_token].client_token,
                 }
 
@@ -151,7 +150,7 @@ module.exports= function(app,db) {
                     if (!err)
                     //the user exists
                         res.redirect("/signintwitters/step3?session=" + body.user_token
-                            + "&screen_name=" + body.screen_name
+                            + "&screen_name=" + results.screen_name
                             + "&new=false");
 
                     else {
@@ -161,7 +160,7 @@ module.exports= function(app,db) {
                                 console.log(body);
                         });
                         res.redirect("/signintwitters/step3?session=" + twitteruserinfo.user_token
-                            + "&screen_name=" + twitteruserinfo.screen_name
+                            + "&screen_name=" + results.screen_name
                             + "&new=true");
                     }
 
@@ -177,8 +176,8 @@ module.exports= function(app,db) {
         //add session management here:
         //currently the session id is the user's user_token
         //session id and user token will be separated eventually
-        req.session.session_token = req.query.session;
-        req.session.screen_name = req.query.screen_name;
+        sess.session_token = req.query.session;
+        sess.screen_name = req.query.screen_name;
 
         console.log("at siginstep3, user's session_token is" + sess.session_token);
         console.log("at siginstep3, user's screen_name is" + sess.screen_name);
@@ -186,7 +185,6 @@ module.exports= function(app,db) {
 
         //if the user signning up just now
         res.redirect('/survey');
-
 
     });
 
