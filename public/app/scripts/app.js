@@ -48,16 +48,18 @@ var formdata = {
     },
     "personal": {
         "gender": null,
-        "birthDate": null,
+        "yearOfBirth": null,
         "postalCode": null,
+        "markedLocation":{
+            "lat": null,
+            "lng":null
+        },
         "twitter": null,
         "email": null,
         "work": null,
         "other": null
     }
 };
-
-
 
 function setFormDataValue(category, subcategory) {
 
@@ -85,13 +87,21 @@ function setFormDataValue(category, subcategory) {
             value=element.value;
         }
 
-        if (category) {
-            if (subcategory) {
-                formdata[category][subcategory] = value;
-            } else {
-                formdata[category] = value;
+        if (subcategory==='markedLocation')
+        {
+            formdata[category][subcategory].lat = element.latitude;
+            formdata[category][subcategory].lng = element.longitude;
+        }else{
+            if (category) {
+                if (subcategory) {
+                    formdata[category][subcategory] = value;
+                } else {
+                    formdata[category] = value;
+                }
             }
         }
+
+
     }
 }
 
@@ -189,7 +199,7 @@ function sendData() {
         });
 
        //initiate the options of the birthDate select
-        var birthDay = document.querySelector("#birthDate");
+        var birthDay = document.querySelector("#yearOfBirth");
 
         var years=[];
 
@@ -222,8 +232,6 @@ function sendData() {
        gmap.addEventListener('api-load', function(e) {
             app.lat = 45.387372,
             app.lng = -75.695090;
-            app.markerlat= app.lat;
-            app.markerlng = app.lng;
 
             navigator.geolocation.getCurrentPosition(function(position){
                 var location = position.coords;
@@ -232,9 +240,6 @@ function sendData() {
 
                 app.lng=location.longitude;
 
-                app.markerlat= app.lat;
-                app.markerlng = app.lng;
-
                 console.log(location);
 
             });
@@ -242,10 +247,6 @@ function sendData() {
        });
 
        gmap.addEventListener('google-map-ready', function(){
-
-           gmap.mouseEvents=true;
-
-           gmap._mouseEventsChanged();
 
            gmap.clickEvents=true;
 
@@ -257,9 +258,9 @@ function sendData() {
             var location;
             console.log(event);
 
-            app.markerlat = event.latLng.lat();
+            app.markerlat = event.detail.latLng.lat();
 
-            app.markerlng = event.latLng.lng();
+            app.markerlng = event.detail.latLng.lng();
 
             console.log(app.markerlat + "," + app.markerlng);
 

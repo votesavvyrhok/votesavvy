@@ -284,10 +284,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                 </paper-radio-group>
                             </paper-item>
                         </paper-material>
-                        <div class="subject ">Birthdate (Year):</div>
+                        <div class="subject ">Year of birth:</div>
                         <paper-material elevation="2 ">
                             <paper-item >
-                                 <select id="birthDate"  selectedIndex="{{selectedIndex}}"  value="{{defaultYear}}">
+                                 <select id="yearOfBirth"  selectedIndex="{{selectedIndex}}"  value="{{defaultYear}}">
                                  </select>
                                  <br>
                             </paper-item>
@@ -300,7 +300,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <p>Or, select a location with dragging and dropping the marker on the map: </p>
 
                             <google-map clickEvents="true" mouseEvents="true" latitude="{{lat}}" longitude="{{lng}}" >
-                                <google-map-marker latitude="{{markerlat}}" longitude="{{markerlng}}"
+                                <google-map-marker id="markedLocation" latitude="{{markerlat}}" longitude="{{markerlng}}"
                                                    draggable="true">
                                 </google-map-marker>
                             </google-map>
