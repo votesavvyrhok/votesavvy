@@ -94,21 +94,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                             <!-- p class="paper-font-subhead">You now have:</p -->
                             <!-- my-list></my-list -->
-                            <h3 class="card__title">Create a custom VoteSavvy info kit</h3>
-                            <p class="paper-font-body2">Oh hey, thanks for dropping by. Let's get Vote Savvy. This quiz helps the Vote Savvy team get a better sense of how we can help you (and young people like you) get informed about the politics. It only takes a few minutes. After you are done we help you figure out what the politicians are saying about the issues that mater to you.</p>
-                            <template is='dom-if' id="twittersignin" if="{{visible}}">
-                                <p class="paper-font-body2">Optionally sign in to speed up the process, and to return to your data later.</p>
-                                <input type="image" src="../images/sign-in-with-twitter-gray.png" onclick="location.href='../signintwitters/step1'" />
-                            </template>
+                            <h3 class="card__title">Thanks for stopping by! Are you ready to get Vote Savvy? This quiz helps you identify the information you need.</h3>
+                            <p class="paper-font-body2">The quiz is part of an academic study led by researchers at Carleton University and the University of Oxford. The study aims to uncover how young Canadians collect political information, how they participate in politics, and the political issues Canadian youth are concerned with. The quiz should take less than 5 minutes to complete.</p>
+                            <p class="paper-font-body2">Participation is voluntary and responses will be kept confidential. You are free to not respond to any questions you choose with no penalty.</p>
+                            <p class="paper-font-body2">If you have questions at any time about the study or the procedures, you may contact Elizabeth Dubois: <a href="mailto:elizabeth.dubois@oii.ox.ac.uk">elizabeth.dubois@oii.ox.ac.uk</a> .</p>
                         </paper-material>
 
-                        <paper-material elevation="2">
-                            I consent to participate in this study.*
-                            <BR/>
-                            <BR/>
+                        <template is='dom-if' id="twittersignin" if="{{signinvisible}}">
+                            <paper-material elevation="2">
+                                <p class="paper-font-body2">If you want, you can sign in to Twitter now to speed up the quiz later. Don’t have Twitter? No problem! You don’t need it for the quiz.</p>
+                                <p class="paper-font-body2">Tip: By connecting with Twitter you are allowing the researcher to gain contextual information which can help us better understand young voters in Canada. Your data will remain confidential and will not be shared with anyone beyond the research team.</p>
+                                <input type="image" src="../images/sign-in-with-twitter-gray.png" onclick="location.href='../signintwitters/step1'" />
+                            </paper-material>
+                        </template>
+
+                        <paper-material elevation = "2">
+                            <p class="paper-font-body2">By ticking the box below you are stating ‘I have read the above information and agree to participate in this research project. I am at least 18 years of age.'</p>
                             <paper-checkbox id="consentCheckbox">I Consent</paper-checkbox>
                         </paper-material>
+
+
+                        <iron-ajax method="GET" id="formRetrieve" url="/survey/data" contentType="application/json" handle-as="json" debounce-duration="300">
+                        </iron-ajax>
+
                         <paper-fab id="consentButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                        <a class="nextButton">Start Quiz!</a>
                         <paper-toast id="toaster" text="We need your consent to continue!"></paper-toast>
 
                     </section>
@@ -213,17 +223,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     <div class="mediaitem">Television</div>
                                     <paper-slider id="Television" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
                                     <div class="mediaitem">Radio Newspaper (physical or online)</div>
-                                    <paper-slider id="Radio" snaps="true" pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <paper-slider id="Radio" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
                                     <div class="mediaitem">Social Media Sites (Twitter, Facebook etc.)</div>
-                                    <paper-slider id="Social" snaps="true" pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <paper-slider id="Social" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
                                     <div class="mediaitem">Other Online Sources (Blogs, Websites etc.)</div>
-                                    <paper-slider id="Online" snaps="true" pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <paper-slider id="Online" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
                                     <div class="mediaitem">Family and Friends</div>
-                                    <paper-slider id="Family" snaps="true" pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <paper-slider id="Family" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
                                     <div class="mediaitem">Political Parties</div>
-                                    <paper-slider id="Political" snaps="true" pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <paper-slider id="Political" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
                                     <div class="mediaitem">Elected Officials</div>
-                                    <paper-slider id="Elected" snaps="true" pin min="1 " max="10 " step="1 "></paper-slider>
+                                    <paper-slider id="Elected" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
                                 </paper-item-body>
                             </paper-item>
                         </paper-material>

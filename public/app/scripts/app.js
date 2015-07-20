@@ -141,8 +141,12 @@ function setDataForSubcategory(category, subcategory){
         }
 
         if (element.localName==='google-map-marker'){
-            element.latitude = value.lat;
-            element.longitude = value.lng;
+            if (value) {
+                if (value.lat)
+                    element.latitude = value.lat;
+                if (value.lng)
+                    element.longitude = value.lng;
+            }
         }
     }
 }
@@ -200,9 +204,11 @@ function sendData() {
             if (event.detail.response) {
                 consentCheckbox.checked = true;
 
-                for (var category in formdata) {
-                   for (var subcategory in formdata[category]) {
-                       formdata[category][subcategory] = event.detail.response[category][subcategory];
+                var storeddata = event.detail.response;
+
+                for (var category in storeddata) {
+                   for (var subcategory in storeddata[category]) {
+                       formdata[category][subcategory] = storeddata[category][subcategory];
                    }
                 }
             }
@@ -306,7 +312,7 @@ function sendData() {
         var workButton = document.querySelector('#workButton');
 
         workButton.addEventListener('click', function () {
-            setFormDataValue("personal", "work");
+
             app.switch();
         });
 
