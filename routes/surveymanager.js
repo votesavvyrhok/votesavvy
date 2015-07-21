@@ -172,9 +172,39 @@ module.exports = function (app, db) {
                         "format": "email"
                     },
                     work: {
-                        "type": "number",
-                        "minimum": 0,
-                        "maximum": 10
+                        "fullTime": {
+                            "type": "boolean"
+                        },
+                        "partTime": {
+                            "type": "boolean"
+                        },
+                        "unemployed": {
+                            "type": "boolean"
+                        },
+                        "disabled": {
+                            "type": "boolean"
+                        },
+                        "undergradStudent": {
+                            "type": "boolean"
+                        },
+                        "mastersStudent": {
+                            "type": "boolean"
+                        },
+                        "phdStudent": {
+                            "type": "boolean"
+                        },
+                        "collegeStudentApprentice": {
+                            "type": "boolean"
+                        },
+                        "home": {
+                            "type": "boolean"
+                        },
+                        "retired": {
+                            "type": "boolean"
+                        },
+                        "undisclosed": {
+                            "type": "boolean"
+                        }
                     },
                     "other": {
                         "type": ["string", "null"],

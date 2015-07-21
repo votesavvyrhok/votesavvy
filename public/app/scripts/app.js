@@ -59,7 +59,19 @@ var formdata = {
         },
         "twitter": null,
         "email": null,
-        "work": null,
+        "work": {
+            "fullTime": null,
+            "partTime": null,
+            "unemployed": null,
+            "disabled": null,
+            "undergradStudent": null,
+            "mastersStudent": null,
+            "phdStudent": null,
+            "collegeStudentApprentice": null,
+            "home": null,
+            "retired": null,
+            "undisclosed": null
+        },
         "other": null
     }
 };
@@ -82,7 +94,7 @@ function getDataForSubcategory(category, subcategory) {
         }
 
         /* For checkboxes */
-        if (element.checked) {
+        if (element.checked !== undefined) {
             value = element.checked;
         }
 
@@ -92,14 +104,14 @@ function getDataForSubcategory(category, subcategory) {
 
         if (subcategory==='markedLocation')
         {
-            formdata[category][subcategory].lat = element.latitude;
-            formdata[category][subcategory].lng = element.longitude;
+            category[subcategory].lat = element.latitude;
+            category[subcategory].lng = element.longitude;
         }else{
             if (category) {
                 if (subcategory) {
-                    formdata[category][subcategory] = value;
+                    category[subcategory] = value;
                 } else {
-                    formdata[category] = value;
+                    category = value;
                 }
             }
         }
@@ -112,9 +124,9 @@ function setDataForSubcategory(category, subcategory){
 
     if (category) {
         if (subcategory) {
-            value = formdata[category][subcategory];
+            value = category[subcategory];
         } else {
-            value = formdata[category];
+            value = category;
         }
     }
 
@@ -151,9 +163,9 @@ function setDataForSubcategory(category, subcategory){
     }
 }
 
-function getDataForCategory(category,operation) {
-    for (var key in formdata[category]) {
-        operation(category,key);
+function getDataForCategory(categoryFormdata,operation) {
+    for (var key in categoryFormdata) {
+        operation(categoryFormdata,key);
     }
 }
 
@@ -230,7 +242,7 @@ function sendData() {
                 timestamp.start = startingTime.getFullYear() + "-" + startingTime.getMonth() + "-" + startingTime.getDate()
                     + " " + startingTime.getHours() + ":" + startingTime.getMinutes() + ":" + startingTime.getSeconds();
 
-                getDataForCategory("issues",setDataForSubcategory);
+                getDataForCategory(formdata["issues"],setDataForSubcategory);
 
                 app.switch();
             } else {
@@ -243,8 +255,8 @@ function sendData() {
 
         issuesButton.addEventListener('click', function () {
 
-            getDataForCategory("issues",getDataForSubcategory);
-            getDataForCategory("interest",setDataForSubcategory);
+            getDataForCategory(formdata["issues"],getDataForSubcategory);
+            getDataForCategory(formdata["interest"],setDataForSubcategory);
 
             app.switch();
         });
@@ -253,8 +265,8 @@ function sendData() {
 
         interestButton.addEventListener('click', function () {
 
-            getDataForCategory("interest",getDataForSubcategory);
-            getDataForCategory("sources",setDataForSubcategory);
+            getDataForCategory(formdata["interest"],getDataForSubcategory);
+            getDataForCategory(formdata["sources"],setDataForSubcategory);
 
             app.switch();
         });
@@ -263,8 +275,8 @@ function sendData() {
 
         sourcesButton.addEventListener('click', function () {
 
-            getDataForCategory("sources",getDataForSubcategory);
-            getDataForCategory("activity",setDataForSubcategory);
+            getDataForCategory(formdata["sources"],getDataForSubcategory);
+            getDataForCategory(formdata["activity"],setDataForSubcategory);
 
             app.switch();
         });
@@ -273,8 +285,8 @@ function sendData() {
 
         activityButton.addEventListener('click', function () {
 
-            getDataForCategory("activity",getDataForSubcategory);
-            getDataForCategory("personal",setDataForSubcategory);
+            getDataForCategory(formdata["activity"],getDataForSubcategory);
+            getDataForCategory(formdata["personal"],setDataForSubcategory);
 
             app.switch();
         });
@@ -296,7 +308,7 @@ function sendData() {
 
         for (var year=1987;year<1997;year++){
             years[year-1987]=year;
-        };
+        }
 
         app.set("years", years);
 
@@ -320,7 +332,7 @@ function sendData() {
         //initiate the map location
 
        gmap.addEventListener('api-load', function(e) {
-            app.lat = 45.387372,
+            app.lat = 45.387372;
             app.lng = -75.695090;
 
             navigator.geolocation.getCurrentPosition(function(position){
@@ -367,7 +379,8 @@ function sendData() {
 
         emailButton.addEventListener('click', function () {
 
-            getDataForCategory("personal",getDataForSubcategory);
+            getDataForCategory(formdata["personal"],getDataForSubcategory);
+            getDataForCategory(formdata["personal"]["work"],getDataForSubcategory);
 
             endingTime = new Date();
 
