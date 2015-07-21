@@ -56,16 +56,12 @@ var dbCredentials = {
     dbNames: {
         //   voters: "voters",  //store the original answers of samplers in a survey
         survey: "answers",
-        signintwitters: "twitterusers", //store the samplers' information collected from twitter
-        //tweets: 'tweets'            //store the tweets collected from twitter
-        preferences:"preferences"
-
+        signintwitters: "twitterusers" //store the samplers' information collected from twitter
     },
     dbs: {}
 };
 
 var cloudant;
-
 
 function useDatabase(next) {
     async.forEach(Object.keys(dbCredentials.dbNames), function (name, callback) {
@@ -80,7 +76,14 @@ function useDatabase(next) {
             callback();
         });
     }, function (err) {
+
+        //create the index on answers db here,
+        //the index is upon the field of user_token;
+
+
         next();
+
+
 
         cloudant.db.list(function (err, all_dbs) {
             console.log('All my databases: %s', all_dbs.join(', '));
@@ -131,23 +134,19 @@ function apiMapping() {
     var apis={
         survey:{
             name: "surveymanager.js",
-            dbs: [dbCredentials.dbs.survey,dbCredentials.dbs.preferences]
+            db: dbCredentials.dbs.survey
         },
         signintwitters:{
             name:"signintwitters.js",
-            dbs:[dbCredentials.dbs.signintwitters]
+            db:dbCredentials.dbs.signintwitters
 
-        },
-        preferences:{
-            name:"preferencemanager.js",
-            dbs:[dbCredentials.dbs.preferences]
         }
     };
 
 
     for (var api in apis)
     {
-        require('./routes/' + apis[api].name)(app, apis[api].dbs);
+        require('./routes/' + apis[api].name)(app, apis[api].db);
     }
 }
 

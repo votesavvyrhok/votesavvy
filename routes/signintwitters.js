@@ -2,9 +2,7 @@
  * Created by a on 6/21/2015.
  */
 
-module.exports= function(app,db) {
-
-    var signindb=db[0];
+module.exports= function(app,signindb) {
 
     // get the app environment from Cloud Foundry
     var cfenv = require('cfenv');
@@ -13,7 +11,6 @@ module.exports= function(app,db) {
     var uuid = require('node-uuid');
 
     var survey = require('./surveymanager.js');
-    var preference = require('./preferencemanager.js');
 
     //JSON structure of the documents in twitterusers signindb
     /*
