@@ -4,8 +4,7 @@
 
 module.exports= function(app,db) {
 
-    var signindb=db[0];
-
+    var signindb = db.handler;
     // get the app environment from Cloud Foundry
     var cfenv = require('cfenv');
     var appEnv = cfenv.getAppEnv();
@@ -13,7 +12,6 @@ module.exports= function(app,db) {
     var uuid = require('node-uuid');
 
     var survey = require('./surveymanager.js');
-    var preference = require('./preferencemanager.js');
 
     //JSON structure of the documents in twitterusers signindb
     /*
