@@ -153,9 +153,7 @@ module.exports = function (app, db) {
             "personal": {
                 "properties": {
                     "gender": {
-                        "type": "number",
-                        "minimum": 0,
-                        "maximum": 2
+                        "enum": [ "female", "male", "other", "unknown" ]
                     },
                     "birthDate": {
                         "type": ["string", "null"],
@@ -284,7 +282,7 @@ module.exports = function (app, db) {
 
         //the validation function is turned off temporarily
         //will be turned on after the JSON format is determined
-        validationResults.valid = true
+        validationResults.valid = true;
 
         if (validationResults.valid) {
             if (user_token) {
