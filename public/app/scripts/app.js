@@ -51,8 +51,12 @@ var formdata = {
     },
     "personal": {
         "gender": null,
-        "bday": null,
-        "postcode": null,
+        "yearOfBirth": null,
+        "postalCode": null,
+        "markedLocation":{
+            "lat": null,
+            "lng":null
+        },
         "twitter": null,
         "email": null,
         "work": null,
@@ -86,11 +90,17 @@ function getDataForSubcategory(category, subcategory) {
             value = element.value;
         }
 
-        if (category) {
-            if (subcategory) {
-                formdata[category][subcategory] = value;
-            } else {
-                formdata[category] = value;
+        if (subcategory==='markedLocation')
+        {
+            formdata[category][subcategory].lat = element.latitude;
+            formdata[category][subcategory].lng = element.longitude;
+        }else{
+            if (category) {
+                if (subcategory) {
+                    formdata[category][subcategory] = value;
+                } else {
+                    formdata[category] = value;
+                }
             }
         }
     }
@@ -128,6 +138,15 @@ function setDataForSubcategory(category, subcategory){
         /*for input */
         if (element.localName==='input'){
             element.value = value;
+        }
+
+        if (element.localName==='google-map-marker'){
+            if (value) {
+                if (value.lat)
+                    element.latitude = value.lat;
+                if (value.lng)
+                    element.longitude = value.lng;
+            }
         }
     }
 }
@@ -185,9 +204,11 @@ function sendData() {
             if (event.detail.response) {
                 consentCheckbox.checked = true;
 
-                for (var category in formdata) {
-                   for (var subcategory in formdata[category]) {
-                       formdata[category][subcategory] = event.detail.response[category][subcategory];
+                var storeddata = event.detail.response;
+
+                for (var category in storeddata) {
+                   for (var subcategory in storeddata[category]) {
+                       formdata[category][subcategory] = storeddata[category][subcategory];
                    }
                 }
             }
@@ -266,7 +287,26 @@ function sendData() {
             /*gender*/
 
             app.switch();
+        });
 
+       //initiate the options of the birthDate select
+        var birthDay = document.querySelector("#yearOfBirth");
+
+        var years=[];
+
+        for (var year=1987;year<1997;year++){
+            years[year-1987]=year;
+        };
+
+        app.set("years", years);
+
+        console.log("app.years " + app.years);
+
+        years.forEach(function (item) {
+            var option = document.createElement('option');
+            option.textContent = item;
+            option.value = item;
+            birthDay.appendChild(option);
         });
 
         var workButton = document.querySelector('#workButton');
@@ -276,13 +316,53 @@ function sendData() {
             app.switch();
         });
 
+       var gmap=document.querySelector('google-map');
+        //initiate the map location
+
+       gmap.addEventListener('api-load', function(e) {
+            app.lat = 45.387372,
+            app.lng = -75.695090;
+
+            navigator.geolocation.getCurrentPosition(function(position){
+                var location = position.coords;
+
+                app.lat=location.latitude;
+
+                app.lng=location.longitude;
+
+                console.log(location);
+
+            });
+
+       });
+
+       gmap.addEventListener('google-map-ready', function(){
+
+           gmap.clickEvents=true;
+
+           gmap._clickEventsChanged();
+
+       });
+
+        gmap.addEventListener('google-map-click',function(event){
+            var location;
+            console.log(event);
+
+            app.markerlat = event.detail.latLng.lat();
+
+            app.markerlng = event.detail.latLng.lng();
+
+            console.log(app.markerlat + "," + app.markerlng);
+
+        });
+
+
         var formSubmit = document.querySelector('#formSubmit');
 
         formSubmit.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
             app.switch();
         });
-
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
@@ -301,11 +381,12 @@ function sendData() {
             formSubmit.body = JSON.stringify(formdata);
             console.log(formSubmit.body);
             formSubmit.generateRequest();
+
         });
 
-    });
 
-    // Close drawer after menu item is selected if drawerPanel is narrow
+    });
+     // Close drawer after menu item is selected if drawerPanel is narrow
     app.onMenuSelect = function () {
         var drawerPanel = document.querySelector('#paperDrawerPanel');
         if (drawerPanel.narrow) {

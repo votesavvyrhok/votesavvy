@@ -1,0 +1,53 @@
+{
+  "name": "votesavvyrhok",
+  "version": "0.0.0",
+  "homepage": "https://github.com/votesavvyrhok/votesavvy",
+  "authors": [
+
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "core-component-page": "Polymer/core-component-page#^0.5",
+    "core-focusable": "Polymer/core-focusable#^0.5",
+    "core-a11y-keys": "Polymer/core-a11y-keys#^0.5",
+    "core-overlay": "Polymer/core-overlay#^0.5",
+    "chai": "^2.3.0",
+    "font-roboto": "Polymer/font-roboto#^0.5",
+    "async": "^0.9.2",
+    "iron-a11y-announcer": "polymerelements/iron-a11y-announcer#^1.0.0",
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^1.0.0",
+    "hydrolysis": "Polymer/hydrolysis#^1.11",
+    "iron-autogrow-textarea": "PolymerElements/iron-autogrow-textarea#^1.0.0",
+    "iron-collapse": "PolymerElements/iron-collapse#^1.0.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-elements": "PolymerElements/iron-elements#1.0.0",
+    "lodash": "^3.7.0",
+    "mocha": "^2.2.4",
+    "page": "visionmedia/page.js#~1.6.3",
+    "neon-elements": "PolymerElements/neon-elements#1.0.0",
+    "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.0",
+    "paper-datepicker": "*",
+    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^1.0.0",
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#^1.0.0",
+    "paper-elements": "PolymerElements/paper-elements#1.0.1",
+    "paper-shadow": "Polymer/paper-shadow#^0.5",
+    "platinum-push-messaging": "PolymerElements/platinum-push-messaging#~1.0.0",
+    "platinum-elements": "PolymerElements/platinum-elements#1.0.1",
+    "sinon-chai": "^2.7.0",
+    "sinonjs": "^1.14.1",
+    "stacky": "PolymerLabs/stacky#^1.2.2",
+    "star-rating": "*",
+    "test-fixture": "PolymerElements/test-fixture#^1.0.0",
+    "web-component-tester": "*",
+    "google-map": "GoogleWebComponents/google-map#~1.0.3"
+  }
+}
