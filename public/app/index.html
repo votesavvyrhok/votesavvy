@@ -196,16 +196,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </section>
 
                     <section data-route="interest" animateInitialSelection="true">
-                        <div class="subject "> Have you looked for information on any political issues in the past month?</div>
+                        <div class="subject ">How frequently do you actively look for information on the 2015 federal election?</div>
                         <paper-material elevation="2 ">
 
                             <paper-item>
                                 <paper-item-body two-line>
                                     <paper-radio-group id="interest">
-                                        <paper-radio-button class="choice " name="1" label="No">No ( zero times )</paper-radio-button>
-                                        <paper-radio-button class="choice " name="2" label="Little">A Little ( less than weekly )</paper-radio-button>
-                                        <paper-radio-button class="choice " name="3" label="Frequently">Frequently ( weekly to several times a week )</paper-radio-button>
-                                        <paper-radio-button class="choice " name="4" label="Very Frequently">Very Frequently ( daily or more )</paper-radio-button>
+                                        <paper-radio-button class="choice " name="1" label="Never">Never</paper-radio-button>
+                                        <paper-radio-button class="choice " name="2" label="Little">A little (less than weekly)</paper-radio-button>
+                                        <paper-radio-button class="choice " name="3" label="Frequently">Frequently (weekly to several times a week)</paper-radio-button>
+                                        <paper-radio-button class="choice " name="4" label="Very frequently">Very frequently (daily or more)</paper-radio-button>
                                     </paper-radio-group>
                                 </paper-item-body>
                             </paper-item>
@@ -242,18 +242,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <section data-route="activity">
 
                         <div class="subject ">During the past 12 months I have:</div>
+                        <div class="ratinginfo ">Tip: Please select all that apply.</div>
                         <paper-material elevation="2 ">
                             <paper-item>
                                 <paper-item-body two-line>
                                     <paper-checkbox id="face">Discussed a political or societal issue face-to-face or over the phone</paper-checkbox>
-                                    <paper-checkbox id="message">Used email or instant messaging to discuss a political or societal issue Circulated</paper-checkbox>
-                                    <paper-checkbox id="social">(re)posted or embedded political information or content on social media such as Facebook, Twitter, Google+, Blogging site</paper-checkbox>
-                                    <paper-checkbox id="petition"> Signed a petition</paper-checkbox>
-                                    <paper-checkbox id="protest"> Taken part in a protest or demonstration </paper-checkbox>
+                                    <paper-checkbox id="message">Used email or instant messaging to discuss a political or societal issue</paper-checkbox>
+                                    <paper-checkbox id="social">Circulated, (re)posted or embedded political information or content on social media such as Facebook, Twitter, blogging site or other social media</paper-checkbox>
+                                    <paper-checkbox id="petition">Signed a petition</paper-checkbox>
+                                    <paper-checkbox id="protest">Participated in a protest or demonstration</paper-checkbox>
                                     <paper-checkbox id="volunteerPolitical">Volunteered for a political party</paper-checkbox>
-                                    <paper-checkbox id="donatePolitical"> Donated to a political party</paper-checkbox>
-                                    <paper-checkbox id="volunteerCharity"> Volunteered for a charity, community organization or cause</paper-checkbox>
-                                    <paper-checkbox id="donateCharity"> Donated to a charity, community organization or cause</paper-checkbox>
+                                    <paper-checkbox id="donatePolitical">Donated to a political party</paper-checkbox>
+                                    <paper-checkbox id="volunteerCharity">Volunteered for a charity, community organization or cause</paper-checkbox>
+                                    <paper-checkbox id="donateCharity">Raised money for, or donated money to, a charity, community organization or cause</paper-checkbox>
                                 </paper-item-body>
                             </paper-item>
                         </paper-material>
@@ -265,17 +266,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-material elevation="2 ">
                             <paper-item>
                                 <paper-radio-group id="work">
-                                    <paper-radio-button class="choice" name="0" label="Small ">Working Full Time ( 30+ hours per week )</paper-radio-button>
-                                    <paper-radio-button class="choice" name="1" label="Medium ">Working Part Time ( 8 - 29 hours per week )</paper-radio-button>
+                                    <paper-radio-button class="choice" name="0" label="Small ">Working full time (30+ hours a week)</paper-radio-button>
+                                    <paper-radio-button class="choice" name="1" label="Medium ">Working part time (8-29 hours a week)</paper-radio-button>
                                     <paper-radio-button class="choice" name="2" label="Large ">Unemployed</paper-radio-button>
-                                    <paper-radio-button class="choice" name="3" label="Large ">Permanently Sick or Disabled</paper-radio-button>
-                                    <paper-radio-button class="choice" name="4" label="Large ">Undergraduate Student</paper-radio-button>
-                                    <paper-radio-button class="choice" name="5" label="Large ">Masters Student</paper-radio-button>
-                                    <paper-radio-button class="choice" name="6" label="Large ">PhD/Post-Doctorate Student</paper-radio-button>
-                                    <paper-radio-button class="choice" name="7" label="Large ">Full Time Education ( not a higher degree )</paper-radio-button>
-                                    <paper-radio-button class="choice" name="8" label="Large ">Part Time Education ( not a higher degree )</paper-radio-button>
-                                    <paper-radio-button class="choice" name="9" label="Large ">Prefer Not to disclose</paper-radio-button>
-                                    <paper-radio-button class="choice" name="10" label="Large ">Other</paper-radio-button>
+                                    <paper-radio-button class="choice" name="3" label="Large ">Permanently sick or disabled</paper-radio-button>
+                                    <paper-radio-button class="choice" name="4" label="Large ">Undergraduate student</paper-radio-button>
+                                    <paper-radio-button class="choice" name="5" label="Large ">Master's student</paper-radio-button>
+                                    <paper-radio-button class="choice" name="6" label="Large ">PhD/post-doctoral students</paper-radio-button>
+                                    <paper-radio-button class="choice" name="7" label="Large ">College student or other training (e.g. full-time apprenticeship)</paper-radio-button>
+                                    <paper-radio-button class="choice" name="8" label="Large ">Full-time doing housework, looking after children or other persons</paper-radio-button>
+                                    <paper-radio-button class="choice" name="9" label="Large ">Retired</paper-radio-button>
+                                    <paper-radio-button class="choice" name="10" label="Large ">Prefer not to disclose</paper-radio-button>
                                 </paper-radio-group>
                             </paper-item>
                         </paper-material>
@@ -291,11 +292,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     <paper-radio-button class="choice " name="female" label="Small ">Female</paper-radio-button>
                                     <paper-radio-button class="choice " name="male" label="Medium ">Male</paper-radio-button>
                                     <paper-radio-button class="choice " name="other" label="Large ">Other</paper-radio-button>
-                                    <paper-radio-button class="choice " name="unknown" label="Large ">Prefer not to state</paper-radio-button>
+                                    <paper-radio-button class="choice " name="undisclosed" label="Large ">Prefer not to state</paper-radio-button>
                                 </paper-radio-group>
                             </paper-item>
                         </paper-material>
-                        <div class="subject ">Year of birth:</div>
+                        <div class="subject ">What year were you born?</div>
                         <paper-material elevation="2 ">
                             <paper-item >
                                  <select id="yearOfBirth"  selectedIndex="{{selectedIndex}}"  value="{{defaultYear}}">
@@ -303,7 +304,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                  <br>
                             </paper-item>
                         </paper-material>
-                        <div class="subject ">What's your postal code:</div>
+                        <div class="subject ">What is your postal code?</div>
+                        <div class="ratinginfo ">Tip: This helps researchers understand differences across the country and helps Vote Savvy give you information about candidates in your area.</div>
                         <paper-material elevation="2 ">
                             <input type="text" id="postalCode" name="pcode" pattern="[A_Z]\d[A_Z] \d[A_Z]\d">
                             <div id="pcodeErr" class="error"></div>
@@ -322,14 +324,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </section>
 
                     <section data-route="email">
-                        <div class="subject ">What's your email address?</div>
-                        <div class="ratinginfo ">We will only send you emails for two reasons: 1. To give you voting information no more than twice during this election 2. To invite you to participate in a follow up study no more than twice following the election. You'll be able to unsubscribe at any time</div>
+                        <div class="subject ">What is your email address?</div>
+                        <div class="ratinginfo ">Tip: Your email address will be kept confidential and you will only be contacted for research purposes.</div>
                         <paper-material elevation="2">
                             <input type="email" id="email" name="emailInput">
                             <div id="emailErr" class="error"></div>
                         </paper-material>
-                        <paper-fab id="emailButton" class="nextButton" icon="file-upload"></paper-fab>
 
+                        <div class="subject ">If you have Twitter, what is your Twitter handle? (e.g. @VoteSavvy)</div>
+                        <div class="ratinginfo ">Tip: By connecting with Twitter you are allowing the researcher to gain contextual information which can help us better understand young voters in Canada. Your data will remain confidential and will not be shared with anyone beyond the research team.</div>
+                        <paper-material elevation="2">
+                            <input name="twitter" pattern="^(\w){1,15}$">
+                        </paper-material>
+
+                        <paper-fab id="emailButton" class="nextButton" icon="file-upload"></paper-fab>
                     </section>
 
                     <section data-route="confirmedSubmission">

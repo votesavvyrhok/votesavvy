@@ -153,7 +153,7 @@ module.exports = function (app, db) {
             "personal": {
                 "properties": {
                     "gender": {
-                        "enum": [ "female", "male", "other", "unknown" ]
+                        "enum": [ "female", "male", "other", "undisclosed" ]
                     },
                     "birthDate": {
                         "type": ["string", "null"],
