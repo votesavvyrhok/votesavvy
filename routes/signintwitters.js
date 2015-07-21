@@ -2,8 +2,9 @@
  * Created by a on 6/21/2015.
  */
 
-module.exports= function(app,signindb) {
+module.exports= function(app,db) {
 
+    var signindb = db.handler;
     // get the app environment from Cloud Foundry
     var cfenv = require('cfenv');
     var appEnv = cfenv.getAppEnv();

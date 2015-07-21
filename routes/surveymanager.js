@@ -1,4 +1,8 @@
-module.exports = function (app, surveydb) {
+module.exports = function (app, db) {
+
+    var surveydb = db.handler;
+
+    var indexspec = db.indexes;
 
     var uuid = require('node-uuid');
     var bodyParser = require('body-parser');
@@ -188,6 +192,9 @@ module.exports = function (app, surveydb) {
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
 
+
+    //retrieve the indexes of surveydb
+
     app.get('/survey', function (req, res) {
 
         //render the blank survey form in the case that no session has been defined
@@ -209,11 +216,33 @@ module.exports = function (app, surveydb) {
         var data = {};
 
         if (user_token) {
-           surveydb.get(user_token, {rev_info: true}, function (err, results) {
+          //retrieved by the index
+          //sort by the timestamp.end
+            var query = {
+                selector: {
+                   "token": {
+                             "$eq": user_token
+                         }
+                     },
+
+                sort: [{"token":"desc"},
+                    {"formdata.timestamp.end": "desc"}]
+            };
+
+            surveydb.find(indexspec.user, query, function (err, results) {
                 if (err) {
+                    console.log("retrieve error" + JSON.stringify(err));
                     res.json(null);
                 } else {
-                    res.json(results.formdata);
+                    console.log("number of document is %d, first result is %s ", results.docs.length, JSON.stringify(results.docs[0]));
+                    console.log("time of the submissions")
+                    /*
+                    for (var doc in results.docs){
+                       console.log (results.docs[doc].formdata.timestamp.end + " ");
+                    }
+                    */
+                    res.json(results.docs[0].formdata);
+                    //res.json(results.formdata);
                 }
            });
         }

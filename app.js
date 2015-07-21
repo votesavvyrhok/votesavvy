@@ -53,25 +53,31 @@ app.use(session({
 }));
 
 var dbCredentials = {
-    dbNames: {
-        //   voters: "voters",  //store the original answers of samplers in a survey
-        survey: "answers",
-        signintwitters: "twitterusers" //store the samplers' information collected from twitter
-    },
-    dbs: {}
+    dbs: {
+        survey: {
+            name: "answers",
+            handler: null,
+            indexes: {}
+        },
+        signintwitters: {
+            name: "twitterusers",
+            handler: null
+        }
+
+    }
 };
 
 var cloudant;
 
 function useDatabase(next) {
-    async.forEach(Object.keys(dbCredentials.dbNames), function (name, callback) {
-        cloudant.db.create(dbCredentials.dbNames[name], function (err, res) {
+    async.forEach(Object.keys(dbCredentials.dbs), function (db, callback) {
+        cloudant.db.create(dbCredentials.dbs[db].name, function (err, res) {
             if (err) {
-                console.log('database ' + dbCredentials.dbNames[name] + ' already created');
+                console.log('database ' + dbCredentials.dbs[db].name + ' already created');
             } else {
-                console.log('database ' + dbCredentials.dbNames[name] + ' is created');
+                console.log('database ' + dbCredentials.dbs[db].name + ' is created');
             }
-            dbCredentials.dbs[name] = cloudant.use(dbCredentials.dbNames[name]);
+            dbCredentials.dbs[db].handler = cloudant.use(dbCredentials.dbs[db].name);
 
             callback();
         });
@@ -79,11 +85,29 @@ function useDatabase(next) {
 
         //create the index on answers db here,
         //the index is upon the field of user_token;
+        var answersdb = dbCredentials.dbs.survey.handler;
+        var user = {
+            name: 'user',
+            type: 'json',
+            index: {
+                fields: [
+                    {"token": "desc"},
+                    {"formdata.timestamp.end": "desc"}
+                ]
+            }
+        };
 
+        answersdb.index(user, function(err, response) {
+                if (err)
+                    console.log("create index error" + JSON.stringify(err));
+                else
+                    dbCredentials.dbs.survey.indexes.user=response;
+
+             console.log('Index creation result: ', JSON.stringify(response));
+
+        });
 
         next();
-
-
 
         cloudant.db.list(function (err, all_dbs) {
             console.log('All my databases: %s', all_dbs.join(', '));
