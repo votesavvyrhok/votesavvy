@@ -15,15 +15,7 @@ var formdata = {
         "duration": null
     },
     "issues": {
-        "Justice": null,
-        "Health": null,
-        "Welfare": null,
-        "Immigration": null,
-        "Economy": null,
-        "Environment": null,
-        "Other": null,
-        "Education": null,
-        "Defence": null
+        "selected": ''
     },
     "sources": {
         "Television": null,
@@ -53,9 +45,9 @@ var formdata = {
         "gender": null,
         "yearOfBirth": null,
         "postalCode": null,
-        "markedLocation":{
+        "markedLocation": {
             "lat": null,
-            "lng":null
+            "lng": null
         },
         "twitter": null,
         "email": null,
@@ -85,7 +77,7 @@ function getDataForSubcategory(category, subcategory) {
 
         /* For radio buttons */
         if (element.selected) {
-            value = parseInt(element.selected);
+            value = element.selected;
         }
 
         /* For slider */
@@ -98,15 +90,14 @@ function getDataForSubcategory(category, subcategory) {
             value = element.checked;
         }
 
-        if (element.text){
+        if (element.text) {
             value = element.value;
         }
 
-        if (subcategory==='markedLocation')
-        {
+        if (subcategory === 'markedLocation') {
             category[subcategory].lat = element.latitude;
             category[subcategory].lng = element.longitude;
-        }else{
+        } else {
             if (category) {
                 if (subcategory) {
                     category[subcategory] = value;
@@ -118,7 +109,7 @@ function getDataForSubcategory(category, subcategory) {
     }
 }
 
-function setDataForSubcategory(category, subcategory){
+function setDataForSubcategory(category, subcategory) {
     var element = document.querySelector('#' + subcategory);
     var value;
 
@@ -133,26 +124,26 @@ function setDataForSubcategory(category, subcategory){
     if (element) {
 
         /* For radio buttons */
-        if (element.localName==='paper-radio-group'){
+        if (element.localName === 'paper-radio-group') {
             element.selected = value;
         }
 
-       /* For slider */
-        if (element.localName==='paper-slider') {
+        /* For slider */
+        if (element.localName === 'paper-slider') {
             element.value = value;
         }
 
         /* For checkboxes */
-        if (element.localName==='paper-checkbox'){
+        if (element.localName === 'paper-checkbox') {
             element.checked = value;
         }
 
         /*for input */
-        if (element.localName==='input'){
+        if (element.localName === 'input') {
             element.value = value;
         }
 
-        if (element.localName==='google-map-marker'){
+        if (element.localName === 'google-map-marker') {
             if (value) {
                 if (value.lat)
                     element.latitude = value.lat;
@@ -196,15 +187,14 @@ function sendData() {
     window.addEventListener('WebComponentsReady', function () {
 
         // imports are loaded and elements have been registered
-        var screenName= document.querySelector("#screenName");
+        var screenName = document.querySelector("#screenName");
 
         app.signinvisible = true;
 
         var formRetrieve = document.querySelector('#formRetrieve');
 
-        if (screenName.textContent)
-        {
-            app.signinvisible=false;
+        if (screenName.textContent) {
+            app.signinvisible = false;
 
             //fire the ajax call to retrieve the data stored
             formRetrieve.generateRequest();
@@ -212,16 +202,16 @@ function sendData() {
 
         var consentCheckbox = document.querySelector("#consentCheckbox");
 
-        formRetrieve.addEventListener('response',function(event){
+        formRetrieve.addEventListener('response', function (event) {
             if (event.detail.response) {
                 consentCheckbox.checked = true;
 
                 var storeddata = event.detail.response;
 
                 for (var category in storeddata) {
-                   for (var subcategory in storeddata[category]) {
-                       formdata[category][subcategory] = storeddata[category][subcategory];
-                   }
+                    for (var subcategory in storeddata[category]) {
+                        formdata[category][subcategory] = storeddata[category][subcategory];
+                    }
                 }
             }
         });
@@ -239,8 +229,7 @@ function sendData() {
 
                 var timestamp = formdata.timestamp;
 
-                timestamp.start = startingTime.getFullYear() + "-" + startingTime.getMonth() + "-" + startingTime.getDate()
-                    + " " + startingTime.getHours() + ":" + startingTime.getMinutes() + ":" + startingTime.getSeconds();
+                timestamp.start = startingTime.getFullYear() + "-" + startingTime.getMonth() + "-" + startingTime.getDate() + " " + startingTime.getHours() + ":" + startingTime.getMinutes() + ":" + startingTime.getSeconds();
 
                 getDataForCategory(formdata["issues"],setDataForSubcategory);
 
@@ -301,14 +290,14 @@ function sendData() {
             app.switch();
         });
 
-       //initiate the options of the birthDate select
+        //initiate the options of the birthDate select
         var birthDay = document.querySelector("#yearOfBirth");
 
-        var years=[];
+        var years = [];
 
-        for (var year=1987;year<1997;year++){
-            years[year-1987]=year;
-        }
+        for (var year = 1987; year < 1997; year++) {
+            years[year - 1987] = year;
+        };
 
         app.set("years", years);
 
@@ -328,35 +317,34 @@ function sendData() {
             app.switch();
         });
 
-       var gmap=document.querySelector('google-map');
+        var gmap = document.querySelector('google-map');
         //initiate the map location
 
        gmap.addEventListener('api-load', function(e) {
             app.lat = 45.387372;
             app.lng = -75.695090;
 
-            navigator.geolocation.getCurrentPosition(function(position){
+            navigator.geolocation.getCurrentPosition(function (position) {
                 var location = position.coords;
 
-                app.lat=location.latitude;
+                app.lat = location.latitude;
 
-                app.lng=location.longitude;
+                app.lng = location.longitude;
 
                 console.log(location);
 
             });
+        });
 
-       });
+        gmap.addEventListener('google-map-ready', function () {
 
-       gmap.addEventListener('google-map-ready', function(){
+            gmap.clickEvents = true;
 
-           gmap.clickEvents=true;
+            gmap._clickEventsChanged();
 
-           gmap._clickEventsChanged();
+        });
 
-       });
-
-        gmap.addEventListener('google-map-click',function(event){
+        gmap.addEventListener('google-map-click', function (event) {
             var location;
             console.log(event);
 
@@ -384,11 +372,10 @@ function sendData() {
 
             endingTime = new Date();
 
-            formdata.timestamp.end = endingTime.getFullYear() + "-" + endingTime.getMonth() + "-" + endingTime.getDate()
-                + " " +
+            formdata.timestamp.end = endingTime.getFullYear() + "-" + endingTime.getMonth() + "-" + endingTime.getDate() + " " +
                 endingTime.getHours() + ":" + endingTime.getMinutes() + ":" + endingTime.getSeconds();
 
-            formdata.timestamp.duration = endingTime-startingTime;
+            formdata.timestamp.duration = endingTime - startingTime;
 
             console.log(formdata);
             formSubmit.body = JSON.stringify(formdata);
@@ -399,7 +386,7 @@ function sendData() {
 
 
     });
-     // Close drawer after menu item is selected if drawerPanel is narrow
+    // Close drawer after menu item is selected if drawerPanel is narrow
     app.onMenuSelect = function () {
         var drawerPanel = document.querySelector('#paperDrawerPanel');
         if (drawerPanel.narrow) {
