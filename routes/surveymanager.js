@@ -1,8 +1,8 @@
 module.exports = function (app, db) {
 
-    var surveydb = db[0];
+    var surveydb = db.handler;
 
-    var preferencedb = db[1];
+    var indexspec = db.indexes;
 
     var uuid = require('node-uuid');
     var bodyParser = require('body-parser');
@@ -220,7 +220,8 @@ module.exports = function (app, db) {
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
 
-    var preference = require('./preferencemanager.js')(app, [preferencedb]);
+
+    //retrieve the indexes of surveydb
 
     app.get('/survey', function (req, res) {
 
@@ -243,11 +244,33 @@ module.exports = function (app, db) {
         var data = {};
 
         if (user_token) {
-           surveydb.get(user_token, {rev_info: true}, function (err, results) {
+          //retrieved by the index
+          //sort by the timestamp.end
+            var query = {
+                selector: {
+                   "token": {
+                             "$eq": user_token
+                         }
+                     },
+
+                sort: [{"token":"desc"},
+                    {"formdata.timestamp.end": "desc"}]
+            };
+
+            surveydb.find(indexspec.user, query, function (err, results) {
                 if (err) {
+                    console.log("retrieve error" + JSON.stringify(err));
                     res.json(null);
                 } else {
-                    res.json(results.formdata);
+                    console.log("number of document is %d, first result is %s ", results.docs.length, JSON.stringify(results.docs[0]));
+                    console.log("time of the submissions")
+                    /*
+                    for (var doc in results.docs){
+                       console.log (results.docs[doc].formdata.timestamp.end + " ");
+                    }
+                    */
+                    res.json(results.docs[0].formdata);
+                    //res.json(results.formdata);
                 }
            });
         }
@@ -260,7 +283,7 @@ module.exports = function (app, db) {
 
         /*the data is stored as
         {
-        token:     //key
+        token:     //token as index, for the sigined user, the token is the user_token
         status:    //submit or inprogress
         formdata: {    //the data received from client
 
@@ -271,27 +294,14 @@ module.exports = function (app, db) {
         console.log('store the doc' + JSON.stringify(doc));
         console.log('at surveymanager, session_token is ' + user_token);
 
-        surveydb.get(user_token, function (err, body) {
-            if (err) {
-                //There is no doc of the answer exists
-                surveydb.insert(doc, user_token, function (err, body) {
-                    if (!err)
-                        console.log(body);
-                    else
-                        console.log(err);
-                });
-
-            } else {
-                doc._id = body._id;
-                doc._rev = body._rev;
-                surveydb.insert(doc, function (err, body) {
-                    if (err)
-                        console.log(err);
-                    else
-                        console.log(body);
-                });
-            }
+        //the primary key is auto generated to store multiple sets of answers of a user
+        surveydb.insert(doc, null, function (err, body) {
+             if (!err)
+                 console.log(body);
+             else
+                 console.log(err);
         });
+
     };
 
     app.post('/survey/:status', function (req, res) {
@@ -317,12 +327,6 @@ module.exports = function (app, db) {
         if (validationResults.valid) {
             if (user_token) {
                 storedoc(user_token, data, status);
-
-                if (status == 'submit') {
-                        //the preference data is not sent back to the client
-                        //the preference is generated locally at client
-                        preference.generatepref(user_token, data.formdata);
-                }
 
                 //return ok
                 res.status(200).json({status:"ok"});
