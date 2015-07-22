@@ -108,7 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </paper-material>
                         </template>
 
-                        <paper-material elevation = "2">
+                        <paper-material elevation="2">
                             <p class="paper-font-body2">By ticking the box below you are stating ‘I have read the above information and agree to participate in this research project. I am at least 18 years of age.'</p>
                             <paper-checkbox id="consentCheckbox">I Consent</paper-checkbox>
                         </paper-material>
@@ -127,68 +127,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                         <!-- SECTION 1 -->
 
-                        <div class=" subject "> Below is a list of political issues, please give each a rating based on how important the issues is.</div>
-                        <div class="ratinginfo ">( where 1 is unimportant, and 5 is very important )</div>
-                        <paper-material elevation="2 ">
+                        <div class="subject"> Please choose the political issue you care about the most from this list:</div>
+                        <paper-material elevation="2">
                             <paper-item>
-                                <paper-item-body two-line>
-                                    <span class="rate question ">a: Crime and Justice</span>
-                                    <paper-radio-group id="Justice">
-                                        <paper-radio-button class="rate " name="1" label="One">1</paper-radio-button>
-                                        <paper-radio-button class="rate " name="2" label="Two">2</paper-radio-button>
-                                        <paper-radio-button class="rate " name="3" label="Three">3</paper-radio-button>
-                                        <paper-radio-button class="rate " name="4" label="Four">4</paper-radio-button>
-                                        <paper-radio-button class="rate " name="5" label="Five">5</paper-radio-button>
-                                    </paper-radio-group>
-                                    <span class="rate question ">b: Welfare</span>
-                                    <paper-radio-group id="Welfare">
-                                        <paper-radio-button class="rate " name="1" label="One">1</paper-radio-button>
-                                        <paper-radio-button class="rate " name="2" label="Two">2</paper-radio-button>
-                                        <paper-radio-button class="rate " name="3" label="Three">3</paper-radio-button>
-                                        <paper-radio-button class="rate " name="4" label="Four">4</paper-radio-button>
-                                        <paper-radio-button class="rate " name="5" label="Five">5</paper-radio-button>
-                                    </paper-radio-group>
-                                    <span class="rate question ">c: Defense and International Affairs</span>
-                                    <paper-radio-group id="Immigration">
-                                        <paper-radio-button class="rate " name="1" label="One">1</paper-radio-button>
-                                        <paper-radio-button class="rate " name="2" label="Two">2</paper-radio-button>
-                                        <paper-radio-button class="rate " name="3" label="Three">3</paper-radio-button>
-                                        <paper-radio-button class="rate " name="4" label="Four">4</paper-radio-button>
-                                        <paper-radio-button class="rate " name="5" label="Five">5</paper-radio-button>
-                                    </paper-radio-group>
-                                    <span class="rate question ">d: Environment </span>
-                                    <paper-radio-group id="Environment">
-                                        <paper-radio-button class="rate " name="1" label="One">1</paper-radio-button>
-                                        <paper-radio-button class="rate " name="2" label="Two">2</paper-radio-button>
-                                        <paper-radio-button class="rate " name="3" label="Three">3</paper-radio-button>
-                                        <paper-radio-button class="rate " name="4" label="Four">4</paper-radio-button>
-                                        <paper-radio-button class="rate " name="5" label="Five">5</paper-radio-button>
-                                    </paper-radio-group>
-                                    <span class="rate question ">e: Economy</span>
-                                    <paper-radio-group id="Economy">
-                                        <paper-radio-button class="rate " name="1" label="One">1</paper-radio-button>
-                                        <paper-radio-button class="rate " name="2" label="Two">2</paper-radio-button>
-                                        <paper-radio-button class="rate " name="3" label="Three">3</paper-radio-button>
-                                        <paper-radio-button class="rate " name="4" label="Four">4</paper-radio-button>
-                                        <paper-radio-button class="rate " name="5" label="Five">5</paper-radio-button>
-                                    </paper-radio-group>
-                                    <span class="rate question ">f: Healthcare</span>
-                                    <paper-radio-group id="Health">
-                                        <paper-radio-button class="rate " name="1" label="One">1</paper-radio-button>
-                                        <paper-radio-button class="rate " name="2" label="Two">2</paper-radio-button>
-                                        <paper-radio-button class="rate " name="3" label="Three">3</paper-radio-button>
-                                        <paper-radio-button class="rate " name="4" label="Four">4</paper-radio-button>
-                                        <paper-radio-button class="rate " name="5" label="Five">5</paper-radio-button>
-                                    </paper-radio-group>
-                                    <span class="rate question ">g: Education</span>
-                                    <paper-radio-group id="Education">
-                                        <paper-radio-button class="rate " name="1" label="One">1</paper-radio-button>
-                                        <paper-radio-button class="rate " name="2" label="Two">2</paper-radio-button>
-                                        <paper-radio-button class="rate " name="3" label="Three">3</paper-radio-button>
-                                        <paper-radio-button class="rate " name="4" label="Four">4</paper-radio-button>
-                                        <paper-radio-button class="rate " name="5" label="Five">5</paper-radio-button>
-                                    </paper-radio-group>
-                                </paper-item-body>
+                                <paper-radio-group id="selected">
+                                    <paper-radio-button class="choice" name="Crime and Justice" label="Crime and Justice">Crime and Justice</paper-radio-button>
+                                    <paper-radio-button class="choice" name="Welfare" label="Welfare">Welfare</paper-radio-button>
+                                    <paper-radio-button class="choice" name="Defense and International Affairs" label="Defense and International Affairs">Defense and International Affairs</paper-radio-button>
+                                    <paper-radio-button class="choice" name="Environment" label="Environment">Environment</paper-radio-button>
+                                    <paper-radio-button class="choice" name="Economy" label="Economy">Economy</paper-radio-button>
+                                    <paper-radio-button class="choice" name="Healthcare" label="Healthcare">Healthcare</paper-radio-button>
+                                    <paper-radio-button class="choice" name="Education" label="Education">Education</paper-radio-button>
+                                </paper-radio-group>
                             </paper-item>
 
                         </paper-material>
@@ -297,10 +247,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
                         <div class="subject ">Year of birth:</div>
                         <paper-material elevation="2 ">
-                            <paper-item >
-                                 <select id="yearOfBirth"  selectedIndex="{{selectedIndex}}"  value="{{defaultYear}}">
-                                 </select>
-                                 <br>
+                            <paper-item>
+                                <select id="yearOfBirth" selectedIndex="{{selectedIndex}}" value="{{defaultYear}}">
+                                </select>
+                                <br>
                             </paper-item>
                         </paper-material>
                         <div class="subject ">What's your postal code:</div>
@@ -310,9 +260,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                             <p>Or, select a location with dragging and dropping the marker on the map: </p>
 
-                            <google-map clickEvents="true" mouseEvents="true" latitude="{{lat}}" longitude="{{lng}}" >
-                                <google-map-marker id="markedLocation" latitude="{{markerlat}}" longitude="{{markerlng}}"
-                                                   draggable="true">
+                            <google-map clickEvents="true" mouseEvents="true" latitude="{{lat}}" longitude="{{lng}}">
+                                <google-map-marker id="markedLocation" latitude="{{markerlat}}" longitude="{{markerlng}}" draggable="true">
                                 </google-map-marker>
                             </google-map>
 
