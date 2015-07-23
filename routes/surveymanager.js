@@ -226,8 +226,10 @@ module.exports = function (app, db) {
     app.get('/survey', function (req, res) {
 
         //render the blank survey form in the case that no session has been defined
+
         var user_token = req.session.session_token;
         var screen_name = req.session.screen_name;
+
         console.log('at survey manager, session_token is' + user_token);
 
         res.render('app/index.html', {screen_name: screen_name});
