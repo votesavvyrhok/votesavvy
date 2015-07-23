@@ -250,7 +250,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <div class="subject ">What year were you born?</div>
                         <paper-material elevation="2 ">
                             <paper-item >
-                                 <select id="yearOfBirth"  selectedIndex="{{selectedIndex}}"  value="{{defaultYear}}">
+                                 <select id="yearOfBirth">
                                  </select>
                                  <br>
                             </paper-item>
@@ -261,7 +261,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <input type="text" id="postalCode" name="pcode" pattern="[A_Z]\d[A_Z] \d[A_Z]\d">
                             <div id="pcodeErr" class="error"></div>
 
-                            <p>Or, select a location with dragging and dropping the marker on the map: </p>
+                            <p>Or, select a location in the following map: </p>
 
                             <google-map clickEvents="true" mouseEvents="true" latitude="{{lat}}" longitude="{{lng}}">
                                 <google-map-marker id="markedLocation" latitude="{{markerlat}}" longitude="{{markerlng}}" draggable="true">

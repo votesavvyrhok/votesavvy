@@ -76,21 +76,26 @@ function getDataForSubcategory(category, subcategory) {
     if (element) {
 
         /* For radio buttons */
-        if (element.selected) {
+        if (element.localName === 'paper-radio-group') {
             value = element.selected;
         }
 
         /* For slider */
-        if (element.value) {
-            value = element.value;
+        if (element.localName === 'paper-slider') {
+            value = element.value ;
         }
 
         /* For checkboxes */
-        if (element.checked !== undefined) {
+        if (element.localName === 'paper-checkbox') {
             value = element.checked;
         }
 
-        if (element.text) {
+        /*for input */
+        if (element.localName === 'input') {
+            value = element.value;
+        }
+
+        if (element.localName === 'select'){
             value = element.value;
         }
 
@@ -124,7 +129,7 @@ function setDataForSubcategory(category, subcategory) {
         }
     }
 
-    if (element) {
+    if (element && value) {
 
         /* For radio buttons */
         if (element.localName === 'paper-radio-group') {
@@ -143,6 +148,10 @@ function setDataForSubcategory(category, subcategory) {
 
         /*for input */
         if (element.localName === 'input') {
+            element.value = value;
+        }
+
+        if (element.localName === 'select'){
             element.value = value;
         }
 
@@ -353,6 +362,18 @@ function sendData() {
             console.log("response from server" + JSON.stringify(e.detail.response));
             app.switch();
         });
+
+        var email=document.querySelector("#email");
+
+        email.addEventListener('blur', function(event) {
+            if(email.validity.typeMismatch) {
+                document.querySelector('#emailErr').innerHTML="Please enter a valid eMail address";
+                email.value="";
+            }else{
+                document.querySelector('#emailErr').innerHTML="";
+            }
+        });
+
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
