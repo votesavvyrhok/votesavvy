@@ -146,6 +146,10 @@ function setDataForSubcategory(category, subcategory) {
             element.value = value;
         }
 
+        if (element.localName === 'select'){
+            element.value = value;
+        }
+
         if (element.localName === 'google-map-marker') {
             if (value) {
                 if (value.lat)
