@@ -357,6 +357,15 @@ function sendData() {
             console.log("response from server" + JSON.stringify(e.detail.response));
             app.switch();
         });
+
+        var email=document.querySelector("#email");
+
+        email.addEventListener('blur', function(event) {
+            if(email.validity.typeMismatch) {
+                document.querySelector('#emailErr').innerHTML="Please enter a valid eMail address";
+            }
+        });
+
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
