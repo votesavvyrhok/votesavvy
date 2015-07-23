@@ -51,20 +51,20 @@ var formdata = {
         },
         "twitter": null,
         "email": null,
-        "work": {
-            "fullTime": null,
-            "partTime": null,
-            "unemployed": null,
-            "disabled": null,
-            "undergradStudent": null,
-            "mastersStudent": null,
-            "phdStudent": null,
-            "collegeStudentApprentice": null,
-            "home": null,
-            "retired": null,
-            "undisclosed": null
-        },
         "other": null
+    },
+    "work": {
+        "fullTime": null,
+        "partTime": null,
+        "unemployed": null,
+        "disabled": null,
+        "undergradStudent": null,
+        "mastersStudent": null,
+        "phdStudent": null,
+        "collegeStudentApprentice": null,
+        "home": null,
+        "retired": null,
+        "undisclosed": null
     }
 };
 
@@ -113,6 +113,9 @@ function setDataForSubcategory(category, subcategory) {
     var element = document.querySelector('#' + subcategory);
     var value;
 
+    if (!element)
+        return;
+
     if (category) {
         if (subcategory) {
             value = category[subcategory];
@@ -154,9 +157,10 @@ function setDataForSubcategory(category, subcategory) {
     }
 }
 
-function getDataForCategory(categoryFormdata,operation) {
-    for (var key in categoryFormdata) {
-        operation(categoryFormdata,key);
+function formdataOperation(operation) {
+    for (var category in formdata)
+        for (var subcategory in formdata[category]) {
+            operation(formdata[category], subcategory);
     }
 }
 
@@ -231,7 +235,8 @@ function sendData() {
 
                 timestamp.start = startingTime.getFullYear() + "-" + startingTime.getMonth() + "-" + startingTime.getDate() + " " + startingTime.getHours() + ":" + startingTime.getMinutes() + ":" + startingTime.getSeconds();
 
-                getDataForCategory(formdata["issues"],setDataForSubcategory);
+                //set up the formdata at the beginning
+                formdataOperation(setDataForSubcategory);
 
                 app.switch();
             } else {
@@ -244,18 +249,12 @@ function sendData() {
 
         issuesButton.addEventListener('click', function () {
 
-            getDataForCategory(formdata["issues"],getDataForSubcategory);
-            getDataForCategory(formdata["interest"],setDataForSubcategory);
-
             app.switch();
         });
 
         var interestButton = document.querySelector('#interestButton');
 
         interestButton.addEventListener('click', function () {
-
-            getDataForCategory(formdata["interest"],getDataForSubcategory);
-            getDataForCategory(formdata["sources"],setDataForSubcategory);
 
             app.switch();
         });
@@ -264,9 +263,6 @@ function sendData() {
 
         sourcesButton.addEventListener('click', function () {
 
-            getDataForCategory(formdata["sources"],getDataForSubcategory);
-            getDataForCategory(formdata["activity"],setDataForSubcategory);
-
             app.switch();
         });
 
@@ -274,18 +270,12 @@ function sendData() {
 
         activityButton.addEventListener('click', function () {
 
-            getDataForCategory(formdata["activity"],getDataForSubcategory);
-            getDataForCategory(formdata["personal"],setDataForSubcategory);
-
             app.switch();
         });
 
         var personalButton = document.querySelector('#personalButton');
 
         personalButton.addEventListener('click', function () {
-            /* birthdate */
-            /* postcode */
-            /*gender*/
 
             app.switch();
         });
@@ -367,8 +357,8 @@ function sendData() {
 
         emailButton.addEventListener('click', function () {
 
-            getDataForCategory(formdata["personal"],getDataForSubcategory);
-            getDataForCategory(formdata["personal"]["work"],getDataForSubcategory);
+            //retrieve the data from the form
+            formdataOperation(getDataForSubcategory);
 
             endingTime = new Date();
 

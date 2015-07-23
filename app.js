@@ -23,6 +23,7 @@ var database;
 // create a new express server
 var app = express();
 
+require('./routes/index')(app);
 // routing
 require('./routes/represent')(app);
 
