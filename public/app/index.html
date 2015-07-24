@@ -118,7 +118,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </iron-ajax>
 
                         <paper-fab id="consentButton" class="nextButton" icon="arrow-forward"></paper-fab>
-                        <a class="nextButton">Start Quiz!</a>
+                        <p class="nextButton">Start Quiz! &nbsp </p>
                         <paper-toast id="toaster" text="We need your consent to continue!"></paper-toast>
 
                     </section>
@@ -258,8 +258,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <div class="subject ">What is your postal code?</div>
                         <div class="ratinginfo ">Tip: This helps researchers understand differences across the country and helps Vote Savvy give you information about candidates in your area.</div>
                         <paper-material elevation="2 ">
-                            <input type="text" id="postalCode" name="pcode" pattern="[A_Z]\d[A_Z] \d[A_Z]\d">
-                            <div id="pcodeErr" class="error"></div>
+                            <paper-input id="postalCode" auto-validate char-counter pattern="^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]( )?\d[ABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="7" error-message="Please follow the format of canadian postal code!"></paper-input>
 
                             <p>Or, select a location in the following map: </p>
 
@@ -277,17 +276,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <div class="subject ">What is your email address?</div>
                         <div class="ratinginfo ">Tip: Your email address will be kept confidential and you will only be contacted for research purposes.</div>
                         <paper-material elevation="2">
-                            <input type="email" id="email" name="emailInput">
-                            <div id="emailErr" class="error"></div>
+                            <paper-input id="email" char-counter auto-validate pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$" maxlength="40" error-message="Please enter a valid email address!"></paper-input>
                         </paper-material>
 
                         <div class="subject ">If you have Twitter, what is your Twitter handle? (e.g. @VoteSavvy)</div>
                         <div class="ratinginfo ">Tip: By connecting with Twitter you are allowing the researcher to gain contextual information which can help us better understand young voters in Canada. Your data will remain confidential and will not be shared with anyone beyond the research team.</div>
                         <paper-material elevation="2">
-                            <input name="twitterInput" id="twitter" pattern="^(\w){1,15}$">
+                            <paper-input id="twitter" char-counter auto-validate pattern="^@?(\w){1,15}$" maxlength="20" error-message="Please enter a valid twitter user name!"></paper-input>
                         </paper-material>
 
-                        <paper-fab id="emailButton" class="nextButton" icon="file-upload"></paper-fab>
+                        <paper-fab id="emailButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="lastPage">
+                        <div class="subject ">Young people are amongst the least likely to vote in Canadian elections. Why do you think this is the case?</div>
+                        <paper-material elevation="2">
+                            <paper-input id="youthVoting" ></paper-input>
+                        </paper-material>
+
+                        <div class="subject ">What do you think is the most important issue facing Canadians today? </div>
+                        <paper-material elevation="2">
+                            <paper-input id="proposedIssue" ></paper-input>
+                        </paper-material>
+
+                        <div class="subject ">How likely are you to vote in the 2015 federal election? </div>
+                        <div class="ratinginfo ">Tips: sliding scale with five ticks. 0=Very unlikely, 2=Neither, 4=Very likely.</div>
+                        <paper-material elevation="2">
+                            <paper-item>
+                                <paper-item-body>
+                                    <paper-slider id="yourParticipation" snaps="true" pin="true" min="0 " max="4 " step="1 "></paper-slider>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab id="endButton" class="nextButton" icon="file-upload"></paper-fab>
+                        <p class="nextButton">All done! Click here to submit your responses and get your custom information kit for the 2015 election! &nbsp </p>
+
                     </section>
 
                     <section data-route="confirmedSubmission">
