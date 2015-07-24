@@ -65,6 +65,11 @@ var formdata = {
         "home": null,
         "retired": null,
         "undisclosed": null
+    },
+    "openQuestion":{
+        "youthVoting": null,
+        "proposedIssue":null,
+        "yourParticipation":null
     }
 };
 
@@ -90,6 +95,13 @@ function getDataForSubcategory(category, subcategory) {
             value = element.checked;
         }
 
+        if (element.localName === 'paper-input'){
+            if (!element.invalid)
+                value=element.value;
+            else
+                value="";
+        }
+
         /*for input */
         if (element.localName === 'input') {
             value = element.value;
@@ -104,11 +116,11 @@ function getDataForSubcategory(category, subcategory) {
             category[subcategory].lng = element.longitude;
         } else {
             if (category) {
-                if (subcategory) {
-                    category[subcategory] = value;
-                } else {
+               if (subcategory) {
+                     category[subcategory] = value;
+               } else {
                     category = value;
-                }
+              }
             }
         }
     }
@@ -147,6 +159,11 @@ function setDataForSubcategory(category, subcategory) {
         }
 
         /*for input */
+
+        if (element.localName === 'paper-input'){
+            element.value = value;
+        }
+
         if (element.localName === 'input') {
             element.value = value;
         }
@@ -377,6 +394,12 @@ function sendData() {
         var emailButton = document.querySelector('#emailButton');
 
         emailButton.addEventListener('click', function () {
+            app.switch();
+        });
+
+        var endButton = document.querySelector('#endButton');
+
+        endButton.addEventListener('click', function () {
 
             //retrieve the data from the form
             formdataOperation(getDataForSubcategory);

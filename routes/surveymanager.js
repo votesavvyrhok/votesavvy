@@ -273,7 +273,7 @@ module.exports = function (app, db) {
                        console.log (results.docs[doc].formdata.timestamp.end + " ");
                     }
                     */
-                    if (results.docs.length>0)
+                    if (results.docs.length)
                         res.json(results.docs[0].formdata);
                     else
                         res.json(null);
