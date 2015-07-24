@@ -256,7 +256,9 @@ module.exports = function (app, db) {
                      },
 
                 sort: [{"token":"desc"},
-                    {"formdata.timestamp.end": "desc"}]
+                    {"formdata.timestamp.end": "desc"}],
+                limit: 1,
+                skip:0
             };
 
             surveydb.find(indexspec.user, query, function (err, results) {
@@ -271,7 +273,10 @@ module.exports = function (app, db) {
                        console.log (results.docs[doc].formdata.timestamp.end + " ");
                     }
                     */
-                    res.json(results.docs[0].formdata);
+                    if (results.docs.length>0)
+                        res.json(results.docs[0].formdata);
+                    else
+                        res.json(null);
                     //res.json(results.formdata);
                 }
            });
