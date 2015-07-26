@@ -264,46 +264,18 @@ function sendData() {
                 //set up the formdata at the beginning
                 formdataOperation(setDataForSubcategory);
 
-                app.switch();
             } else {
                 var toast = document.querySelector('#toaster');
                 toast.show();
             }
         });
 
-        var issuesButton = document.querySelector('#issuesButton');
+        var nextButtons = document.querySelectorAll('paper-fab.nextButton');
 
-        issuesButton.addEventListener('click', function () {
-
-            app.switch();
-        });
-
-        var interestButton = document.querySelector('#interestButton');
-
-        interestButton.addEventListener('click', function () {
-
-            app.switch();
-        });
-
-        var sourcesButton = document.querySelector('#sourcesButton');
-
-        sourcesButton.addEventListener('click', function () {
-
-            app.switch();
-        });
-
-        var activityButton = document.querySelector('#activityButton');
-
-        activityButton.addEventListener('click', function () {
-
-            app.switch();
-        });
-
-        var personalButton = document.querySelector('#personalButton');
-
-        personalButton.addEventListener('click', function () {
-
-            app.switch();
+        Array.prototype.forEach.call(nextButtons,function(button) {
+           button.addEventListener('click', function () {
+                app.switch();
+            });
         });
 
         //initiate the options of the birthDate select
@@ -326,17 +298,10 @@ function sendData() {
             birthDay.appendChild(option);
         });
 
-        var workButton = document.querySelector('#workButton');
-
-        workButton.addEventListener('click', function () {
-
-            app.switch();
-        });
-
         var gmap = document.querySelector('google-map');
         //initiate the map location
 
-       gmap.addEventListener('api-load', function(e) {
+        gmap.addEventListener('api-load', function(e) {
             app.lat = 45.387372;
             app.lng = -75.695090;
 
@@ -372,29 +337,10 @@ function sendData() {
 
         });
 
-
         var formSubmit = document.querySelector('#formSubmit');
 
         formSubmit.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
-            app.switch();
-        });
-
-        var email=document.querySelector("#email");
-
-        email.addEventListener('blur', function(event) {
-            if(email.validity.typeMismatch) {
-                document.querySelector('#emailErr').innerHTML="Please enter a valid eMail address";
-                email.value="";
-            }else{
-                document.querySelector('#emailErr').innerHTML="";
-            }
-        });
-
-        var emailButton = document.querySelector('#emailButton');
-
-        emailButton.addEventListener('click', function () {
-            app.switch();
         });
 
         var endButton = document.querySelector('#endButton');
@@ -418,8 +364,8 @@ function sendData() {
 
         });
 
-
     });
+
     // Close drawer after menu item is selected if drawerPanel is narrow
     app.onMenuSelect = function () {
         var drawerPanel = document.querySelector('#paperDrawerPanel');
