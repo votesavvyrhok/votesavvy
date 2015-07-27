@@ -221,18 +221,18 @@ function sendData() {
 
         app.signinvisible = true;
 
-        var formRetrieve = document.querySelector('#formRetrieve');
+        var formRetrieveCall = document.querySelector('#formRetrieveCall');
 
         if (screenName.textContent) {
             app.signinvisible = false;
 
             //fire the ajax call to retrieve the data stored
-            formRetrieve.generateRequest();
+            formRetrieveCall.generateRequest();
         }
 
         var consentCheckbox = document.querySelector("#consentCheckbox");
 
-        formRetrieve.addEventListener('response', function (event) {
+        formRetrieveCall.addEventListener('response', function (event) {
             if (event.detail.response) {
                 consentCheckbox.checked = true;
 
@@ -337,9 +337,9 @@ function sendData() {
 
         });
 
-        var formSubmit = document.querySelector('#formSubmit');
+        var formSubmitCall = document.querySelector('#formSubmitCall');
 
-        formSubmit.addEventListener('response', function (e) {
+        formSubmitCall.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
         });
 
@@ -347,6 +347,12 @@ function sendData() {
 
         endButton.addEventListener('click', function () {
 
+            forSubmitting;
+
+
+        });
+
+        var forSubmitting = function(){
             //retrieve the data from the form
             formdataOperation(getDataForSubcategory);
 
@@ -358,11 +364,11 @@ function sendData() {
             formdata.timestamp.duration = endingTime - startingTime;
 
             console.log(formdata);
-            formSubmit.body = JSON.stringify(formdata);
-            console.log(formSubmit.body);
-            formSubmit.generateRequest();
+            formSubmitCall.body = JSON.stringify(formdata);
+            console.log(formSubmitCall.body);
+            formSubmitCall.generateRequest();
 
-        });
+        }
 
     });
 

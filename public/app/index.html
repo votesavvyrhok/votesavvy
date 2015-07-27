@@ -62,10 +62,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <!-- Main Toolbar -->
             <paper-toolbar class="standard" id="mainToolbar">
                 <!-- paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button -->
-                <span class="flex"></span>
-                <span id="screenName"><%= screen_name %></span>
-                <!-- Toolbar icons -->
-                <paper-icon-button icon="account-circle"></paper-icon-button>
+
+                    <span class="flex"></span>
+                    <span id="screenName"><%= screen_name %></span>
+                    <!-- Toolbar icons -->
+
+                <div class="horizontal-section-container">
+                    <div class="horizontal-section">
+                        <paper-menu-button>
+                            <paper-icon-button icon="account-circle" class="dropdown-trigger" ></paper-icon-button>
+                            <template is='dom-if' id="menuTemplate" if="{{!signinvisible}}">
+                                <paper-menu id ="avatarMenu" class="dropdown-content">
+                                    <paper-item onclick="location.href='/signintwitters/logout'">Logout</paper-item>
+                                </paper-menu>
+                            </template>
+                        </paper-menu-button>
+                    </div>
+                </div>
+
 
                 <!-- Application name -->
                 <div class="middle paper-font-display2 app-name">VoteSavvy Survey</div>
@@ -117,8 +131,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <p class="nextButton">Start Quiz! &nbsp </p>
                         <paper-toast id="toaster" text="We need your consent to continue!"></paper-toast>
 
-                        <iron-ajax method="GET" id="formRetrieve" url="/survey/data" contentType="application/json" handle-as="json" debounce-duration="300">
-                        </iron-ajax>
 
                     </section>
 
@@ -324,10 +336,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
                     </section>
 
-                    <iron-ajax method="POST" id="formSubmit" url="../survey/submit" contentType="application/json" handle-as="json" debounce-duration="300">
+                    <iron-ajax method="GET" id="formRetrieveCall" url="/survey/data" contentType="application/json" handle-as="json" debounce-duration="300">
+                    </iron-ajax>
+
+                    <iron-ajax method="POST" id="formSubmitCall" url="../survey/submit" contentType="application/json" handle-as="json" debounce-duration="300">
                     </iron-ajax>
 
                 </iron-pages>
+
             </div>
         </paper-header-panel>
 
