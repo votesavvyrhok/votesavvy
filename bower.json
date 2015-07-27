@@ -2,9 +2,7 @@
   "name": "votesavvyrhok",
   "version": "0.0.0",
   "homepage": "https://github.com/votesavvyrhok/votesavvy",
-  "authors": [
-
-  ],
+  "authors": [],
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -48,6 +46,7 @@
     "star-rating": "*",
     "test-fixture": "PolymerElements/test-fixture#^1.0.0",
     "web-component-tester": "*",
-    "google-map": "GoogleWebComponents/google-map#~1.0.3"
+    "google-map": "GoogleWebComponents/google-map#~1.0.3",
+    "paper-menu-button": "PolymerElements/paper-menu-button#~1.0.0"
   }
 }

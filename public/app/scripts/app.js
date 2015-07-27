@@ -221,18 +221,18 @@ function sendData() {
 
         app.signinvisible = true;
 
-        var formRetrieve = document.querySelector('#formRetrieve');
+        var formRetrieveCall = document.querySelector('#formRetrieveCall');
 
         if (screenName.textContent) {
             app.signinvisible = false;
 
             //fire the ajax call to retrieve the data stored
-            formRetrieve.generateRequest();
+            formRetrieveCall.generateRequest();
         }
 
         var consentCheckbox = document.querySelector("#consentCheckbox");
 
-        formRetrieve.addEventListener('response', function (event) {
+        formRetrieveCall.addEventListener('response', function (event) {
             if (event.detail.response) {
                 consentCheckbox.checked = true;
 
@@ -264,46 +264,18 @@ function sendData() {
                 //set up the formdata at the beginning
                 formdataOperation(setDataForSubcategory);
 
-                app.switch();
             } else {
                 var toast = document.querySelector('#toaster');
                 toast.show();
             }
         });
 
-        var issuesButton = document.querySelector('#issuesButton');
+        var nextButtons = document.querySelectorAll('paper-fab.nextButton');
 
-        issuesButton.addEventListener('click', function () {
-
-            app.switch();
-        });
-
-        var interestButton = document.querySelector('#interestButton');
-
-        interestButton.addEventListener('click', function () {
-
-            app.switch();
-        });
-
-        var sourcesButton = document.querySelector('#sourcesButton');
-
-        sourcesButton.addEventListener('click', function () {
-
-            app.switch();
-        });
-
-        var activityButton = document.querySelector('#activityButton');
-
-        activityButton.addEventListener('click', function () {
-
-            app.switch();
-        });
-
-        var personalButton = document.querySelector('#personalButton');
-
-        personalButton.addEventListener('click', function () {
-
-            app.switch();
+        Array.prototype.forEach.call(nextButtons,function(button) {
+           button.addEventListener('click', function () {
+                app.switch();
+            });
         });
 
         //initiate the options of the birthDate select
@@ -326,17 +298,10 @@ function sendData() {
             birthDay.appendChild(option);
         });
 
-        var workButton = document.querySelector('#workButton');
-
-        workButton.addEventListener('click', function () {
-
-            app.switch();
-        });
-
         var gmap = document.querySelector('google-map');
         //initiate the map location
 
-       gmap.addEventListener('api-load', function(e) {
+        gmap.addEventListener('api-load', function(e) {
             app.lat = 45.387372;
             app.lng = -75.695090;
 
@@ -372,35 +337,22 @@ function sendData() {
 
         });
 
+        var formSubmitCall = document.querySelector('#formSubmitCall');
 
-        var formSubmit = document.querySelector('#formSubmit');
-
-        formSubmit.addEventListener('response', function (e) {
+        formSubmitCall.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
-            app.switch();
-        });
-
-        var email=document.querySelector("#email");
-
-        email.addEventListener('blur', function(event) {
-            if(email.validity.typeMismatch) {
-                document.querySelector('#emailErr').innerHTML="Please enter a valid eMail address";
-                email.value="";
-            }else{
-                document.querySelector('#emailErr').innerHTML="";
-            }
-        });
-
-        var emailButton = document.querySelector('#emailButton');
-
-        emailButton.addEventListener('click', function () {
-            app.switch();
         });
 
         var endButton = document.querySelector('#endButton');
 
         endButton.addEventListener('click', function () {
 
+            forSubmitting;
+
+
+        });
+
+        var forSubmitting = function(){
             //retrieve the data from the form
             formdataOperation(getDataForSubcategory);
 
@@ -412,14 +364,14 @@ function sendData() {
             formdata.timestamp.duration = endingTime - startingTime;
 
             console.log(formdata);
-            formSubmit.body = JSON.stringify(formdata);
-            console.log(formSubmit.body);
-            formSubmit.generateRequest();
+            formSubmitCall.body = JSON.stringify(formdata);
+            console.log(formSubmitCall.body);
+            formSubmitCall.generateRequest();
 
-        });
-
+        }
 
     });
+
     // Close drawer after menu item is selected if drawerPanel is narrow
     app.onMenuSelect = function () {
         var drawerPanel = document.querySelector('#paperDrawerPanel');
