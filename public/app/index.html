@@ -174,32 +174,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
                         <paper-fab id="interestButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
+
                     <section data-route="sources">
 
-                        <div class="subject ">Regardless of whether or not you look for political information, how often do you encounter information about political issues from each of the following channels/sources?</div>
-                        <div class="ratinginfo ">Think specifically about this election period starting August 2015.</div>
-                        <paper-material elevation="2 ">
-                            <paper-item>
-                                <paper-item-body two-line>
-                                    <div class="mediaitem">Television</div>
-                                    <paper-slider id="Television" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
-                                    <div class="mediaitem">Radio Newspaper (physical or online)</div>
-                                    <paper-slider id="Radio" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
-                                    <div class="mediaitem">Social Media Sites (Twitter, Facebook etc.)</div>
-                                    <paper-slider id="Social" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
-                                    <div class="mediaitem">Other Online Sources (Blogs, Websites etc.)</div>
-                                    <paper-slider id="Online" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
-                                    <div class="mediaitem">Family and Friends</div>
-                                    <paper-slider id="Family" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
-                                    <div class="mediaitem">Political Parties</div>
-                                    <paper-slider id="Political" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
-                                    <div class="mediaitem">Elected Officials</div>
-                                    <paper-slider id="Elected" snaps="true" pin min="0 " max="10 " step="1 "></paper-slider>
-                                </paper-item-body>
-                            </paper-item>
-                        </paper-material>
+                        <div class="subject ">How often do you receive political information from the following sources:</div>
+                        <div class="ratinginfo ">Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations.</div>
+                        <div class="infolist">Family and friends</div>
+                        <div class="infolist">Politicians, candidates and political parties</div>
+                        <div class="infolist">Traditional media (e.g. CBC, National Post)</div>
+                        <div class="infolist">Civil society groups (including charities, nonprofits and grassroots organizations)</div>
+                        <br>
+
+                        <template is="dom-repeat" items="{{sources}}">
+                            <div class="ratinginfo ">{{item.question.preffix}}<span style="font-weight: bold">{{item.question.keyword}}</span>{{item.question.suffix}}</div>
+                            <div class="ratinginfo">{{tip}}</div>
+
+                            <paper-material elevation="2 ">
+                                <paper-item>
+                                    <paper-item-body two-line>
+                                        <template is="dom-repeat" items="{{item.evaluations}}">
+                                            <div class="mediaitem">{{item.title}}</div>
+                                            <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
+                                        </template>
+                                    </paper-item-body>
+                                </paper-item>
+                            </paper-material>
+                        </template>
+
                         <paper-fab id="sourcesButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
+
                     <section data-route="activity">
 
                         <div class="subject ">During the past 12 months I have:</div>
@@ -303,16 +307,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <section data-route="lastPage">
                         <div class="subject ">Young people are amongst the least likely to vote in Canadian elections. Why do you think this is the case?</div>
                         <paper-material elevation="2">
-                            <paper-item>
-                                <paper-input id="youthVoting" ></paper-input>
-                            </paper-item>
+                            <paper-input id="youthVoting" ></paper-input>
                         </paper-material>
 
                         <div class="subject ">What do you think is the most important issue facing Canadians today? </div>
                         <paper-material elevation="2">
-                            <paper-item>
-                                <paper-input id="proposedIssue" ></paper-input>
-                            </paper-item>
+                            <paper-input id="proposedIssue" ></paper-input>
                         </paper-material>
 
                         <div class="subject ">How likely are you to vote in the 2015 federal election? </div>

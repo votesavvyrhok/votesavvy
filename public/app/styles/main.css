@@ -36,6 +36,10 @@ google-map {
     padding: 10px;
 }
 
+.infolist {
+    padding: 3px 40px;
+}
+
 .choice {
     display: block;
 }
