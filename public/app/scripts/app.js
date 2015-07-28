@@ -17,16 +17,6 @@ var formdata = {
     "issues": {
         "selected": ''
     },
-    "sources": {
-        "Television": null,
-        "Radio": null,
-        "Newspaper": null,
-        "Social": null,
-        "Online": null,
-        "Family": null,
-        "Political": null,
-        "Elected": null
-    },
     "activity": {
         "face": null,
         "message": null,
@@ -73,9 +63,178 @@ var formdata = {
     }
 };
 
+var questions={
+    "familyFriend": {
+        preffix:"If you get political information from ",
+        keyword:"family and friends",
+        suffix:", how often do you get it via the following channels?"
+    },
+    "politicanParty":{
+        preffix:"If you get political information from ",
+        keyword:"politicians or political parties",
+        suffix:", how often do you get it via the following channels?"
+    },
+    "traditionalMedia": {
+        preffix: "If you get political information from ",
+        keyword: "traditional media",
+        suffix: ", how often do you get it via the following channels?"
+    },
+    "civilSociety": {
+            preffix: "If you get political information from ",
+            keyword: "civil society",
+            suffix: " (including charities, nonprofits and grassroots organizations), how often do you get it via the following channels?"
+        }
+    };
+
+var tip = "For each, sliding scale with six ticks. From left to right: Never, Very Rarely, Rarely, Occasionally, Frequently, Very Frequently ";
+
+var evaluations= {
+    "familyFriend": [{
+        title: "Facebook (excluding Facebook Messenger)",
+        id: "facebook"
+    }, {
+        title: "Twitter",
+        id: "twitter"
+    }, {
+        title: "Other social media",
+        id: "other"
+    }, {
+        title: "Face to face conversations",
+        id: "facetoface"
+    }, {
+        title: "Phone and video calls (including Skype and Facetime)",
+        id: "phone"
+    }, {
+        title: "Email",
+        id: "email"
+    }, {
+        title: "Text/SMS/BBM (and other instant messaging like Facebook Messenger)",
+        id: "instancemessage"
+    }],
+    "politicanParty": [{
+        title: "Facebook (excluding Facebook Messenger)",
+        id: "facebook"
+    }, {
+        title: "Twitter",
+        id: "twitter"
+    }, {
+        title: "Other social media",
+        id: "other"
+    }, {
+        title: "Website, blog, RSS feed",
+        id: "web"
+    }, {
+        title: "Face to face conversations (e.g. door-to-door canvassing, community events)",
+        id: "facetoface"
+    }, {
+        title: "Phone and video calls (including Skype and Facetime)",
+        id: "phone"
+    }, {
+        title: "Email (e.g. party or candidate newsletters and mailing lists)",
+        id: "email"
+    }, {
+        title: "Text/SMS/BBM (and other instant messaging like Facebook Messenger)",
+        id: "instancemessage"
+    }],
+    "traditionalMedia": [{
+        title: "Facebook (excluding Facebook Messenger)",
+        id: "facebook"
+    }, {
+        title: "Twitter",
+        id: "twitter"
+    }, {
+        title: "Other social media",
+        id: "other"
+    }, {
+        title: "News website or RSS feeds (e.g. www.cbc.ca/news or www.nationalpost.com)",
+        id: "web"
+    }, {
+        title: "Email (e.g. Google Alerts)",
+        id: "email"
+    }, {
+        title: "Print media (e.g. paper newspaper, paper magazine)",
+        id: "printmedia"
+    }, {
+        title: "Radio or Podcast",
+        id: "radio"
+    }, {
+        title: "Television",
+        id: "television"
+    }],
+    "civilSociety": [{
+        title: "Facebook (excluding Facebook Messenger)",
+        id: "facebook"
+    }, {
+        title: "Twitter",
+        id: "twitter"
+    }, {
+        title: "Other social media",
+        id: "other"
+    }, {
+        title: "Website, blog, RSS feed",
+        id: "web"
+    }, {
+        title: "Face to face conversations (e.g. door-to-door canvassing, community events)",
+        id: "facetoface"
+    }, {
+        title: "Phone and video calls (including Skype and Facetime)",
+        id: "phone"
+    }, {
+        title: "Email (e.g. newsletters and mailing lists)",
+        id: "email"
+    }, {
+        title: "Text/SMS/BBM (and other instant messaging like Facebook Messenger)",
+        id: "instancemessage"
+    }]
+};
+
+var sources=[];
+
+var configureSources= function(){
+
+    for (var key in questions){
+        var formItem= {};
+
+        evaluations[key].forEach(function(eval){
+            //configure the formdata
+            formItem[eval.id]=null;
+
+            //configure the sourcedata
+            //the id is as <question.key><evaluation.id>
+            eval.id=key.concat(eval.id);
+        });
+
+        formdata[key]=formItem;
+
+        //configure the sources
+        var sourceItem = {
+            question: questions[key],
+            evaluations: evaluations[key]
+        };
+
+        sources.push(sourceItem);
+    }
+};
+
+
+var configureFormdata=function(){
+    configureSources();
+};
+
 function getDataForSubcategory(category, subcategory) {
 
-    var element = document.querySelector('#' + subcategory);
+    var element;
+
+    var id;
+
+    //in questions, the id is as <category><subcategory>
+    if (category in questions)
+        id = category.concat(subcategory);
+    else
+        id = subcategory;
+
+    element=document.querySelector('#' + id);
+
     var value;
 
     if (element) {
@@ -112,14 +271,14 @@ function getDataForSubcategory(category, subcategory) {
         }
 
         if (subcategory === 'markedLocation') {
-            category[subcategory].lat = element.latitude;
-            category[subcategory].lng = element.longitude;
+            formdata[category][subcategory].lat = element.latitude;
+            formdata[category][subcategory].lng = element.longitude;
         } else {
-            if (category) {
-               if (subcategory) {
-                     category[subcategory] = value;
+            if (category in formdata) {
+               if (subcategory in formdata[category]) {
+                     formdata[category][subcategory] = value;
                } else {
-                    category = value;
+                    formdata[category] = value;
               }
             }
         }
@@ -127,17 +286,27 @@ function getDataForSubcategory(category, subcategory) {
 }
 
 function setDataForSubcategory(category, subcategory) {
-    var element = document.querySelector('#' + subcategory);
+    var element;
+
+    var id;
+
+    if (category in questions)
+        id = category.concat(subcategory);
+    else
+        id = subcategory;
+
+    element=document.querySelector('#' + id);
+
     var value;
 
     if (!element)
         return;
 
-    if (category) {
-        if (subcategory) {
-            value = category[subcategory];
+    if (category in formdata) {
+        if (subcategory in formdata[category]) {
+            value = formdata[category][subcategory];
         } else {
-            value = category;
+            value = formdata[category];
         }
     }
 
@@ -186,7 +355,7 @@ function setDataForSubcategory(category, subcategory) {
 function formdataOperation(operation) {
     for (var category in formdata)
         for (var subcategory in formdata[category]) {
-            operation(formdata[category], subcategory);
+            operation(category, subcategory);
     }
 }
 
@@ -212,6 +381,8 @@ function sendData() {
     app.addEventListener('dom-change', function () {
         console.log('Our app is ready to rock!');
     });
+
+    configureFormdata();
 
     // See https://github.com/Polymer/polymer/issues/1381
     window.addEventListener('WebComponentsReady', function () {
@@ -240,7 +411,8 @@ function sendData() {
 
                 for (var category in storeddata) {
                     for (var subcategory in storeddata[category]) {
-                        formdata[category][subcategory] = storeddata[category][subcategory];
+                        if ((category in formdata) && (subcategory in formdata[category]))
+                            formdata[category][subcategory] = storeddata[category][subcategory];
                     }
                 }
             }
@@ -278,13 +450,16 @@ function sendData() {
             });
         });
 
+        app.sources=sources;
+        app.tip = tip;
+
         //initiate the options of the birthDate select
         var birthDay = document.querySelector("#yearOfBirth");
 
-        var years = [];
+        var years = [null];
 
         for (var year = 1987; year < 1997; year++) {
-            years[year - 1987] = year;
+            years.push(year);
         };
 
         app.set("years", years);
@@ -347,12 +522,11 @@ function sendData() {
 
         endButton.addEventListener('click', function () {
 
-            forSubmitting;
-
+            formSubmission();
 
         });
 
-        var forSubmitting = function(){
+        var formSubmission = function(){
             //retrieve the data from the form
             formdataOperation(getDataForSubcategory);
 
@@ -367,7 +541,6 @@ function sendData() {
             formSubmitCall.body = JSON.stringify(formdata);
             console.log(formSubmitCall.body);
             formSubmitCall.generateRequest();
-
         }
 
     });
