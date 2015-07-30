@@ -43,11 +43,15 @@ var get = function(key, callback) {
   request(getOptions('GET', key), function(err, req, body) {
     try {
       //var retval = JSON.parse(body);
-      var retval=body;
+      var retval;
+
+      if (typeof body == 'object')
+           retval=body;
+
       callback(err, retval);
     } catch(e) {
       console.log("Parse exception", body);
-      callback(err, null);
+      callback(true, null);
     }
   });
 };
