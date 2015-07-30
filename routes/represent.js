@@ -27,12 +27,14 @@ module.exports = function (app) {
                 }
                 else {
                     //store in the cache
-                    app.locals.datacache.put(cacheKey, data, function (err, body) {
+                    console.log("represent received " + JSON.stringify(data));
+
+                    app.locals.datacache.put(cacheKey, JSON.stringify(data), function (err, body) {
                         if (err) {
                             console.log("cache error" + JSON.stringify(err));
                         }
                         else {
-                              console.log("cache result: " + JSON.stringify(body));
+                              console.log("cache stored: " + JSON.stringify(body));
                         }
                     });
                     res.send(data);
