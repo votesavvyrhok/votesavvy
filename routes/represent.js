@@ -13,7 +13,7 @@ module.exports = function (app) {
         var cacheKey = req.params.code;
 
         app.locals.datacache.get(cacheKey, function (err, data) {
-            if (!err) {
+            if (data) {
                 //in the cache
                 console.log("cache retrieved" + JSON.stringify(data));
                 res.send(data);
