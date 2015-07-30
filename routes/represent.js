@@ -1,4 +1,5 @@
 // For OpenNorth Represent API calls
+
 module.exports = function (app) {
     var represent = require('represent');
 
@@ -7,8 +8,37 @@ module.exports = function (app) {
     });
 
     app.get('/represent/postcode/:code', function (req, res) {
-        represent.postalCode(req.params.code, function(err, data){
-            res.send(data);
+
+        //retrieve the datacache first
+        var cacheKey = req.params.code;
+
+        app.locals.datacache.get(cacheKey, function (err, data) {
+            if (data) {
+                //in the cache
+                console.log("cache retrieved" + JSON.stringify(data));
+                res.send(data);
+            }
+            else{
+
+                represent.postalCode(req.params.code, function (err, data) {
+                if (err) {
+                    console.log("represent error" + JSON.stringify(err));
+                    res.send(err);
+                }
+                else {
+                    //store in the cache
+                    app.locals.datacache.put(cacheKey, data, function (err, body) {
+                        if (err) {
+                            console.log("cache error" + JSON.stringify(err));
+                        }
+                        else {
+                              console.log("cache result: " + JSON.stringify(body));
+                        }
+                    });
+                    res.send(data);
+                }
+                });
+            }
         });
     });
 
