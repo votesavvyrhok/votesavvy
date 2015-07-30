@@ -16,7 +16,7 @@ var cfenv = require('cfenv');
 var https = require('https');
 var JSON = require('JSON');
 
-var datacache = require('bluemixdatacache');
+var datacache = require('./bluemix_datacache.js');
 
 var async = require('async');
 

@@ -13,9 +13,9 @@ module.exports = function (app) {
         var cacheKey = req.params.code;
 
         app.locals.datacache.get(cacheKey, function (err, data) {
-            if (data) {
+            if (!err) {
                 //in the cache
-                console.log("cache retrieved" + JSON.stringify(data));
+                console.log("cache retrieved");
                 res.send(data);
             }
             else{
@@ -32,7 +32,7 @@ module.exports = function (app) {
                             console.log("cache error" + JSON.stringify(err));
                         }
                         else {
-                              console.log("cache result: " + JSON.stringify(body));
+                              console.log("cache stored: " + JSON.stringify(body));
                         }
                     });
                     res.send(data);
