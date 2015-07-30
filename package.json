@@ -26,7 +26,8 @@
     "twitter-node-client":"~0.0.6",
     "async": "~1.2.1",
     "node-uuid": "~1.4.3",
-    "express-session":"~1.11.3"
+    "express-session":"~1.11.3",
+    "bluemixdatacache":"^0.0.6"
   },
   "repository": {}
 }

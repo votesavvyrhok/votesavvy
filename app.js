@@ -16,9 +16,9 @@ var cfenv = require('cfenv');
 var https = require('https');
 var JSON = require('JSON');
 
-var async = require('async');
+var datacache = require('bluemixdatacache');
 
-var database;
+var async = require('async');
 
 // create a new express server
 var app = express();
@@ -52,6 +52,21 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
+//DataCache
+app.locals.datacache = datacache;
+
+//do a test here
+datacache.put("test",{"first":1}, function(err,body){
+        if (err)
+        {
+            console.log("cache error" + JSON.stringify(err));
+        }
+        else{
+            console.log("cache result: " + JSON.stringify(body));
+        }
+});
+
 
 var dbCredentials = {
     dbs: {
