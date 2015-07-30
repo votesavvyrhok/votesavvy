@@ -47,6 +47,8 @@ var get = function(key, callback) {
 
       if (typeof body == 'object')
            retval=body;
+      else
+           throw "error";
 
       callback(err, retval);
     } catch(e) {
