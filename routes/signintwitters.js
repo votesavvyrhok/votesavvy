@@ -126,9 +126,6 @@ module.exports= function(app,db) {
 
         console.log("oauthStore: " + JSON.stringify(oauthStore));
 
-        console.log("oauth_token " + oauth_token);
-        console.log("oauth_verifier " + oauth_verifier);
-
         var oauthStep2 = {
             "token": oauth_token,
             "token_secret": oauthStore[oauth_token].token_secret,
