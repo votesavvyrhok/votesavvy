@@ -63,32 +63,57 @@ var formdata = {
     }
 };
 
+var generalTip="Tip: From left to right: never to very frequently.";
+
 var questions={
-    "familyFriend": {
-        preffix:"If you get political information from ",
-        keyword:"family and friends",
-        suffix:", how often do you get it via the following channels?"
+    "sources":{
+      prefix: "How often do you receive political information from the following sources:",
+      keyword: " ",
+      suffix: " ",
+      tip:"Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations."
     },
-    "politicanParty":{
-        preffix:"If you get political information from ",
+    "familyFriend": {
+        prefix:"If you get political information from ",
+        keyword:"family and friends",
+        suffix:", how often do you get it via the following channels?",
+        tip: generalTip
+    },
+    "politicianParty":{
+        prefix:"If you get political information from ",
         keyword:"politicians or political parties",
-        suffix:", how often do you get it via the following channels?"
+        suffix:", how often do you get it via the following channels?",
+        tip: generalTip
     },
     "traditionalMedia": {
-        preffix: "If you get political information from ",
+        prefix: "If you get political information from ",
         keyword: "traditional media",
-        suffix: ", how often do you get it via the following channels?"
+        suffix: ", how often do you get it via the following channels?",
+        tip: generalTip
     },
     "civilSociety": {
-            preffix: "If you get political information from ",
-            keyword: "civil society",
-            suffix: " (including charities, nonprofits and grassroots organizations), how often do you get it via the following channels?"
+        preffix: "If you get political information from ",
+        keyword: "civil society",
+        suffix: " (including charities, nonprofits and grassroots organizations), how often do you get it via the following channels?",
+        tip: generalTip
         }
     };
 
 var tip = "For each, sliding scale with six ticks. From left to right: Never, Very Rarely, Rarely, Occasionally, Frequently, Very Frequently ";
 
 var evaluations= {
+    "sources":[{
+        title:"Family and Friends",
+        id: "familyFriend"
+    },{
+        title:"Politicians, candidates and political parties",
+        id: "politicianParty"
+    },{
+        title:"Traditional media (e.g. CBC, National Post)",
+        id: "traditionalMedia"
+    },{
+        title:"Civil society groups (including charities, nonprofits and grassroots organizations)",
+        id: "civilSociety"
+    }],
     "familyFriend": [{
         title: "Facebook (excluding Facebook Messenger)",
         id: "facebook"
@@ -111,7 +136,7 @@ var evaluations= {
         title: "Text/SMS/BBM (and other instant messaging like Facebook Messenger)",
         id: "instancemessage"
     }],
-    "politicanParty": [{
+    "politicianParty": [{
         title: "Facebook (excluding Facebook Messenger)",
         id: "facebook"
     }, {
@@ -401,8 +426,6 @@ function sendData() {
             formRetrieveCall.generateRequest();
         }
 
-        var consentCheckbox = document.querySelector("#consentCheckbox");
-
         formRetrieveCall.addEventListener('response', function (event) {
             if (event.detail.response) {
                 consentCheckbox.checked = true;
@@ -418,13 +441,16 @@ function sendData() {
             }
         });
 
+        var consentCheckbox = document.querySelector("#consentCheckbox");
+
         var consentButton = document.querySelector('#consentButton');
 
         var startingTime;
         var endingTime;
 
-        consentButton.addEventListener('click', function () {
+        var consent = false;
 
+        consentButton.addEventListener('click',function(){
             if (consentCheckbox.checked) {
 
                 startingTime = new Date();
@@ -435,18 +461,21 @@ function sendData() {
 
                 //set up the formdata at the beginning
                 formdataOperation(setDataForSubcategory);
+                consent = true;
 
             } else {
                 var toast = document.querySelector('#toaster');
                 toast.show();
             }
+
         });
 
         var nextButtons = document.querySelectorAll('paper-fab.nextButton');
 
         Array.prototype.forEach.call(nextButtons,function(button) {
            button.addEventListener('click', function () {
-                app.switch();
+                if (consent)
+                   app.switch();
             });
         });
 
@@ -458,7 +487,7 @@ function sendData() {
 
         var years = [null];
 
-        for (var year = 1987; year < 1997; year++) {
+        for (var year = 1996; year > 1910; year--) {
             years.push(year);
         };
 
