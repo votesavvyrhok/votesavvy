@@ -91,7 +91,7 @@ var questions={
         tip: generalTip
     },
     "civilSociety": {
-        preffix: "If you get political information from ",
+        prefix: "If you get political information from ",
         keyword: "civil society",
         suffix: " (including charities, nonprofits and grassroots organizations), how often do you get it via the following channels?",
         tip: generalTip
