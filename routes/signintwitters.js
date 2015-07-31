@@ -113,9 +113,21 @@ module.exports= function(app,db) {
 
         var oauth_verifier = req.query.oauth_verifier;
 
+        var denied = req.query.denied;
+
+        //the authentication is denied
+        if (denied)
+        {
+            res.redirect('/');
+            return;
+        }
+
         console.log("you are at step 2 now");
 
         console.log("oauthStore: " + JSON.stringify(oauthStore));
+
+        console.log("oauth_token " + oauth_token);
+        console.log("oauth_verifier " + oauth_verifier);
 
         var oauthStep2 = {
             "token": oauth_token,
