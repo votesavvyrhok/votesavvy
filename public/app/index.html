@@ -15,7 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="VoteSavvy Quiz" />
+    <meta name="generator" content="VoteSavvy Survey" />
     <title>VoteSavvy Survey</title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
@@ -261,11 +261,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                  </select>
                                  <br>
                             </paper-item>
+
                         </paper-material>
-                        <div class="subject ">What is your postal code without space? (e.g. K1A0A9)</div>
+                        <div class="subject ">What is your postal code in uppercase without space? (e.g. K1A0A9)</div>
                         <div class="ratinginfo ">Tip: This helps researchers understand differences across the country and helps Vote Savvy give you information about candidates in your area.</div>
                         <paper-material elevation="2 ">
-                            <paper-input id="postalCode" auto-validate char-counter pattern="^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]\d[ABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="6" error-message="Please follow the format of canadian postal code!"></paper-input>
+                            <paper-input autocapitalize="characters" auto-validate id="postalCode" char-counter pattern="^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]\d[ABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="6" error-message="Please follow the format of canadian postal code!">
+                            </paper-input>
 
                             <p>Or, select a location in the following map: </p>
                             <google-map clickEvents="true" mouseEvents="true" latitude="{{lat}}" longitude="{{lng}}">

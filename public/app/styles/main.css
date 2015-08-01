@@ -48,6 +48,7 @@ google-map {
     position: relative;
     float: right;
 }
+
 input:invalid {
     border: 1px solid #900;
 }

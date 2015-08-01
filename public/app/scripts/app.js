@@ -487,13 +487,11 @@ function sendData() {
 
         var years = [null];
 
-        for (var year = 1996; year > 1910; year--) {
+        for (var year = 1996; year>= 1910; year--) {
             years.push(year);
         };
 
         app.set("years", years);
-
-        console.log("app.years " + app.years);
 
         years.forEach(function (item) {
             var option = document.createElement('option');
