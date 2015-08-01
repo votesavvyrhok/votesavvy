@@ -157,7 +157,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </section>
 
                     <section data-route="interest" animateInitialSelection="true">
-                        <div class="subject ">How frequently do you actively look for information on the 2015 federal election?</div>
+                        <div class="subject ">How frequently do you actively look for information about the 2015 federal election?</div>
                         <paper-material elevation="2 ">
 
                             <paper-item>
@@ -177,17 +177,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     <section data-route="sources">
 
-                        <div class="subject ">How often do you receive political information from the following sources:</div>
-                        <div class="ratinginfo ">Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations.</div>
-                        <div class="infolist">Family and friends</div>
-                        <div class="infolist">Politicians, candidates and political parties</div>
-                        <div class="infolist">Traditional media (e.g. CBC, National Post)</div>
-                        <div class="infolist">Civil society groups (including charities, nonprofits and grassroots organizations)</div>
-                        <br>
-
                         <template is="dom-repeat" items="{{sources}}">
-                            <div class="ratinginfo ">{{item.question.preffix}}<span style="font-weight: bold">{{item.question.keyword}}</span>{{item.question.suffix}}</div>
-                            <div class="ratinginfo">{{tip}}</div>
+                            <div class="subject ">{{item.question.prefix}}<span style="font-style: italic">{{item.question.keyword}}</span>{{item.question.suffix}}</div>
+                            <div class="ratinginfo">{{item.question.tip}}</div>
 
                             <paper-material elevation="2 ">
                                 <paper-item>
@@ -269,11 +261,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                  </select>
                                  <br>
                             </paper-item>
+
                         </paper-material>
-                        <div class="subject ">What is your postal code?</div>
+                        <div class="subject ">What is your postal code in uppercase without space? (e.g. K1A0A9)</div>
                         <div class="ratinginfo ">Tip: This helps researchers understand differences across the country and helps Vote Savvy give you information about candidates in your area.</div>
                         <paper-material elevation="2 ">
-                            <paper-input id="postalCode" auto-validate char-counter pattern="^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]( )?\d[ABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="7" error-message="Please follow the format of canadian postal code!"></paper-input>
+                            <paper-input autocapitalize="characters" auto-validate id="postalCode" char-counter pattern="^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]\d[ABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="6" error-message="Please follow the format of canadian postal code!">
+                            </paper-input>
 
                             <p>Or, select a location in the following map: </p>
                             <google-map clickEvents="true" mouseEvents="true" latitude="{{lat}}" longitude="{{lng}}">
@@ -316,7 +310,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
 
                         <div class="subject ">How likely are you to vote in the 2015 federal election? </div>
-                        <div class="ratinginfo ">Tips: sliding scale with five ticks. 0=Very unlikely, 2=Neither, 4=Very likely.</div>
+                        <div class="ratinginfo ">Tip: From left to right: Very unlikely to very likely</div>
                         <paper-material elevation="2">
                             <paper-item>
                                 <paper-item-body>

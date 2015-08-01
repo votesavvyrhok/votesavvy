@@ -42,7 +42,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <div class="vertical center-justified layout">
     <h4>Text input</h4>
     <div class="vertical-section">
-      <paper-input label="label"></paper-input>
+      <paper-input label="label" ></paper-input>
 
       <paper-input label="password" type="password"></paper-input>
 
@@ -53,14 +53,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <h4>Text area</h4>
     <div class="vertical-section">
-      <paper-textarea label="textarea label"></paper-textarea>
+      <paper-textarea label="textarea label" ></paper-textarea>
     </div>
 
     <h4>Validation</h4>
     <div class="vertical-section">
       <paper-input label="only type letters (auto-validate)" auto-validate pattern="[a-zA-Z]*" error-message="letters only!"></paper-input>
 
-      <paper-input id="inputForValidation" required label="only type letters (no auto validate)" pattern="[a-zA-Z]*" error-message="letters only, required input!"></paper-input>
+
       <br>
       <button onclick="validate()">Validate!</button>
     </div>
@@ -74,6 +74,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-textarea label="textarea" char-counter></paper-textarea>
 
       <paper-textarea label="textarea with maxlength" char-counter maxlength="10"></paper-textarea>
+
+      <paper-textarea label="text area with rows and max-rows" rows="3" max-rows="4"><paper-textarea>
     </div>
 
     <h4>Complex inputs</h4>

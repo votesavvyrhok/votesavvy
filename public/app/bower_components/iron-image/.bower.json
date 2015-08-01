@@ -27,14 +27,14 @@
     "web-component-tester": "*",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
   },
-  "homepage": "https://github.com/polymerelements/iron-image",
+  "homepage": "https://github.com/PolymerElements/iron-image",
   "_release": "1.0.2",
   "_resolution": {
     "type": "version",
     "tag": "v1.0.2",
     "commit": "f3d3090dc9a59b662f67c9c7dd1fc61e716f353d"
   },
-  "_source": "git://github.com/polymerelements/iron-image.git",
+  "_source": "git://github.com/PolymerElements/iron-image.git",
   "_target": "^1.0.0",
-  "_originalSource": "polymerelements/iron-image"
+  "_originalSource": "PolymerElements/iron-image"
 }
