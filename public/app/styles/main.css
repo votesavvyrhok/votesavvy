@@ -60,3 +60,11 @@ input:invalid {
 .vslogo {
     font-size: 14px;
 }
+
+.pol-widget {
+    border: none !important;
+}
+
+.pol-divider {
+    padding: 10px;
+}
