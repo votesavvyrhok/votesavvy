@@ -10,7 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 body {
     background: #F5F5F5;
     font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #333;
+    color: rgb(39, 39, 39);
 }
 
 google-map {
@@ -53,6 +53,10 @@ input:invalid {
     border: 1px solid #900;
 }
 
-.error{
+.error {
     font-size: smaller;
+}
+
+.vslogo {
+    font-size: 14px;
 }

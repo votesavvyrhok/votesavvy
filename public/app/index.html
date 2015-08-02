@@ -61,18 +61,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-header-panel main mode="standard">
             <!-- Main Toolbar -->
             <paper-toolbar class="standard" id="mainToolbar">
-                <!-- paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button -->
 
-                    <span class="flex"></span>
-                    <span id="screenName"><%= screen_name %></span>
-                    <!-- Toolbar icons -->
+                <span class="flex"></span>
+                <span class="middle"><img style="margin-top:22px;" src="http://static1.squarespace.com/static/5596a2f8e4b0f75fd2971413/t/55a7f472e4b0bd72ffa3c1ce/1438448341501/?format=1500w"></span>
+                <span id="screenName" class="vslogo"><%= screen_name %></span>
+                <!-- Toolbar icons -->
 
-                <div class="horizontal-section-container">
+                <div class="horizontal-section-container" style="color:white;margin-top:22px;">
                     <div class="horizontal-section">
                         <paper-menu-button>
-                            <paper-icon-button icon="account-circle" class="dropdown-trigger" ></paper-icon-button>
+                            <paper-icon-button icon="account-circle" class="dropdown-trigger"></paper-icon-button>
                             <template is='dom-if' id="menuTemplate" if="{{!signinvisible}}">
-                                <paper-menu id ="avatarMenu" class="dropdown-content">
+                                <paper-menu id="avatarMenu" class="dropdown-content">
                                     <paper-item onclick="location.href='/signintwitters/logout'">Logout</paper-item>
                                 </paper-menu>
                             </template>
@@ -82,17 +82,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
                 <!-- Application name -->
-                <div class="middle paper-font-display2 app-name">VoteSavvy Survey</div>
+                <div class="middle paper-font-display2 app-name"></div>
 
                 <!-- Application sub title -->
                 <div class="bottom title"></div>
 
-                <!-- paper-tabs selected="0" class="bottom horizontal self-end" style="width: 100%; margin-bottom:10px;">
+                <paper-tabs selected="0" class="middle horizontal self-end" style="width: 100%; margin-bottom:10px;color:white;font-size:14px;">
 
-                    <paper-tab>MY SURVEY</paper-tab>
-                    <paper-tab>MY INFO PACK</paper-tab>
+                    <paper-tab>SURVEY</paper-tab>
+                    <paper-tab>INFO PACK</paper-tab>
 
-                </paper-tabs -->
+                </paper-tabs>
 
                 <!--                <div class="bottom flex self-start"></div>-->
             </paper-toolbar>
@@ -103,7 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-pages attr-for-selected="data-route" selected="home">
 
                     <section data-route="home" animateInitialSelection="true">
-                        <paper-material elevation="2">
+                        <paper-material elevation="1">
                             <!-- my-greeting></my-greeting -->
 
                             <!-- p class="paper-font-subhead">You now have:</p -->
@@ -115,14 +115,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
 
                         <template is='dom-if' id="twittersignin" if="{{signinvisible}}">
-                            <paper-material elevation="2">
+                            <paper-material elevation="1">
                                 <p class="paper-font-body2">If you want, you can sign in to Twitter now to speed up the quiz later. Don’t have Twitter? No problem! You don’t need it for the quiz.</p>
                                 <p class="paper-font-body2">Tip: By connecting with Twitter you are allowing the researcher to gain contextual information which can help us better understand young voters in Canada. Your data will remain confidential and will not be shared with anyone beyond the research team.</p>
                                 <input type="image" src="../images/sign-in-with-twitter-gray.png" onclick="location.href='../signintwitters/step1'" />
                             </paper-material>
                         </template>
 
-                        <paper-material elevation="2">
+                        <paper-material elevation="1">
                             <p class="paper-font-body2">By ticking the box below you are stating ‘I have read the above information and agree to participate in this research project. I am at least 18 years of age.'</p>
                             <paper-checkbox id="consentCheckbox">I Consent</paper-checkbox>
                         </paper-material>
@@ -139,7 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <!-- SECTION 1 -->
 
                         <div class="subject"> Please choose the political issue you care about the most from this list:</div>
-                        <paper-material elevation="2">
+                        <paper-material elevation="1">
                             <paper-item>
                                 <paper-radio-group id="selected">
                                     <paper-radio-button class="choice" name="Crime and Justice" label="Crime and Justice">Crime and Justice</paper-radio-button>
@@ -158,7 +158,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     <section data-route="interest" animateInitialSelection="true">
                         <div class="subject ">How frequently do you actively look for information about the 2015 federal election?</div>
-                        <paper-material elevation="2 ">
+                        <paper-material elevation="1 ">
 
                             <paper-item>
                                 <paper-item-body two-line>
@@ -181,7 +181,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <div class="subject ">{{item.question.prefix}}<span style="font-style: italic">{{item.question.keyword}}</span>{{item.question.suffix}}</div>
                             <div class="ratinginfo">{{item.question.tip}}</div>
 
-                            <paper-material elevation="2 ">
+                            <paper-material elevation="1 ">
                                 <paper-item>
                                     <paper-item-body two-line>
                                         <template is="dom-repeat" items="{{item.evaluations}}">
@@ -200,7 +200,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                         <div class="subject ">During the past 12 months I have:</div>
                         <div class="ratinginfo ">Tip: Please select all that apply.</div>
-                        <paper-material elevation="2 ">
+                        <paper-material elevation="1 ">
                             <paper-item>
                                 <paper-item-body two-line>
                                     <paper-checkbox id="face">Discussed a political or societal issue face-to-face or over the phone</paper-checkbox>
@@ -221,7 +221,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <section data-route="work">
                         <div class="subject ">What's your current working situation:</div>
                         <div class="ratinginfo ">Tip: Please select all that apply.</div>
-                        <paper-material elevation="2 ">
+                        <paper-material elevation="1 ">
                             <paper-item>
                                 <paper-item-body data-route="work">
                                     <paper-checkbox class="choice" id="fullTime" label="Small ">Working full time (30+ hours a week)</paper-checkbox>
@@ -244,7 +244,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     <section data-route="personal">
                         <div class="subject ">Gender (self identified):</div>
-                        <paper-material elevation="2 ">
+                        <paper-material elevation="1 ">
                             <paper-item>
                                 <paper-radio-group id="gender">
                                     <paper-radio-button class="choice " name="female" label="Small ">Female</paper-radio-button>
@@ -255,17 +255,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </paper-item>
                         </paper-material>
                         <div class="subject ">What year were you born?</div>
-                        <paper-material elevation="2 ">
-                            <paper-item >
-                                 <select id="yearOfBirth">
-                                 </select>
-                                 <br>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <select id="yearOfBirth">
+                                </select>
+                                <br>
                             </paper-item>
 
                         </paper-material>
                         <div class="subject ">What is your postal code in uppercase without space? (e.g. K1A0A9)</div>
                         <div class="ratinginfo ">Tip: This helps researchers understand differences across the country and helps Vote Savvy give you information about candidates in your area.</div>
-                        <paper-material elevation="2 ">
+                        <paper-material elevation="1 ">
                             <paper-input autocapitalize="characters" auto-validate id="postalCode" char-counter pattern="^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]\d[ABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="6" error-message="Please follow the format of canadian postal code!">
                             </paper-input>
 
@@ -281,7 +281,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <section data-route="email">
                         <div class="subject ">What is your email address?</div>
                         <div class="ratinginfo ">Tip: Your email address will be kept confidential and you will only be contacted for research purposes.</div>
-                        <paper-material elevation="2">
+                        <paper-material elevation="1">
                             <paper-item>
                                 <paper-input id="email" char-counter auto-validate pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$" maxlength="40" error-message="Please enter a valid email address!"></paper-input>
                             </paper-item>
@@ -289,7 +289,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                         <div class="subject ">If you have Twitter, what is your Twitter handle? (e.g. @VoteSavvy)</div>
                         <div class="ratinginfo ">Tip: By connecting with Twitter you are allowing the researcher to gain contextual information which can help us better understand young voters in Canada. Your data will remain confidential and will not be shared with anyone beyond the research team.</div>
-                        <paper-material elevation="2">
+                        <paper-material elevation="1">
                             <paper-item>
                                 <paper-input id="twitter" char-counter auto-validate pattern="^@?(\w){1,15}$" maxlength="20" error-message="Please enter a valid twitter user name!"></paper-input>
                             </paper-item>
@@ -300,18 +300,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     <section data-route="lastPage">
                         <div class="subject ">Young people are amongst the least likely to vote in Canadian elections. Why do you think this is the case?</div>
-                        <paper-material elevation="2">
-                            <paper-input id="youthVoting" ></paper-input>
+                        <paper-material elevation="1">
+                            <paper-input id="youthVoting"></paper-input>
                         </paper-material>
 
                         <div class="subject ">What do you think is the most important issue facing Canadians today? </div>
-                        <paper-material elevation="2">
-                            <paper-input id="proposedIssue" ></paper-input>
+                        <paper-material elevation="1">
+                            <paper-input id="proposedIssue"></paper-input>
                         </paper-material>
 
                         <div class="subject ">How likely are you to vote in the 2015 federal election? </div>
                         <div class="ratinginfo ">Tip: From left to right: Very unlikely to very likely</div>
-                        <paper-material elevation="2">
+                        <paper-material elevation="1">
                             <paper-item>
                                 <paper-item-body>
                                     <paper-slider id="yourParticipation" snaps="true" pin="true" min="0 " max="4 " step="1 "></paper-slider>
@@ -326,7 +326,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     <section data-route="confirmedSubmission">
                         <paper-material>
-                            <paper-spinner alt="Loading contacts list" active></paper-spinner><span style="padding-left:10px;">Thanks for submitting ... preparing an information pack based on your answers :)</span>
+                            <paper-spinner alt="Loading contacts list" active></paper-spinner>
+                            <span style="padding-left:10px;">Thanks for submitting ... preparing an information pack based on your answers :)</span>
                         </paper-material>
                     </section>
 
@@ -342,11 +343,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-header-panel>
 
     </template>
-
     <!-- build:js scripts/app.js -->
     <script src="../app/scripts/app.js "></script>
-
-
     <!-- endbuild-->
 </body>
 

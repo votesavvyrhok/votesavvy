@@ -21,7 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     
     :root {
         --dark-primary-color: #FFA000;
-        --default-primary-color: #FFC107;
+        --default-primary-color: #656561;
         --light-primary-color: #FFECB3;
         --text-primary-color: #212121;
         --accent-color: #607D8B;
@@ -41,11 +41,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --paper-menu-background-color: #fff;
         --menu-link-color: #111111;
         /* paper-input */
-
+        
         --paper-input-container-color: #607D8B;
         --paper-input-container-focus-color: #607D8B;
         --paper-input-container-input-color: #607D8B;
-
         /*--paper-input-container-color: rgba(255, 255, 255, 0.64);
         --paper-input-container-focus-color: rgba(255, 255, 255, 1);
         --paper-input-container-input-color: #fff;
@@ -104,6 +103,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 10px;
     }
     
+    paper-toolbar {
+        display: block;
+        position: relative;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 84px;
+    }
+    
     paper-menu a {
         text-decoration: none;
         color: var(--menu-link-color);
@@ -126,6 +133,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 0 16px;
     }
     
+    .paper-font-display2 {
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: -.018em;
+        line-height: 48px;
+    }
+    
     #mainToolbar .middle {
         margin-left: 48px;
     }
@@ -134,6 +148,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 20px;
         padding-bottom: 0;
         margin-left: 48px;
+    }
+    
+    #mainToolbar .middle:not([style-scope]):not(.style-scope) {
+        margin-left: 0;
     }
     /* Height of the scroll area */
     
