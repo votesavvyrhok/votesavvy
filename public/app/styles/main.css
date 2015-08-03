@@ -57,6 +57,20 @@ input:invalid {
     font-size: smaller;
 }
 
+.list {
+    padding-top: 12px;
+    background-color: white;
+    display: inline-block;
+    width: 240px;
+    height: 228px;
+    margin: 12px;
+    @apply(--shadow-elevation-2dp);
+}
+
+.photo{
+    max-height: 120px;
+}
+
 .vslogo {
     font-size: 14px;
 }
