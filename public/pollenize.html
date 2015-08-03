@@ -4,9 +4,46 @@
 </head>
 
 <body>
-    <div class="pol-widget" data-stance="canada/liberal-party/privacy"></div>
-    <div class="pol-widget" data-stance="canada/green-party/privacy"></div>
+    <div id="partyData"></div>
 </body>
 <script async src="//widget.pollenize.org/widget.js " charset="utf-8 "></script>
+<script>
+    function addPartyData(topic, anchor) {
+
+        var partyData = ['green', 'liberal'];
+
+        parties = document.getElementById(anchor);
+
+        var dataStance = '<div class="pol-widget" data-stance="canada/';
+        var identifier = '-party/';
+        var end = '"></div>';
+
+        for (var p in partyData) {
+            var element = document.createElement('div');
+            var innertext = dataStance + partyData[p] + identifier + topic + end;
+            console.log(innertext);
+            element.innerHTML = innertext;
+            parties.appendChild(element);
+        }
+    }
+
+    var topics = ['economy', 'justice', 'privacy', 'foreign-policy', 'government-and-transparency', 'social'];
+
+    //    for (var t in topics) {
+    //        addPartyData(topics[t], 'partyData');
+    //    }
+
+    addPartyData('social', 'partyData');
+
+
+
+
+
+    //    var greenAnchor = document.getElementById('anchor');
+    //
+    //    anchor.innerHTML = '<div class="pol-widget" data-stance="canada/green-party/privacy"></div>';
+    //
+    //    var greenAnchor = document.getElementById('anchor');
+</script>
 
 </html>

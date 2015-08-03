@@ -325,18 +325,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </section>
 
                     <section data-route="confirmedSubmission">
-                        <!-- paper-material elevation="1">
-                            <paper-item>
-                                <div class="pol-divider">
-                                    <div class="pol-widget" data-stance="canada/liberal-party/privacy"></div>
-                                </div>
-                            </paper-item>
-                            <paper-item>
-                                <div class="pol-divider">
-                                    <div class="pol-widget" data-stance="canada/green-party/privacy"></div>
-                                </div>
-                            </paper-item>
-                        </paper-material -->
+                        <paper-material elevation="1">
+                            <div id="partyInfo"></div>
+                        </paper-material>
                     </section>
 
                     <iron-ajax method="GET" id="formRetrieveCall" url="/survey/data" contentType="application/json" handle-as="json" debounce-duration="300">
@@ -353,8 +344,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
     <!-- build:js scripts/app.js -->
     <script src="../app/scripts/app.js "></script>
-    <!-- script async src="//widget.pollenize.org/widget.js " charset="utf-8 "></script -->
-
     <!-- endbuild-->
 </body>
 

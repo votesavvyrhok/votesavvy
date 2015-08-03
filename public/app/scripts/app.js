@@ -56,32 +56,63 @@ var formdata = {
         "retired": null,
         "undisclosed": null
     },
-    "openQuestion":{
+    "openQuestion": {
         "youthVoting": null,
-        "proposedIssue":null,
-        "yourParticipation":null
+        "proposedIssue": null,
+        "yourParticipation": null
     }
 };
 
-var generalTip="Tip: From left to right: never to very frequently.";
+function addPartyData(topic, anchor) {
 
-var questions={
-    "sources":{
-      prefix: "How often do you receive political information from the following sources:",
-      keyword: " ",
-      suffix: " ",
-      tip:"Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations."
+    var partyData = ['green', 'liberal'];
+
+    parties = document.getElementById(anchor);
+
+    var dataStance = '<div class="pol-widget" data-stance="canada/';
+    var identifier = '-party/';
+    var end = '"></div>';
+
+    for (var p in partyData) {
+        var paperItem = document.createElement('paper-item');
+        var element = document.createElement('div');
+        var innertext = dataStance + partyData[p] + identifier + topic + end;
+        console.log(innertext);
+        element.innerHTML = innertext;
+        paperItem.appendChild(element);
+        parties.appendChild(paperItem);
+    }
+}
+
+/* Unhappy about loading this dynamically - we should ask for a method */
+
+function loadPollenize() {
+    var headID = document.getElementsByTagName("head")[0];
+    var newScript = document.createElement('script');
+    newScript.type = 'text/javascript';
+    newScript.src = 'http:////widget.pollenize.org/widget.js';
+    headID.appendChild(newScript);
+}
+
+var generalTip = "Tip: From left to right: never to very frequently.";
+
+var questions = {
+    "sources": {
+        prefix: "How often do you receive political information from the following sources:",
+        keyword: " ",
+        suffix: " ",
+        tip: "Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations."
     },
     "familyFriend": {
-        prefix:"If you get political information from ",
-        keyword:"family and friends",
-        suffix:", how often do you get it via the following channels?",
+        prefix: "If you get political information from ",
+        keyword: "family and friends",
+        suffix: ", how often do you get it via the following channels?",
         tip: generalTip
     },
-    "politicianParty":{
-        prefix:"If you get political information from ",
-        keyword:"politicians or political parties",
-        suffix:", how often do you get it via the following channels?",
+    "politicianParty": {
+        prefix: "If you get political information from ",
+        keyword: "politicians or political parties",
+        suffix: ", how often do you get it via the following channels?",
         tip: generalTip
     },
     "traditionalMedia": {
@@ -95,23 +126,23 @@ var questions={
         keyword: "civil society",
         suffix: " (including charities, nonprofits and grassroots organizations), how often do you get it via the following channels?",
         tip: generalTip
-        }
-    };
+    }
+};
 
 var tip = "For each, sliding scale with six ticks. From left to right: Never, Very Rarely, Rarely, Occasionally, Frequently, Very Frequently ";
 
-var evaluations= {
-    "sources":[{
-        title:"Family and Friends",
+var evaluations = {
+    "sources": [{
+        title: "Family and Friends",
         id: "familyFriend"
-    },{
-        title:"Politicians, candidates and political parties",
+    }, {
+        title: "Politicians, candidates and political parties",
         id: "politicianParty"
-    },{
-        title:"Traditional media (e.g. CBC, National Post)",
+    }, {
+        title: "Traditional media (e.g. CBC, National Post)",
         id: "traditionalMedia"
-    },{
-        title:"Civil society groups (including charities, nonprofits and grassroots organizations)",
+    }, {
+        title: "Civil society groups (including charities, nonprofits and grassroots organizations)",
         id: "civilSociety"
     }],
     "familyFriend": [{
@@ -213,23 +244,23 @@ var evaluations= {
     }]
 };
 
-var sources=[];
+var sources = [];
 
-var configureSources= function(){
+var configureSources = function () {
 
-    for (var key in questions){
-        var formItem= {};
+    for (var key in questions) {
+        var formItem = {};
 
-        evaluations[key].forEach(function(eval){
+        evaluations[key].forEach(function (eval) {
             //configure the formdata
-            formItem[eval.id]=null;
+            formItem[eval.id] = null;
 
             //configure the sourcedata
             //the id is as <question.key><evaluation.id>
-            eval.id=key.concat(eval.id);
+            eval.id = key.concat(eval.id);
         });
 
-        formdata[key]=formItem;
+        formdata[key] = formItem;
 
         //configure the sources
         var sourceItem = {
@@ -242,7 +273,7 @@ var configureSources= function(){
 };
 
 
-var configureFormdata=function(){
+var configureFormdata = function () {
     configureSources();
 };
 
@@ -258,7 +289,7 @@ function getDataForSubcategory(category, subcategory) {
     else
         id = subcategory;
 
-    element=document.querySelector('#' + id);
+    element = document.querySelector('#' + id);
 
     var value;
 
@@ -271,7 +302,7 @@ function getDataForSubcategory(category, subcategory) {
 
         /* For slider */
         if (element.localName === 'paper-slider') {
-            value = element.value ;
+            value = element.value;
         }
 
         /* For checkboxes */
@@ -279,11 +310,11 @@ function getDataForSubcategory(category, subcategory) {
             value = element.checked;
         }
 
-        if (element.localName === 'paper-input'){
+        if (element.localName === 'paper-input') {
             if (!element.invalid)
-                value=element.value;
+                value = element.value;
             else
-                value="";
+                value = "";
         }
 
         /*for input */
@@ -291,7 +322,7 @@ function getDataForSubcategory(category, subcategory) {
             value = element.value;
         }
 
-        if (element.localName === 'select'){
+        if (element.localName === 'select') {
             value = element.value;
         }
 
@@ -300,11 +331,11 @@ function getDataForSubcategory(category, subcategory) {
             formdata[category][subcategory].lng = element.longitude;
         } else {
             if (category in formdata) {
-               if (subcategory in formdata[category]) {
-                     formdata[category][subcategory] = value;
-               } else {
+                if (subcategory in formdata[category]) {
+                    formdata[category][subcategory] = value;
+                } else {
                     formdata[category] = value;
-              }
+                }
             }
         }
     }
@@ -320,7 +351,7 @@ function setDataForSubcategory(category, subcategory) {
     else
         id = subcategory;
 
-    element=document.querySelector('#' + id);
+    element = document.querySelector('#' + id);
 
     var value;
 
@@ -354,7 +385,7 @@ function setDataForSubcategory(category, subcategory) {
 
         /*for input */
 
-        if (element.localName === 'paper-input'){
+        if (element.localName === 'paper-input') {
             element.value = value;
         }
 
@@ -362,7 +393,7 @@ function setDataForSubcategory(category, subcategory) {
             element.value = value;
         }
 
-        if (element.localName === 'select'){
+        if (element.localName === 'select') {
             element.value = value;
         }
 
@@ -381,7 +412,7 @@ function formdataOperation(operation) {
     for (var category in formdata)
         for (var subcategory in formdata[category]) {
             operation(category, subcategory);
-    }
+        }
 }
 
 function sendData() {
@@ -450,7 +481,7 @@ function sendData() {
 
         var consent = false;
 
-        consentButton.addEventListener('click',function(){
+        consentButton.addEventListener('click', function () {
             if (consentCheckbox.checked) {
 
                 startingTime = new Date();
@@ -472,14 +503,14 @@ function sendData() {
 
         var nextButtons = document.querySelectorAll('paper-fab.nextButton');
 
-        Array.prototype.forEach.call(nextButtons,function(button) {
-           button.addEventListener('click', function () {
+        Array.prototype.forEach.call(nextButtons, function (button) {
+            button.addEventListener('click', function () {
                 if (consent)
-                   app.switch();
+                    app.switch();
             });
         });
 
-        app.sources=sources;
+        app.sources = sources;
         app.tip = tip;
 
         //initiate the options of the birthDate select
@@ -487,7 +518,7 @@ function sendData() {
 
         var years = [null];
 
-        for (var year = 1996; year>= 1910; year--) {
+        for (var year = 1996; year >= 1910; year--) {
             years.push(year);
         };
 
@@ -503,7 +534,7 @@ function sendData() {
         var gmap = document.querySelector('google-map');
         //initiate the map location
 
-        gmap.addEventListener('api-load', function(e) {
+        gmap.addEventListener('api-load', function (e) {
             app.lat = 45.387372;
             app.lng = -75.695090;
 
@@ -543,6 +574,8 @@ function sendData() {
 
         formSubmitCall.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
+            addPartyData('social', 'partyInfo');
+            loadPollenize();
         });
 
         var endButton = document.querySelector('#endButton');
@@ -553,7 +586,7 @@ function sendData() {
 
         });
 
-        var formSubmission = function(){
+        var formSubmission = function () {
             //retrieve the data from the form
             formdataOperation(getDataForSubcategory);
 
