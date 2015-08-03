@@ -263,10 +263,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </paper-item>
 
                         </paper-material>
-                        <div class="subject ">What is your postal code in uppercase without space? (e.g. K1A0A9)</div>
+                        <div class="subject ">What is your postal code? (e.g. K1A 0A9)</div>
                         <div class="ratinginfo ">Tip: This helps researchers understand differences across the country and helps Vote Savvy give you information about candidates in your area.</div>
                         <paper-material elevation="1 ">
-                            <paper-input autocapitalize="characters" auto-validate id="postalCode" char-counter pattern="^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]\d[ABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="6" error-message="Please follow the format of canadian postal code!">
+                            <paper-input autocapitalize="characters" auto-validate id="postalCode" char-counter
+                                         pattern="^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]( )?\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]\d$"
+                                         maxlength="7" error-message="Please follow the format of canadian postal code!">
                             </paper-input>
 
                             <p>Or, select a location in the following map: </p>
@@ -324,11 +326,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     </section>
 
-                    <section data-route="confirmedSubmission">
+                    <section data-route="confirmedSubmission9">
+                        <div class="subject ">You said ISSUE <span style="font-style: italic">{{yourissue}}</span> was your top issue. This is where each of the major parties stands on this issue :</div>
                         <paper-material elevation="1">
                             <div id="partyInfo"></div>
                         </paper-material>
+
+                        <div class="subject ">Based on your postal code <span style="font-style: italic">{{yourpostcode}}</span>, these are the candidates that you can vote for in the election :</div>
+                        <paper-material elevation="1">
+                            <template is="dom-repeat" items="{{candidates}}">
+                                <div>
+                                <img class="photo" src="{{item.photo_url}}"> </img>
+                                <div class="list">
+                                    <paper-item>
+                                        <paper-item-body two-line>
+                                            <div class="label"> Name: </div>
+                                            <div> <span>{{item.name}}</span></div>
+                                        </paper-item-body>
+                                    </paper-item>
+
+                                    <paper-item>
+                                        <paper-item-body two-line>
+                                            <div class="label"> Party: </div>
+                                            <div> <span>{{item.party_name}}</span></div>
+                                        </paper-item-body>
+                                    </paper-item>
+
+                                    <paper-item>
+                                        <paper-item-body two-line>
+                                            <div class="label" > Website: </div>
+                                            <div ><a href="{{item.personal_url}}" target="_blank"> <span>{{item.personal_url}}</span> </a></div>
+                                        </paper-item-body>
+                                    </paper-item>
+                                </div>
+                                </div>
+                            </template>
+
+                        </paper-material>
+
+                        <div class="subject ">general voting instructions </div>
+                        <paper-material elevation="1">
+                            <paper-item>
+                                <paper-item-body>
+                                    <p>from Elections Canada</p>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
                     </section>
+
+                    <iron-ajax method="GET" id="getCandidateCall" contentType="application/json" handle-as="json" debounce-duration="300">
+                    </iron-ajax>
 
                     <iron-ajax method="GET" id="formRetrieveCall" url="/survey/data" contentType="application/json" handle-as="json" debounce-duration="300">
                     </iron-ajax>

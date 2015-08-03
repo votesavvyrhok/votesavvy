@@ -63,6 +63,16 @@ var formdata = {
     }
 };
 
+var issueTable={
+    "Crime and Justice": "justice",
+    "Welfare":"Welfare",
+    "Defense and International Affairs":"foreign-policy",
+    "Environment":"Environment",
+    "Economy":"economy",
+    "Healthcare":"Healthcare",
+    "Education":"Education"
+};
+
 function addPartyData(topic, anchor) {
 
     var partyData = ['green', 'liberal'];
@@ -73,10 +83,12 @@ function addPartyData(topic, anchor) {
     var identifier = '-party/';
     var end = '"></div>';
 
+    var pollenizeTopic = issueTable[topic];
+
     for (var p in partyData) {
         var paperItem = document.createElement('paper-item');
         var element = document.createElement('div');
-        var innertext = dataStance + partyData[p] + identifier + topic + end;
+        var innertext = dataStance + partyData[p] + identifier + pollenizeTopic + end;
         console.log(innertext);
         element.innerHTML = innertext;
         paperItem.appendChild(element);
@@ -129,11 +141,9 @@ var questions = {
     }
 };
 
-var tip = "For each, sliding scale with six ticks. From left to right: Never, Very Rarely, Rarely, Occasionally, Frequently, Very Frequently ";
-
-var evaluations = {
-    "sources": [{
-        title: "Family and Friends",
+var evaluations= {
+    "sources":[{
+        title:"Family and Friends",
         id: "familyFriend"
     }, {
         title: "Politicians, candidates and political parties",
@@ -272,8 +282,7 @@ var configureSources = function () {
     }
 };
 
-
-var configureFormdata = function () {
+var configureSourcesdata=function(){
     configureSources();
 };
 
@@ -420,6 +429,12 @@ function sendData() {
     formSubmit.parms = formdata;
 }
 
+var formdataAdjust = function(){
+  //adjust the postcode;
+   formdata.personal.postalCode = formdata.personal.postalCode.toUpperCase().replace(/\s+/g, '');
+
+};
+
 (function () {
     'use strict';
 
@@ -438,7 +453,7 @@ function sendData() {
         console.log('Our app is ready to rock!');
     });
 
-    configureFormdata();
+    configureSourcesdata();
 
     // See https://github.com/Polymer/polymer/issues/1381
     window.addEventListener('WebComponentsReady', function () {
@@ -510,15 +525,14 @@ function sendData() {
             });
         });
 
-        app.sources = sources;
-        app.tip = tip;
+        app.sources=sources;
 
         //initiate the options of the birthDate select
         var birthDay = document.querySelector("#yearOfBirth");
 
         var years = [null];
 
-        for (var year = 1996; year >= 1910; year--) {
+        for (var year = 1997; year>= 1910; year--) {
             years.push(year);
         };
 
@@ -574,34 +588,61 @@ function sendData() {
 
         formSubmitCall.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
-            addPartyData('social', 'partyInfo');
+            app.yourissue=formdata.issues.selected;
+            addPartyData(formdata.issues.selected, 'partyInfo');
             loadPollenize();
-        });
-
-        var endButton = document.querySelector('#endButton');
-
-        endButton.addEventListener('click', function () {
-
-            formSubmission();
-
         });
 
         var formSubmission = function () {
             //retrieve the data from the form
             formdataOperation(getDataForSubcategory);
-
+            //adjust the formdata;
+            formdataAdjust();
             endingTime = new Date();
-
             formdata.timestamp.end = endingTime.getFullYear() + "-" + endingTime.getMonth() + "-" + endingTime.getDate() + " " +
                 endingTime.getHours() + ":" + endingTime.getMinutes() + ":" + endingTime.getSeconds();
-
             formdata.timestamp.duration = endingTime - startingTime;
-
             console.log(formdata);
             formSubmitCall.body = JSON.stringify(formdata);
             console.log(formSubmitCall.body);
             formSubmitCall.generateRequest();
-        }
+        };
+
+        formSubmitCall.addEventListener('response', function (e) {
+            console.log("response from server" + JSON.stringify(e.detail.response));
+        });
+
+        var getCandidateCall = document.querySelector('#getCandidateCall');
+
+        var getCandidate = function(){
+
+            //get the postal code
+            var postalCode = formdata.personal.postalCode
+
+            //build the url of the call
+            if (postalCode)
+            {
+                app.yourpostcode = postalCode;
+
+                getCandidateCall.url="/represent/postcode/".concat(postalCode);
+                //ajax call
+                getCandidateCall.generateRequest();
+            }
+        };
+
+        getCandidateCall.addEventListener('response', function(event){
+            console.log(event.detail.response);
+            app.candidates=event.detail.response.candidates_centroid;
+
+        });
+
+
+        var endButton = document.querySelector('#endButton');
+
+        endButton.addEventListener('click', function () {
+            formSubmission();
+            getCandidate();
+        });
 
     });
 
