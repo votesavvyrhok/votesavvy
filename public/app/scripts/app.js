@@ -102,7 +102,7 @@ function loadPollenize() {
     var headID = document.getElementsByTagName("head")[0];
     var newScript = document.createElement('script');
     newScript.type = 'text/javascript';
-    newScript.src = 'http:////widget.pollenize.org/widget.js';
+    newScript.src = '//widget.pollenize.org/widget.js';
     headID.appendChild(newScript);
 }
 
