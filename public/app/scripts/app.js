@@ -113,31 +113,32 @@ var questions = {
         prefix: "How often do you receive political information from the following sources:",
         keyword: " ",
         suffix: " ",
-        tip: "Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations."
+        tips:["Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations.",
+            "From left to right: never to very frequently."]
     },
     "familyFriend": {
         prefix: "If you get political information from ",
-        keyword: "family and friends",
+        keyword: "Family and Friends",
         suffix: ", how often do you get it via the following channels?",
-        tip: generalTip
+        tips: [generalTip]
     },
     "politicianParty": {
         prefix: "If you get political information from ",
-        keyword: "politicians or political parties",
+        keyword: "Politicians or Political Parties",
         suffix: ", how often do you get it via the following channels?",
-        tip: generalTip
+        tips: [generalTip]
     },
     "traditionalMedia": {
         prefix: "If you get political information from ",
-        keyword: "traditional media",
+        keyword: "Traditional Media",
         suffix: ", how often do you get it via the following channels?",
-        tip: generalTip
+        tips: [generalTip]
     },
     "civilSociety": {
         prefix: "If you get political information from ",
-        keyword: "civil society",
+        keyword: "Civil Society",
         suffix: " (including charities, nonprofits and grassroots organizations), how often do you get it via the following channels?",
-        tip: generalTip
+        tips: [generalTip]
     }
 };
 
@@ -429,7 +430,7 @@ function sendData() {
     formSubmit.parms = formdata;
 }
 
-var formdataAdjust = function(){
+var formdataAdjustment = function(){
   //adjust the postcode;
    formdata.personal.postalCode = formdata.personal.postalCode.toUpperCase().replace(/\s+/g, '');
 
@@ -588,16 +589,15 @@ var formdataAdjust = function(){
 
         formSubmitCall.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
-            app.yourissue=formdata.issues.selected;
-            addPartyData(formdata.issues.selected, 'partyInfo');
-            loadPollenize();
+
+
         });
 
         var formSubmission = function () {
             //retrieve the data from the form
             formdataOperation(getDataForSubcategory);
             //adjust the formdata;
-            formdataAdjust();
+            formdataAdjustment();
             endingTime = new Date();
             formdata.timestamp.end = endingTime.getFullYear() + "-" + endingTime.getMonth() + "-" + endingTime.getDate() + " " +
                 endingTime.getHours() + ":" + endingTime.getMinutes() + ":" + endingTime.getSeconds();
@@ -617,31 +617,60 @@ var formdataAdjust = function(){
         var getCandidate = function(){
 
             //get the postal code
-            var postalCode = formdata.personal.postalCode
+            var postcode = formdata.personal.postalCode;
 
             //build the url of the call
-            if (postalCode)
+            if (postcode)
             {
-                app.yourpostcode = postalCode;
+                postcode = postcode.toUpperCase().replace(/\s+/g, '');
 
-                getCandidateCall.url="/represent/postcode/".concat(postalCode);
+                app.yourpostcode = postcode;
+
+                getCandidateCall.url="/represent/postcode/".concat(postcode);
                 //ajax call
                 getCandidateCall.generateRequest();
-            }
+
+                return true;
+            }else
+                return false;
+
         };
 
         getCandidateCall.addEventListener('response', function(event){
             console.log(event.detail.response);
             app.candidates=event.detail.response.candidates_centroid;
-
         });
 
+        var getPollenizeIssues = function(){
+            var yourissue = formdata.issues.selected;
+
+            if (yourissue) {
+                app.yourissue = yourissue;
+                addPartyData(yourissue, 'partyInfo');
+                loadPollenize();
+                return true;
+            }else
+            {
+                return false;
+            }
+        }
 
         var endButton = document.querySelector('#endButton');
 
+        app.attention = false;
+
         endButton.addEventListener('click', function () {
             formSubmission();
-            getCandidate();
+            var candidates = getCandidate();
+            var issues = getPollenizeIssues();
+
+            if (!candidates()&&!issues())
+            {
+                app.attention =true;
+            }else
+            {
+                app.attention = false;
+            }
         });
 
     });

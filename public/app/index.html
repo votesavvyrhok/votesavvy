@@ -179,8 +179,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                         <template is="dom-repeat" items="{{sources}}">
                             <div class="subject ">{{item.question.prefix}}<span style="font-style: italic">{{item.question.keyword}}</span>{{item.question.suffix}}</div>
-                            <div class="ratinginfo">{{item.question.tip}}</div>
-
+                            <template is="dom-repeat" items="{{item.question.tips}}">
+                                <div class="ratinginfo">{{item}}</div>
+                            </template>
                             <paper-material elevation="1 ">
                                 <paper-item>
                                     <paper-item-body two-line>
@@ -327,6 +328,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </section>
 
                     <section data-route="confirmedSubmission9">
+
+                        <template is='dom-if' id="infoAttention" if="{{attention}}">
+                            <div class="subject ">You may see your voting information after selecting your issue and location and submitting your response! </div>
+                        </template>
+
                         <div class="subject ">You said ISSUE <span style="font-style: italic">{{yourissue}}</span> was your top issue. This is where each of the major parties stands on this issue :</div>
                         <paper-material elevation="1">
                             <div id="partyInfo"></div>
