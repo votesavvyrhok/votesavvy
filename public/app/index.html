@@ -58,7 +58,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body unresolved class="fullbleed layout vertical">
     <span id="browser-sync-binding"></span>
     <template is="dom-bind" id="app">
+
         <paper-header-panel main mode="standard">
+
+
             <!-- Main Toolbar -->
             <paper-toolbar class="standard" id="mainToolbar">
 
@@ -71,7 +74,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <div class="horizontal-section">
                         <paper-menu-button>
                             <paper-icon-button icon="account-circle" class="dropdown-trigger"></paper-icon-button>
-
                                 <paper-menu id="avatarMenu" class="dropdown-content">
                                     <template is='dom-if' id="menuTemplate" if="{{!signinvisible}}">
                                         <paper-item onclick="location.href='signintwitters/logout'">Logout</paper-item>
@@ -79,13 +81,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     <template is='dom-if' id="menuTemplate" if="{{signinvisible}}">
                                         <paper-item onclick="location.href='signintwitters/step1'">Signin</paper-item>
                                     </template>
-
                                 </paper-menu>
-
                         </paper-menu-button>
                     </div>
                 </div>
-
 
                 <!-- Application name -->
                 <div class="middle paper-font-display2 app-name"></div>
@@ -94,10 +93,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <div class="bottom title"></div>
 
                 <paper-tabs id="categoryTab" class="middle horizontal self-end" style="width: 60%; margin-bottom:10px;color:white;font-size:14px;">
-
                     <paper-tab>SURVEY</paper-tab>
                     <paper-tab>INFO PACK</paper-tab>
-
                 </paper-tabs>
 
                 <!--                <div class="bottom flex self-start"></div>-->
@@ -105,10 +102,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
             <!-- Main Content -->
-            <div class="content">
+            <div class="content" id="mainContent">
                 <iron-pages attr-for-selected="data-route" selected="home">
 
-                    <section data-route="home" animateInitialSelection="true">
+                    <section data-route="home" animateInitialSelection="true" id="home">
                         <paper-material elevation="1">
                             <!-- my-greeting></my-greeting -->
 
@@ -140,7 +137,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     </section>
 
-                    <section data-route="issues" animateInitialSelection="true">
+                    <section data-route="issues" animateInitialSelection="true" id="issues">
 
                         <!-- SECTION 1 -->
 
@@ -162,7 +159,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-fab id="issuesButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="interest" animateInitialSelection="true">
+                    <section data-route="interest" animateInitialSelection="true" id="interest">
                         <div class="subject ">How frequently do you actively look for information about the 2015 federal election?</div>
                         <paper-material elevation="1 ">
 
@@ -181,7 +178,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-fab id="interestButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="sources">
+                    <section data-route="sources" id="sources">
 
                         <template is="dom-repeat" items="{{sources}}">
                             <div class="subject ">{{item.question.prefix}}<span style="font-style: italic">{{item.question.keyword}}</span>{{item.question.suffix}}</div>
@@ -203,7 +200,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-fab id="sourcesButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="activity">
+                    <section data-route="activity" id="activity">
 
                         <div class="subject ">During the past 12 months I have:</div>
                         <div class="ratinginfo ">Tip: Please select all that apply.</div>
@@ -225,7 +222,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-fab id="activityButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="work">
+                    <section data-route="work" id="work">
                         <div class="subject ">What's your current working situation:</div>
                         <div class="ratinginfo ">Tip: Please select all that apply.</div>
                         <paper-material elevation="1 ">
@@ -249,7 +246,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </section>
 
 
-                    <section data-route="personal">
+                    <section data-route="personal" id="personal">
                         <div class="subject ">Gender (self identified):</div>
                         <paper-material elevation="1 ">
                             <paper-item>
@@ -287,7 +284,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-fab id="personalButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="email">
+                    <section data-route="email" id="email">
                         <div class="subject ">What is your email address?</div>
                         <div class="ratinginfo ">Tip: Your email address will be kept confidential and you will only be contacted for research purposes.</div>
                         <paper-material elevation="1">
@@ -307,7 +304,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-fab id="emailButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="lastPage">
+                    <section data-route="lastPage" id="lastPage">
                         <div class="subject ">Young people are amongst the least likely to vote in Canadian elections. Why do you think this is the case?</div>
                         <paper-material elevation="1">
                             <paper-input id="youthVoting"></paper-input>
@@ -333,7 +330,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                     </section>
 
-                    <section data-route="infopack">
+                    <section data-route="infopack" id="infopack">
 
                         <template is='dom-if' id="infoAttention" if="{{attentionVisible}}">
                             <div class="subject "><span>{{attention}}</span> </div>
