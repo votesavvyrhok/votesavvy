@@ -549,7 +549,6 @@ var surveystate={
         Array.prototype.forEach.call(nextButtons, function (button) {
             button.addEventListener('click', function () {
                 if (consent){
-                    window.scrollTo(0,0);
                     app.switch();
                     surveypage = pages.selected;
                     if (surveypage === infopackpage){
@@ -575,7 +574,6 @@ var surveystate={
                     //return to the first page
                     pages.selected = firstpage;
                     surveypage = firstpage;
-
                 }else {
                     pages.selected = surveypage;
                 }
