@@ -256,7 +256,7 @@ module.exports = function (app, db) {
                      },
 
                 sort: [{"token":"desc"},
-                    {"formdata.timestamp.end": "desc"}],
+                       {"recordedat": "desc"}],
                 limit: 1,
                 skip:0
             };
@@ -287,6 +287,8 @@ module.exports = function (app, db) {
         var doc = data;
         doc.status = status;
         doc.token = user_token;
+
+        doc.recordedat=new Date().getTime();
 
         /*the data is stored as
         {

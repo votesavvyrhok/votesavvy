@@ -65,44 +65,58 @@ var formdata = {
 
 var issueTable={
     "Crime and Justice": "justice",
-    "Welfare":"Welfare",
+    "Welfare":null,
     "Defense and International Affairs":"foreign-policy",
-    "Environment":"Environment",
+    "Environment":null,
     "Economy":"economy",
-    "Healthcare":"Healthcare",
-    "Education":"Education"
+    "Healthcare":null,
+    "Education":null
 };
+
+var removePartyElement = function(anchor){
+
+    parties = document.getElementById(anchor);
+
+    //delet the children of parties first
+    while (parties.firstChild) {
+        parties.removeChild(parties.firstChild);
+    }
+}
 
 function addPartyData(topic, anchor) {
 
     var partyData = ['green', 'liberal'];
 
     parties = document.getElementById(anchor);
-
     var dataStance = '<div class="pol-widget" data-stance="canada/';
     var identifier = '-party/';
     var end = '"></div>';
 
-    var pollenizeTopic = issueTable[topic];
-
     for (var p in partyData) {
         var paperItem = document.createElement('paper-item');
         var element = document.createElement('div');
-        var innertext = dataStance + partyData[p] + identifier + pollenizeTopic + end;
+        var innertext = dataStance + partyData[p] + identifier + topic + end;
         console.log(innertext);
         element.innerHTML = innertext;
         paperItem.appendChild(element);
         parties.appendChild(paperItem);
     }
+
 }
 
 /* Unhappy about loading this dynamically - we should ask for a method */
 
 function loadPollenize() {
+    var oldScript = document.getElementById("pollenize");
+
+    if (oldScript)
+        oldScript.remove();
+
     var headID = document.getElementsByTagName("head")[0];
     var newScript = document.createElement('script');
     newScript.type = 'text/javascript';
     newScript.src = '//widget.pollenize.org/widget.js';
+    newScript.id='pollenize';
     headID.appendChild(newScript);
 }
 
@@ -348,6 +362,7 @@ function getDataForSubcategory(category, subcategory) {
                 }
             }
         }
+        return value;
     }
 }
 
@@ -418,11 +433,13 @@ function setDataForSubcategory(category, subcategory) {
     }
 }
 
-function formdataOperation(operation) {
+function formdataOperation(operation, next) {
     for (var category in formdata)
         for (var subcategory in formdata[category]) {
             operation(category, subcategory);
         }
+    if (next)
+        next();
 }
 
 function sendData() {
@@ -435,6 +452,8 @@ var formdataAdjustment = function(){
    formdata.personal.postalCode = formdata.personal.postalCode.toUpperCase().replace(/\s+/g, '');
 
 };
+
+var formsubmitted = false;
 
 (function () {
     'use strict';
@@ -454,39 +473,12 @@ var formdataAdjustment = function(){
         console.log('Our app is ready to rock!');
     });
 
+    // Close drawer after menu item is selected if drawerPanel is narrow
+
     configureSourcesdata();
 
     // See https://github.com/Polymer/polymer/issues/1381
     window.addEventListener('WebComponentsReady', function () {
-
-        // imports are loaded and elements have been registered
-        var screenName = document.querySelector("#screenName");
-
-        app.signinvisible = true;
-
-        var formRetrieveCall = document.querySelector('#formRetrieveCall');
-
-        if (screenName.textContent) {
-            app.signinvisible = false;
-
-            //fire the ajax call to retrieve the data stored
-            formRetrieveCall.generateRequest();
-        }
-
-        formRetrieveCall.addEventListener('response', function (event) {
-            if (event.detail.response) {
-                consentCheckbox.checked = true;
-
-                var storeddata = event.detail.response;
-
-                for (var category in storeddata) {
-                    for (var subcategory in storeddata[category]) {
-                        if ((category in formdata) && (subcategory in formdata[category]))
-                            formdata[category][subcategory] = storeddata[category][subcategory];
-                    }
-                }
-            }
-        });
 
         var consentCheckbox = document.querySelector("#consentCheckbox");
 
@@ -506,8 +498,7 @@ var formdataAdjustment = function(){
 
                 timestamp.start = startingTime.getFullYear() + "-" + startingTime.getMonth() + "-" + startingTime.getDate() + " " + startingTime.getHours() + ":" + startingTime.getMinutes() + ":" + startingTime.getSeconds();
 
-                //set up the formdata at the beginning
-                formdataOperation(setDataForSubcategory);
+
                 consent = true;
 
             } else {
@@ -517,13 +508,107 @@ var formdataAdjustment = function(){
 
         });
 
+        app.onMenuSelect = function () {
+            var drawerPanel = document.querySelector('#paperDrawerPanel');
+            if (drawerPanel.narrow) {
+                drawerPanel.closeDrawer();
+            }
+        };
+
+        var pages = document.querySelector('iron-pages');
+
+        var surveypage="home";
+
+        var firstpage = "issues";
+
+        var infopackpage = "infopack";
+
+        app.switch = function () {
+            pages.selectNext();
+        };
+
+        /*
+        app.addEventListener('switcher', function (e) {
+            app.switch();
+        });
+        */
+
         var nextButtons = document.querySelectorAll('paper-fab.nextButton');
 
         Array.prototype.forEach.call(nextButtons, function (button) {
             button.addEventListener('click', function () {
-                if (consent)
+                if (consent){
                     app.switch();
+                    surveypage = pages.selected;
+                    if (surveypage === infopackpage){
+                        categorySelect.selected = 1;
+                    }
+                    if (surveypage === firstpage){
+                        categorySelect.selected = 0;
+                    }
+                }
             });
+        });
+
+        var categorySelect = document.querySelector('#categoryTab');
+
+        categorySelect.addEventListener('click',function(event){
+
+            if (categorySelect.selected == 0){
+                if (surveypage == infopackpage)
+                {
+                    //the infopack is opened after form submission
+                    //return to the first page
+                    pages.selected = firstpage;
+                    surveypage = firstpage;
+
+                }else {
+                    pages.selected = surveypage;
+                }
+            }else
+                if (categorySelect.selected == 1)
+                   if (surveypage != infopackpage)
+                    {
+                        openInfoPack();
+                        pages.selected = infopackpage;
+                    }
+        });
+
+        // imports are loaded and elements have been registered
+        var screenName = document.querySelector("#screenName");
+
+        app.signinvisible = true;
+
+        var formRetrieveCall = document.querySelector('#formRetrieveCall');
+
+        if (screenName.textContent) {
+            app.signinvisible = false;
+
+            //fire the ajax call to retrieve the data stored
+            formRetrieveCall.generateRequest();
+        }
+
+        formRetrieveCall.addEventListener('response', function (event) {
+            if (!event.detail.response) {
+                return;
+            }
+
+            consentCheckbox.checked = true;
+
+            formsubmitted = true;
+
+            var storeddata = event.detail.response;
+
+            for (var category in storeddata) {
+                for (var subcategory in storeddata[category]) {
+                    if ((category in formdata) && (subcategory in formdata[category]))
+                            formdata[category][subcategory] = storeddata[category][subcategory];
+                    }
+            }
+
+            //set up the formdata at the beginning
+            formdataOperation(setDataForSubcategory);
+
         });
 
         app.sources=sources;
@@ -595,9 +680,8 @@ var formdataAdjustment = function(){
 
         var formSubmission = function () {
             //retrieve the data from the form
-            formdataOperation(getDataForSubcategory);
-            //adjust the formdata;
-            formdataAdjustment();
+            formdataOperation(getDataForSubcategory,formdataAdjustment);
+
             endingTime = new Date();
             formdata.timestamp.end = endingTime.getFullYear() + "-" + endingTime.getMonth() + "-" + endingTime.getDate() + " " +
                 endingTime.getHours() + ":" + endingTime.getMinutes() + ":" + endingTime.getSeconds();
@@ -605,6 +689,7 @@ var formdataAdjustment = function(){
             console.log(formdata);
             formSubmitCall.body = JSON.stringify(formdata);
             console.log(formSubmitCall.body);
+            formsubmitted = true;
             formSubmitCall.generateRequest();
         };
 
@@ -617,7 +702,7 @@ var formdataAdjustment = function(){
         var getCandidate = function(){
 
             //get the postal code
-            var postcode = formdata.personal.postalCode;
+            var postcode = getDataForSubcategory("personal","postalCode");
 
             //build the url of the call
             if (postcode)
@@ -642,54 +727,62 @@ var formdataAdjustment = function(){
         });
 
         var getPollenizeIssues = function(){
-            var yourissue = formdata.issues.selected;
+            var yourissue = getDataForSubcategory("issues","selected");
 
-            if (yourissue) {
-                app.yourissue = yourissue;
-                addPartyData(yourissue, 'partyInfo');
-                loadPollenize();
-                return true;
-            }else
+            app.yourissue = yourissue;
+
+            var topic = issueTable[yourissue];
+
+            removePartyElement('partyInfo');
+
+            if (!topic)
             {
+                app.attentionVisible=true;
+                app.attention="The information of your issue is not available.";
+                //remove the elements of partyInfo
                 return false;
             }
+
+            addPartyData(topic, 'partyInfo');
+            loadPollenize();
+            return true;
         }
 
         var endButton = document.querySelector('#endButton');
 
-        app.attention = false;
+        app.attentionVisible = false;
 
         endButton.addEventListener('click', function () {
             formSubmission();
+            openInfoPack();
+        });
+
+        var openInfoPack = function(){
+
+            app.attentionVisible = false;
+
+            if (!formsubmitted)
+            {
+                app.attentionVisible = true;
+                app.attention="You may see your voting information after you have submitted your response!"
+                return;
+            }
+
             var candidates = getCandidate();
             var issues = getPollenizeIssues();
 
-            if (!candidates()&&!issues())
-            {
-                app.attention =true;
-            }else
-            {
-                app.attention = false;
+            if (app.attentionVisible){
+                return;
             }
-        });
 
-    });
+            if (!candidates&&!issues)
+            {
+                  app.attentionVisible = true;
+                  app.attention = "Your response should have valide issue or location!"
+                  return;
+            }
 
-    // Close drawer after menu item is selected if drawerPanel is narrow
-    app.onMenuSelect = function () {
-        var drawerPanel = document.querySelector('#paperDrawerPanel');
-        if (drawerPanel.narrow) {
-            drawerPanel.closeDrawer();
         }
-    };
-
-    app.switch = function () {
-        var pages = document.querySelector('iron-pages');
-        pages.selectNext();
-    };
-
-    app.addEventListener('switcher', function (e) {
-        app.switch();
     });
 
 })();

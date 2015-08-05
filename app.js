@@ -97,7 +97,7 @@ function useDatabase(next) {
             index: {
                 fields: [
                     {"token": "desc"},
-                    {"formdata.timestamp.end": "desc"}
+                    {"recordedat": "desc"}
                 ]
             }
         };
