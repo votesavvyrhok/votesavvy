@@ -71,6 +71,10 @@ input:invalid {
     max-height: 120px;
 }
 
+.label{
+    font-weight: bold;
+}
+
 .vslogo {
     font-size: 14px;
 }
