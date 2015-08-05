@@ -71,7 +71,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <div class="horizontal-section">
                         <paper-menu-button>
                             <paper-icon-button icon="account-circle" class="dropdown-trigger"></paper-icon-button>
-
                                 <paper-menu id="avatarMenu" class="dropdown-content">
                                     <template is='dom-if' id="menuTemplate" if="{{!signinvisible}}">
                                         <paper-item onclick="location.href='signintwitters/logout'">Logout</paper-item>
@@ -79,13 +78,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     <template is='dom-if' id="menuTemplate" if="{{signinvisible}}">
                                         <paper-item onclick="location.href='signintwitters/step1'">Signin</paper-item>
                                     </template>
-
                                 </paper-menu>
-
                         </paper-menu-button>
                     </div>
                 </div>
-
 
                 <!-- Application name -->
                 <div class="middle paper-font-display2 app-name"></div>
@@ -94,10 +90,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <div class="bottom title"></div>
 
                 <paper-tabs id="categoryTab" class="middle horizontal self-end" style="width: 60%; margin-bottom:10px;color:white;font-size:14px;">
-
                     <paper-tab>SURVEY</paper-tab>
                     <paper-tab>INFO PACK</paper-tab>
-
                 </paper-tabs>
 
                 <!--                <div class="bottom flex self-start"></div>-->

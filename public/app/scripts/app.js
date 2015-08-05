@@ -453,7 +453,20 @@ var formdataAdjustment = function(){
 
 };
 
-var formsubmitted = false;
+var SUBMITTED="submitted";
+var INIT="init";
+var VALID="valid";
+var INVALID="invalid";
+
+var surveystate={
+    formdata: null,
+    infopack:{
+        topic:null,
+        postcode:null
+    }
+};
+
+//keys is an array containing a leave node and its ancestors
 
 (function () {
     'use strict';
@@ -477,6 +490,8 @@ var formsubmitted = false;
 
     configureSourcesdata();
 
+    surveystate["formdata"]=INIT;
+
     // See https://github.com/Polymer/polymer/issues/1381
     window.addEventListener('WebComponentsReady', function () {
 
@@ -491,13 +506,9 @@ var formsubmitted = false;
 
         consentButton.addEventListener('click', function () {
             if (consentCheckbox.checked) {
-
                 startingTime = new Date();
-
                 var timestamp = formdata.timestamp;
-
                 timestamp.start = startingTime.getFullYear() + "-" + startingTime.getMonth() + "-" + startingTime.getDate() + " " + startingTime.getHours() + ":" + startingTime.getMinutes() + ":" + startingTime.getSeconds();
-
 
                 consent = true;
 
@@ -538,6 +549,7 @@ var formsubmitted = false;
         Array.prototype.forEach.call(nextButtons, function (button) {
             button.addEventListener('click', function () {
                 if (consent){
+                    window.scrollTo(0,0);
                     app.switch();
                     surveypage = pages.selected;
                     if (surveypage === infopackpage){
@@ -553,6 +565,8 @@ var formsubmitted = false;
         var categorySelect = document.querySelector('#categoryTab');
 
         categorySelect.addEventListener('click',function(event){
+
+            window.scrollTo(0,0);
 
             if (categorySelect.selected == 0){
                 if (surveypage == infopackpage)
@@ -595,8 +609,6 @@ var formsubmitted = false;
 
             consentCheckbox.checked = true;
 
-            formsubmitted = true;
-
             var storeddata = event.detail.response;
 
             for (var category in storeddata) {
@@ -605,10 +617,9 @@ var formsubmitted = false;
                             formdata[category][subcategory] = storeddata[category][subcategory];
                     }
             }
-
             //set up the formdata at the beginning
             formdataOperation(setDataForSubcategory);
-
+            surveystate["formdata"]=SUBMITTED;
         });
 
         app.sources=sources;
@@ -640,13 +651,9 @@ var formsubmitted = false;
 
             navigator.geolocation.getCurrentPosition(function (position) {
                 var location = position.coords;
-
                 app.lat = location.latitude;
-
                 app.lng = location.longitude;
-
                 console.log(location);
-
             });
         });
 
@@ -661,21 +668,15 @@ var formsubmitted = false;
         gmap.addEventListener('google-map-click', function (event) {
             var location;
             console.log(event);
-
             app.markerlat = event.detail.latLng.lat();
-
             app.markerlng = event.detail.latLng.lng();
-
             console.log(app.markerlat + "," + app.markerlng);
-
         });
 
         var formSubmitCall = document.querySelector('#formSubmitCall');
 
         formSubmitCall.addEventListener('response', function (e) {
             console.log("response from server" + JSON.stringify(e.detail.response));
-
-
         });
 
         var formSubmission = function () {
@@ -689,7 +690,7 @@ var formsubmitted = false;
             console.log(formdata);
             formSubmitCall.body = JSON.stringify(formdata);
             console.log(formSubmitCall.body);
-            formsubmitted = true;
+            surveystate["formdata"]=SUBMITTED;
             formSubmitCall.generateRequest();
         };
 
@@ -708,49 +709,46 @@ var formsubmitted = false;
             if (postcode)
             {
                 postcode = postcode.toUpperCase().replace(/\s+/g, '');
-
                 app.yourpostcode = postcode;
-
                 getCandidateCall.url="/represent/postcode/".concat(postcode);
+
+                surveystate["infopack"]["postcode"]= VALID;
                 //ajax call
                 getCandidateCall.generateRequest();
-
-                return true;
             }else
-                return false;
+                surveystate["infopack"]["postcode"]=INVALID;
 
         };
 
         getCandidateCall.addEventListener('response', function(event){
             console.log(event.detail.response);
-            app.candidates=event.detail.response.candidates_centroid;
+            if (event.detail.response)
+                app.candidates=event.detail.response.candidates_centroid;
+            else{
+                app.attentionVisible = true;
+                app.attention="There is an error while retrieving the information of canadidates in your location... Try again!"
+            }
         });
 
         var getPollenizeIssues = function(){
             var yourissue = getDataForSubcategory("issues","selected");
 
             app.yourissue = yourissue;
-
             var topic = issueTable[yourissue];
-
+            //remove the elements of partyInfo
             removePartyElement('partyInfo');
 
             if (!topic)
             {
-                app.attentionVisible=true;
-                app.attention="The information of your issue is not available.";
-                //remove the elements of partyInfo
-                return false;
+                surveystate["infopack"]["topic"]=INVALID;
+            }else{
+                addPartyData(topic, 'partyInfo');
+                loadPollenize();
+                surveystate["infopack"]["topic"]=VALID;
             }
-
-            addPartyData(topic, 'partyInfo');
-            loadPollenize();
-            return true;
         }
 
         var endButton = document.querySelector('#endButton');
-
-        app.attentionVisible = false;
 
         endButton.addEventListener('click', function () {
             formSubmission();
@@ -761,25 +759,26 @@ var formsubmitted = false;
 
             app.attentionVisible = false;
 
-            if (!formsubmitted)
+            if (surveystate["formdata"]!=SUBMITTED)
             {
                 app.attentionVisible = true;
-                app.attention="You may see your voting information after you have submitted your response!"
+                if (app.signinvisible)
+                    app.attention="You may see your voting information after submitting your response!";
+                else
+                    app.attention="You may see your voting information after you have submitted your response at least once!";
                 return;
             }
 
-            var candidates = getCandidate();
-            var issues = getPollenizeIssues();
-
-            if (app.attentionVisible){
-                return;
+            getCandidate();
+            if (surveystate["infopack"]["postcode"]!=VALID){
+                app.attentionVisible = true;
+                app.attention = "Your response should have valide location!"
             }
 
-            if (!candidates&&!issues)
-            {
-                  app.attentionVisible = true;
-                  app.attention = "Your response should have valide issue or location!"
-                  return;
+            getPollenizeIssues();
+            if (surveystate["infopack"]["topic"]!=VALID){
+                app.attentionVisible = true;
+                app.attention = "There is no information on your issue temporarily!"
             }
 
         }

@@ -23,7 +23,7 @@ module.exports = function (app) {
                 represent.postalCode(req.params.code, function (err, data) {
                 if (err) {
                     console.log("represent error" + JSON.stringify(err));
-                    res.send(err);
+                    res.send(null);
                 }
                 else {
                     //store in the cache
