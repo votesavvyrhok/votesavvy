@@ -333,7 +333,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <section data-route="infopack" id="infopack">
 
                         <template is='dom-if' id="infoAttention" if="{{attentionVisible}}">
-                            <div class="subject "><span>{{attention}}</span> </div>
+                            <template is="dom-repeat" items="{{attentions}}">
+                                <div class="subject ">{{item}}</div>
+                            </template>
                         </template>
 
                         <div class="subject ">You said ISSUE <span style="font-style: italic">{{yourissue}}</span> was your top issue. This is where each of the major parties stands on this issue :</div>

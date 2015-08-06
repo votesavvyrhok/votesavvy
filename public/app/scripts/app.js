@@ -457,6 +457,7 @@ var SUBMITTED="submitted";
 var INIT="init";
 var VALID="valid";
 var INVALID="invalid";
+var EMPTY="empty";
 
 var surveystate={
     formdata: null,
@@ -581,8 +582,8 @@ var surveystate={
                 if (categorySelect.selected == 1)
                    if (surveypage != infopackpage)
                     {
-                        openInfoPack();
                         pages.selected = infopackpage;
+                        openInfoPack();
                     }
         });
 
@@ -700,6 +701,7 @@ var surveystate={
 
         var getCandidate = function(){
 
+            app.candidates = [];
             //get the postal code
             var postcode = getDataForSubcategory("personal","postalCode");
 
@@ -731,6 +733,11 @@ var surveystate={
         var getPollenizeIssues = function(){
             var yourissue = getDataForSubcategory("issues","selected");
 
+            if (!yourissue){
+                surveystate["infopack"]["topic"]=EMPTY;
+                return;
+            }
+
             app.yourissue = yourissue;
             var topic = issueTable[yourissue];
             //remove the elements of partyInfo
@@ -757,27 +764,33 @@ var surveystate={
 
             app.attentionVisible = false;
 
-            if (surveystate["formdata"]!=SUBMITTED)
-            {
+            var notes=[];
+
+            if (surveystate["formdata"]!=SUBMITTED){
                 app.attentionVisible = true;
                 if (app.signinvisible)
-                    app.attention="You may see your voting information after submitting your response!";
+                    notes.push("You may see your voting information after submitting your response!");
                 else
-                    app.attention="You may see your voting information after you have submitted your response at least once!";
+                    notes.push("You may see your voting information after you have submitted your response at least once!");
                 return;
-            }
-
-            getCandidate();
-            if (surveystate["infopack"]["postcode"]!=VALID){
-                app.attentionVisible = true;
-                app.attention = "Your response should have valide location!"
             }
 
             getPollenizeIssues();
             if (surveystate["infopack"]["topic"]!=VALID){
                 app.attentionVisible = true;
-                app.attention = "There is no information on your issue temporarily!"
+                if (surveystate["infopack"]["topic"]===EMPTY)
+                    notes.push("Your response should contain a valid issue!");
+                else
+                    notes.push("There is no information on your issue temporarily!");
             }
+
+            getCandidate();
+            if (surveystate["infopack"]["postcode"]!=VALID){
+                app.attentionVisible = true;
+                notes.push("Your response should contain a valid location!");
+            }
+
+            app.attentions=notes;
 
         }
     });
