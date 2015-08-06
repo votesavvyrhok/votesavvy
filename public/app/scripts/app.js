@@ -657,11 +657,9 @@ var surveystate={
         });
 
         gmap.addEventListener('google-map-ready', function () {
-
+            gmap.apiKey="AIzaSyDjxTBnTFBRaztP4bAr-bl84Zk6qDxmb2Y";
             gmap.clickEvents = true;
-
             gmap._clickEventsChanged();
-
         });
 
         gmap.addEventListener('google-map-click', function (event) {
@@ -670,6 +668,25 @@ var surveystate={
             app.markerlat = event.detail.latLng.lat();
             app.markerlng = event.detail.latLng.lng();
             console.log(app.markerlat + "," + app.markerlng);
+        });
+
+        var geoCoder=google.maps.Geocoder();
+
+        //right after the postal code is entered,
+        //a marker is displayed in the map
+        //geocoding the postal code into <lat,lng>
+        var postcodeInput = document.querySelector("#postalCode");
+
+        postcodeInput.addEventListener("blur", function(){
+            if (postcodeInput.invalid)
+                return;
+
+            var address = postcodeInput.value.concat(",+CA");
+
+            geoCoder.geocode( { 'address': address}, function(results, status){
+                console.log("response from google map " + JSON.stringify(results));
+            });
+
         });
 
         var formSubmitCall = document.querySelector('#formSubmitCall');
