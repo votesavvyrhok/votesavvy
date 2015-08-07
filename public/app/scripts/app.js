@@ -711,7 +711,7 @@ var surveystate={
 
         var postcodeInput = document.querySelector('#postalCode');
 
-        postcodeInput.addEventListener('blur', function(event){
+        postcodeInput.addEventListener('keyup', function(event){
             if (postcodeInput.invalid)
                 return;
 
