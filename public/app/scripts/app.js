@@ -657,18 +657,44 @@ var surveystate={
             });
         });
 
-        gmap.addEventListener('google-map-ready', function () {
-            gmap.clickEvents = true;
-            gmap._clickEventsChanged();
-
-        });
-
         gmap.addEventListener('google-map-click', function (event) {
             var location;
             console.log(event);
-            app.markerlat = event.detail.latLng.lat();
-            app.markerlng = event.detail.latLng.lng();
+            var lat = event.detail.latLng.lat();
+            var lng = event.detail.latLng.lng();
+            app.markerlat = lat;
+            app.markerlng = lng;
             console.log(app.markerlat + "," + app.markerlng);
+
+            //display the postal code
+            var latlng = new mapAPI.api.LatLng(lat,lng);
+
+            var postcodefounded=false;
+
+            var postcodeFromLatLng;
+            geocoder.geocode({'location':latlng}, function(results, status){
+
+                console.log(JSON.stringify(results));
+
+                if (status === mapAPI.api.GeocoderStatus.OK)
+                {
+                    var components = results[0]["address_components"];
+
+                    components.forEach(function(item){
+                        item.types.forEach(function(type){
+
+                            if (type === "postal_code") {
+                                postcodeFromLatLng = item.long_name;
+                                formdata.personal.postalCode = postcodeFromLatLng;
+                                setDataForSubcategory("personal", "postalCode");
+                                return;
+                            }
+
+                        });
+                    });
+                }
+            });
+
         });
 
         var mapAPI = document.querySelector('google-maps-api');
@@ -676,9 +702,31 @@ var surveystate={
         var geocoder;
 
         mapAPI.addEventListener('api-load', function(e) {
-            geocoder = mapAPI.api.geoCoder;
+
+            var api=mapAPI.api;
+            geocoder = new mapAPI.api.Geocoder();
+
+            console.log("geocoder " + JSON.stringify(geocoder));
         });
 
+        var postcodeInput = document.querySelector('#postalCode');
+
+        postcodeInput.addEventListener('blur', function(event){
+            if (postcodeInput.invalid)
+                return;
+
+            var address=postcodeInput.value.concat('+CA');
+
+            geocoder.geocode({'address':address}, function(results, status){
+
+                if (status == mapAPI.api.GeocoderStatus.OK)
+                {
+                    app.markerlat = results[0].geometry.location.G;
+                    app.markerlng = results[0].geometry.location.K;
+                    console.log(app.markerlat + "," + app.markerlng);
+                }
+            });
+        });
 
 
         var formSubmitCall = document.querySelector('#formSubmitCall');
