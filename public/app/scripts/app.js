@@ -829,6 +829,7 @@ var surveystate={
                     notes.push("You may see your voting information after submitting your response!");
                 else
                     notes.push("You may see your voting information after you have submitted your response at least once!");
+                app.attentions = notes;
                 return;
             }
 
