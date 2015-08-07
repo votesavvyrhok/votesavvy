@@ -457,6 +457,7 @@ var SUBMITTED="submitted";
 var INIT="init";
 var VALID="valid";
 var INVALID="invalid";
+var EMPTY="empty";
 
 var surveystate={
     formdata: null,
@@ -581,8 +582,8 @@ var surveystate={
                 if (categorySelect.selected == 1)
                    if (surveypage != infopackpage)
                     {
-                        openInfoPack();
                         pages.selected = infopackpage;
+                        openInfoPack();
                     }
         });
 
@@ -641,6 +642,7 @@ var surveystate={
         });
 
         var gmap = document.querySelector('google-map');
+
         //initiate the map location
 
         gmap.addEventListener('api-load', function (e) {
@@ -655,21 +657,77 @@ var surveystate={
             });
         });
 
-        gmap.addEventListener('google-map-ready', function () {
-
-            gmap.clickEvents = true;
-
-            gmap._clickEventsChanged();
-
-        });
-
         gmap.addEventListener('google-map-click', function (event) {
             var location;
             console.log(event);
-            app.markerlat = event.detail.latLng.lat();
-            app.markerlng = event.detail.latLng.lng();
+            var lat = event.detail.latLng.lat();
+            var lng = event.detail.latLng.lng();
+            app.markerlat = lat;
+            app.markerlng = lng;
             console.log(app.markerlat + "," + app.markerlng);
+
+            //display the postal code
+            var latlng = new mapAPI.api.LatLng(lat,lng);
+
+            var postcodefounded=false;
+
+            var postcodeFromLatLng;
+            geocoder.geocode({'location':latlng}, function(results, status){
+
+                console.log(JSON.stringify(results));
+
+                if (status === mapAPI.api.GeocoderStatus.OK)
+                {
+                    var components = results[0]["address_components"];
+
+                    components.forEach(function(item){
+                        item.types.forEach(function(type){
+
+                            if (type === "postal_code") {
+                                postcodeFromLatLng = item.long_name;
+                                formdata.personal.postalCode = postcodeFromLatLng;
+                                setDataForSubcategory("personal", "postalCode");
+                                return;
+                            }
+
+                        });
+                    });
+                }
+            });
+
         });
+
+        var mapAPI = document.querySelector('google-maps-api');
+
+        var geocoder;
+
+        mapAPI.addEventListener('api-load', function(e) {
+
+            var api=mapAPI.api;
+            geocoder = new mapAPI.api.Geocoder();
+
+            console.log("geocoder " + JSON.stringify(geocoder));
+        });
+
+        var postcodeInput = document.querySelector('#postalCode');
+
+        postcodeInput.addEventListener('blur', function(event){
+            if (postcodeInput.invalid)
+                return;
+
+            var address=postcodeInput.value.concat('+CA');
+
+            geocoder.geocode({'address':address}, function(results, status){
+
+                if (status == mapAPI.api.GeocoderStatus.OK)
+                {
+                    app.markerlat = results[0].geometry.location.G;
+                    app.markerlng = results[0].geometry.location.K;
+                    console.log(app.markerlat + "," + app.markerlng);
+                }
+            });
+        });
+
 
         var formSubmitCall = document.querySelector('#formSubmitCall');
 
@@ -700,6 +758,7 @@ var surveystate={
 
         var getCandidate = function(){
 
+            app.candidates = [];
             //get the postal code
             var postcode = getDataForSubcategory("personal","postalCode");
 
@@ -731,6 +790,11 @@ var surveystate={
         var getPollenizeIssues = function(){
             var yourissue = getDataForSubcategory("issues","selected");
 
+            if (!yourissue){
+                surveystate["infopack"]["topic"]=EMPTY;
+                return;
+            }
+
             app.yourissue = yourissue;
             var topic = issueTable[yourissue];
             //remove the elements of partyInfo
@@ -757,27 +821,33 @@ var surveystate={
 
             app.attentionVisible = false;
 
-            if (surveystate["formdata"]!=SUBMITTED)
-            {
+            var notes=[];
+
+            if (surveystate["formdata"]!=SUBMITTED){
                 app.attentionVisible = true;
                 if (app.signinvisible)
-                    app.attention="You may see your voting information after submitting your response!";
+                    notes.push("You may see your voting information after submitting your response!");
                 else
-                    app.attention="You may see your voting information after you have submitted your response at least once!";
+                    notes.push("You may see your voting information after you have submitted your response at least once!");
                 return;
-            }
-
-            getCandidate();
-            if (surveystate["infopack"]["postcode"]!=VALID){
-                app.attentionVisible = true;
-                app.attention = "Your response should have valide location!"
             }
 
             getPollenizeIssues();
             if (surveystate["infopack"]["topic"]!=VALID){
                 app.attentionVisible = true;
-                app.attention = "There is no information on your issue temporarily!"
+                if (surveystate["infopack"]["topic"]===EMPTY)
+                    notes.push("Your response should contain a valid issue!");
+                else
+                    notes.push("There is no information on your issue temporarily!");
             }
+
+            getCandidate();
+            if (surveystate["infopack"]["postcode"]!=VALID){
+                app.attentionVisible = true;
+                notes.push("Your response should contain a valid location!");
+            }
+
+            app.attentions=notes;
 
         }
     });
