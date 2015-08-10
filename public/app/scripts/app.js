@@ -525,9 +525,7 @@ var surveystate={
                 startingTime = new Date();
                 var timestamp = formdata.timestamp;
                 timestamp.start = startingTime.getFullYear() + "-" + startingTime.getMonth() + "-" + startingTime.getDate() + " " + startingTime.getHours() + ":" + startingTime.getMinutes() + ":" + startingTime.getSeconds();
-
                 consent = true;
-
             } else {
                 var toast = document.querySelector('#toaster');
                 toast.show();
@@ -561,10 +559,16 @@ var surveystate={
 
         var nextButtons = document.querySelectorAll('paper-fab.nextButton');
 
+        var scrollHeadPanel = document.querySelector('paper-scroll-header-panel');
+
         Array.prototype.forEach.call(nextButtons, function (button) {
             button.addEventListener('click', function () {
                 if (consent){
                     app.switch();
+
+                    //scrollup
+                    scrollHeadPanel.scroller.scrollTop=0;
+
                     surveypage = pages.selected;
                     if (surveypage === infopackpage){
                         categorySelect.selected = 1;
@@ -579,8 +583,6 @@ var surveystate={
         var categorySelect = document.querySelector('#categoryTab');
 
         categorySelect.addEventListener('click',function(event){
-
-            window.scrollTo(0,0);
 
             if (categorySelect.selected == 0){
                 if (surveypage == infopackpage)
@@ -599,6 +601,7 @@ var surveystate={
                         pages.selected = infopackpage;
                         openInfoPack();
                     }
+            scrollHeadPanel.scroller.scrollTop=0;
         });
 
         // imports are loaded and elements have been registered
@@ -698,15 +701,13 @@ var surveystate={
 
                     components.forEach(function(item){
                         item.types.forEach(function(type){
-
                             if (type === "postal_code") {
                                 postcodeFromLatLng = item.long_name;
                                 formdata.personal.postalCode = postcodeFromLatLng;
                                 setDataForSubcategory("personal", "postalCode");
                                 return;
                             }
-
-                        });
+                       });
                     });
                 }
             });
