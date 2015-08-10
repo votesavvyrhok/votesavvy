@@ -145,13 +145,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-material elevation="1">
                             <paper-item>
                                 <paper-radio-group id="selected">
-                                    <paper-radio-button class="choice" name="Crime and Justice" label="Crime and Justice">Crime and Justice</paper-radio-button>
-                                    <paper-radio-button class="choice" name="Welfare" label="Welfare">Welfare</paper-radio-button>
-                                    <paper-radio-button class="choice" name="Defense and International Affairs" label="Defense and International Affairs">Defense and International Affairs</paper-radio-button>
-                                    <paper-radio-button class="choice" name="Environment" label="Environment">Environment</paper-radio-button>
-                                    <paper-radio-button class="choice" name="Economy" label="Economy">Economy</paper-radio-button>
-                                    <paper-radio-button class="choice" name="Healthcare" label="Healthcare">Healthcare</paper-radio-button>
-                                    <paper-radio-button class="choice" name="Education" label="Education">Education</paper-radio-button>
+                                    <template is="dom-repeat" items="{{issues}}">
+                                        <paper-radio-button class="choice" name="{{item}}" label="{{item}}">{{item}}</paper-radio-button>
+                                    </template>
                                 </paper-radio-group>
                             </paper-item>
 
