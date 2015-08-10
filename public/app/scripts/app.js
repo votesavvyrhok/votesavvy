@@ -63,15 +63,31 @@ var formdata = {
     }
 };
 
-var issueTable={
-    "Crime and Justice": "justice",
-    "Welfare":null,
-    "Defense and International Affairs":"foreign-policy",
-    "Environment":null,
+var issuesName=[
+    "Crime and Justice",
+    "Government and Transparancy",
+    "Defense and International Affairs",
+    "Environment",
+    "Economy",
+    "Healthcare",
+    "Immigration",
+    "Aboriginal Affairs",
+    "Privacy",
+    "Housing"
+]
+
+var issuesTable ={
+    "Crime and Justice":"justice",
+    "Government and Transparancy":"government-and-transparency",
+    "Defense and International Affairs": "foreign-policy",
+    "Environment":"environment",
     "Economy":"economy",
-    "Healthcare":null,
-    "Education":null
-};
+    "Healthcare":"healthcare",
+    "Immigration":"immigration",
+    "Aboriginal Affairs": "aboriginal-affairs",
+    "Privacy":"privacy",
+    "Housing":"housing"
+}
 
 var removePartyElement = function(anchor){
 
@@ -85,7 +101,7 @@ var removePartyElement = function(anchor){
 
 function addPartyData(topic, anchor) {
 
-    var partyData = ['green', 'liberal'];
+    var partyData = ['conservative','liberal','new-democratic','green', 'libertarian'];
 
     parties = document.getElementById(anchor);
     var dataStance = '<div class="pol-widget" data-stance="canada/';
@@ -101,7 +117,6 @@ function addPartyData(topic, anchor) {
         paperItem.appendChild(element);
         parties.appendChild(paperItem);
     }
-
 }
 
 /* Unhappy about loading this dynamically - we should ask for a method */
@@ -517,7 +532,6 @@ var surveystate={
                 var toast = document.querySelector('#toaster');
                 toast.show();
             }
-
         });
 
         app.onMenuSelect = function () {
@@ -620,6 +634,8 @@ var surveystate={
             formdataOperation(setDataForSubcategory);
             surveystate["formdata"]=SUBMITTED;
         });
+
+        app.issues = issuesName;
 
         app.sources=sources;
 
@@ -796,7 +812,7 @@ var surveystate={
             }
 
             app.yourissue = yourissue;
-            var topic = issueTable[yourissue];
+            var topic = issuesTable[yourissue];
             //remove the elements of partyInfo
             removePartyElement('partyInfo');
 
