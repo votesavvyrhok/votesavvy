@@ -263,7 +263,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </paper-item>
 
                         </paper-material>
-                        <div class="subject ">What is your postal code? (e.g. K1A 0A9)</div>
+                        <div class="subject ">Please enter your postal code on the line below (e.g. K1A 0A9)</div>
                         <div class="ratinginfo ">Tip: This helps researchers understand differences across the country and helps Vote Savvy give you information about candidates in your area.</div>
                         <paper-material elevation="1 ">
                             <paper-input auto-capitalize="characters" auto-validate id="postalCode" char-counter
@@ -335,9 +335,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             </template>
                         </template>
 
-                        <div class="subject ">You said ISSUE <span style="font-style: italic">{{yourissue}}</span> was your top issue. This is where each of the major parties stands on this issue :</div>
+                        <div class="subject ">You said <span style="font-style: italic">{{yourissue}}</span> was your top issue. This is where each of the major parties stands on this issue :</div>
                         <paper-material elevation="1">
                             <div id="partyInfo"></div>
+                            <div class="subject">Powered by Pollenize</div>
                         </paper-material>
 
                         <div class="subject ">Based on your postal code <span style="font-style: italic">{{yourpostcode}}</span>, these are the candidates that you can vote for in the election :</div>

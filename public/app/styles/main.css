@@ -81,6 +81,7 @@ input:invalid {
 
 .pol-widget {
     border: none !important;
+    width:400px;
 }
 
 .pol-divider {

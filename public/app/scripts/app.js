@@ -101,7 +101,7 @@ var removePartyElement = function(anchor){
 
 function addPartyData(topic, anchor) {
 
-    var partyData = ['conservative','liberal','new-democratic','green', 'libertarian'];
+    var partyData = ['conservative','liberal','new-democratic','green'];
 
     parties = document.getElementById(anchor);
     var dataStance = '<div class="pol-widget" data-stance="canada/';
@@ -130,7 +130,7 @@ function loadPollenize() {
     var headID = document.getElementsByTagName("head")[0];
     var newScript = document.createElement('script');
     newScript.type = 'text/javascript';
-    newScript.src = '//widget.pollenize.org/widget.js';
+    newScript.src = '//staging.pollenize.org/widget.js';
     newScript.id='pollenize';
     headID.appendChild(newScript);
 }
