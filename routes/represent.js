@@ -26,8 +26,26 @@ module.exports = function (app) {
                     res.send(null);
                 }
                 else {
-                    //store in the cache
-                    app.locals.datacache.put(cacheKey, data, function (err, body) {
+                    //store the candidate information in the cache only
+                    var candidates=[];
+
+                    data["candidates_centroid"].forEach(function(candidate){
+                        var storedCandidate = {
+                            name: null,
+                            party_name:null,
+                            personal_url: null,
+                            photo_url: null
+                        };
+
+                        for (var key in storedCandidate){
+                                storedCandidate[key] = candidate[key];
+                        }
+                        candidates.push(storedCandidate);
+                    });
+
+                    var usedInfo = {candidates_centroid:candidates};
+
+                    app.locals.datacache.put(cacheKey,usedInfo , function (err, body) {
                         if (err) {
                             console.log("cache error" + JSON.stringify(err));
                         }
@@ -35,7 +53,7 @@ module.exports = function (app) {
                               console.log("cache stored: " + JSON.stringify(body));
                         }
                     });
-                    res.send(data);
+                    res.send(usedInfo);
                 }
                 });
             }
