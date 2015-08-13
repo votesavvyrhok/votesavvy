@@ -89,6 +89,33 @@ var issuesTable ={
     "Housing":"housing"
 }
 
+var getRandomIssuesName=function(){
+
+    var temp = issuesName.slice();
+
+    var randomIssues=[];
+    var randomIndex;
+
+    var rangeStart = 0;
+    var rangeEnd = temp.length-1;
+
+    while (rangeEnd)
+    {
+        randomIndex = Math.floor(Math.random()*(rangeEnd-rangeStart+1))+rangeStart;
+        randomIssues.push(temp[randomIndex]);
+        temp.splice(randomIndex,1);
+        rangeEnd--;
+    }
+
+    //rangeEnd == 0;
+    randomIssues.push(temp[0]);
+
+    console.log("issues " + randomIssues);
+
+    return randomIssues;
+
+}
+
 var removePartyElement = function(anchor){
 
     parties = document.getElementById(anchor);
@@ -101,7 +128,7 @@ var removePartyElement = function(anchor){
 
 function addPartyData(topic, anchor) {
 
-    var partyData = ['conservative','liberal','new-democratic','green'];
+    var partyData = ['conservative','new-democratic','liberal','green'];
 
     parties = document.getElementById(anchor);
     var dataStance = '<div class="pol-widget" data-stance="canada/';
@@ -468,6 +495,25 @@ var formdataAdjustment = function(){
 
 };
 
+
+var retrieveCandidate=function(candidateInfo){
+
+    var temp={};
+    var partyList=["Conservative", "NDP","Liberal","Green Party"];
+    var orderedList =[];
+
+    candidateInfo.forEach(function(candidate) {
+        temp[candidate["party_name"]] = candidate;
+    });
+
+    partyList.forEach(function(party){
+        if (temp[party])
+            orderedList.push(temp[party]);
+    });
+
+    return orderedList;
+}
+
 var SUBMITTED="submitted";
 var INIT="init";
 var VALID="valid";
@@ -638,7 +684,7 @@ var surveystate={
             surveystate["formdata"]=SUBMITTED;
         });
 
-        app.issues = issuesName;
+        app.issues = getRandomIssuesName();
 
         app.sources=sources;
 
@@ -797,7 +843,7 @@ var surveystate={
         getCandidateCall.addEventListener('response', function(event){
             console.log(event.detail.response);
             if (event.detail.response)
-                app.candidates=event.detail.response.candidates_centroid;
+                app.candidates=retrieveCandidate(event.detail.response.candidates_centroid);
             else{
                 app.attentionVisible = true;
                 app.attention="There is an error while retrieving the information of canadidates in your location... Try again!"
