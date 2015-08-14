@@ -327,7 +327,7 @@ module.exports = function (app, db) {
         }
         var validationResults;
 
-        //validationResults = surveySchema.validate(data);
+        validationResults = surveySchema.validate(data);
 
         //the validation function is turned off temporarily
         //will be turned on after the JSON format is determined

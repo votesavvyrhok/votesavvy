@@ -43,19 +43,40 @@ app.listen(appEnv.port, appEnv.bind, function () {
     console.log('server starting on ' + appEnv.url);
 });
 
+var mongoDBuri;
+
+var initialMongoDBuri = function(){
+
+    var vcapServices;
+    if (process.env.VCAP_SERVICES)
+        vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+
+    if (vcapServices && vcapServices.mongolab){
+            mongoDBuri= vcapServices.mongolab[0].credentials.uri;
+    }else{
+
+          if (process.env.mongodb_uri)
+            mongoDBuri = process.env.mongodb_uri;
+    }
+}
+
+initialMongoDBuri();
+
 //for session management
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 app.use(session({
     secret: "thisisasecret",
-    name: "votesavvycookie",
-    resave: true,
-    saveUninitialized: true
+    saveUninitialized: false,
+    resave: false,
+    store: new MongoStore({url:mongoDBuri}),
+    ttl:5*24*60*60 //5 days expiration
 }));
+
 
 //DataCache
 app.locals.datacache = datacache;
-
 
 var dbCredentials = {
     dbs: {
@@ -139,6 +160,7 @@ function initializeDatabase(callback) {
         cloudant = require('cloudant')(dbCredentials.url);
 
         useDatabase(callback);
+
     } else {
 
         if (process.env.cloudant_hostname && process.env.cloudant_username && process.env.cloudant_password) {
