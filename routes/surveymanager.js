@@ -243,8 +243,6 @@ module.exports = function (app, db) {
 
         console.log('at survey manager, session_token is' + user_token);
 
-        var data = {};
-
         if (user_token) {
           //retrieved by the index
           //sort by the timestamp.end
@@ -327,7 +325,9 @@ module.exports = function (app, db) {
         for (var i in req.body) {
             data.formdata = JSON.parse(i);
         }
-        var validationResults = surveySchema.validate(data);
+        var validationResults;
+
+        //validationResults = surveySchema.validate(data);
 
         //the validation function is turned off temporarily
         //will be turned on after the JSON format is determined
