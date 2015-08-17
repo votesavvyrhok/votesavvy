@@ -16,6 +16,17 @@ var cfenv = require('cfenv');
 var https = require('https');
 var JSON = require('JSON');
 
+//for the memory watch;
+var memwatch = require('memwatch-next');
+
+memwatch.on('leak', function(info){
+    console.log("leak:", info);
+});
+
+memwatch.on('stats', function(stats){
+    console.log("stats:", stats);
+});
+
 var datacache = require('./bluemix_datacache.js');
 
 var async = require('async');
