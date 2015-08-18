@@ -251,6 +251,7 @@ module.exports = function (app, db) {
             var query = {
                 selector: {
                    "token": {
+                             "$exists":true,
                              "$eq": user_token
                          }
                      },
