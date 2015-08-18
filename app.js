@@ -95,6 +95,11 @@ function useDatabase(next) {
             name: 'user',
             type: 'json',
             index: {
+                selector:{
+                    "token": {
+                        "$exists":true
+                    }
+                },
                 fields: [
                     {"token": "desc"},
                     {"recordedat": "desc"}
