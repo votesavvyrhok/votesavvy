@@ -66,33 +66,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-toolbar class="standard" id="mainToolbar">
 
                 <span class="flex"></span>
-                <span class="middle"><img style="margin-top:22px;" src="http://static1.squarespace.com/static/5596a2f8e4b0f75fd2971413/t/55a7f472e4b0bd72ffa3c1ce/1438448341501/?format=1500w"></span>
+                <span class="bottom">
+                    <img src="http://static1.squarespace.com/static/5596a2f8e4b0f75fd2971413/t/55a7f472e4b0bd72ffa3c1ce/1438448341501/?format=1500w"> 
+                </span>
+
+                <!-- Application name -->
+                <div class="middle paper-font-display2 app-name">
+                </div>
+
+                <!-- Application sub title -->
+                <div class="middle">
+                </div>
+
                 <span id="screenName" class="vslogo"><%= screen_name %></span>
                 <!-- Toolbar icons -->
 
-                <div class="horizontal-section-container" style="color:white;margin-top:22px;">
+                <div class="horizontal-section-container" style="color:white;">
                     <div class="horizontal-section">
                         <paper-menu-button>
                             <paper-icon-button icon="account-circle" class="dropdown-trigger"></paper-icon-button>
-                                <paper-menu id="avatarMenu" class="dropdown-content">
-                                    <template is='dom-if' id="menuTemplate" if="{{!signinvisible}}">
-                                        <paper-item onclick="location.href='signintwitters/logout'">Logout</paper-item>
-                                    </template>
-                                    <template is='dom-if' id="menuTemplate" if="{{signinvisible}}">
-                                        <paper-item onclick="location.href='signintwitters/step1'">Signin</paper-item>
-                                    </template>
-                                </paper-menu>
+                            <paper-menu id="avatarMenu" class="dropdown-content">
+                                <template is='dom-if' id="menuTemplate" if="{{!signinvisible}}">
+                                    <paper-item onclick="location.href='signintwitters/logout'">Logout</paper-item>
+                                </template>
+                                <template is='dom-if' id="menuTemplate" if="{{signinvisible}}">
+                                    <paper-item onclick="location.href='signintwitters/step1'">Signin</paper-item>
+                                </template>
+                            </paper-menu>
                         </paper-menu-button>
                     </div>
                 </div>
 
-                <!-- Application name -->
-                <div class="middle paper-font-display2 app-name"></div>
-
-                <!-- Application sub title -->
-                <div class="bottom title"></div>
-
-                <paper-tabs id="categoryTab" class="middle horizontal self-end" style="width: 60%; margin-bottom:10px;color:white;font-size:14px;">
+                <paper-tabs id="categoryTab" selected="0" class="bottom self-end" style=" margin-bottom:0;color:white;font-size:14px;">
                     <paper-tab>SURVEY</paper-tab>
                     <paper-tab>INFO PACK</paper-tab>
                 </paper-tabs>
@@ -266,9 +271,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <div class="subject ">Please enter your postal code on the line below (e.g. K1A 0A9)</div>
                         <div class="ratinginfo ">Tip: This helps researchers understand differences across the country and helps Vote Savvy give you information about candidates in your area.</div>
                         <paper-material elevation="1 ">
-                            <paper-input auto-capitalize="characters" auto-validate id="postalCode" char-counter
-                                         pattern="^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]( )?\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]\d$"
-                                         maxlength="7" error-message="Please follow the format of canadian postal code!">
+                            <paper-input auto-capitalize="characters" auto-validate id="postalCode" char-counter pattern="^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]( )?\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="7" error-message="Please follow the format of canadian postal code!">
                             </paper-input>
 
                             <p>Or, select a location in the following map: </p>
@@ -345,29 +348,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-material elevation="1">
                             <template is="dom-repeat" items="{{candidates}}">
                                 <div>
-                                <img class="photo" src="{{item.photo_url}}"> </img>
-                                <div class="list">
-                                    <paper-item>
-                                        <paper-item-body two-line>
-                                            <div class="label"> Name: </div>
-                                            <div> <span>{{item.name}}</span></div>
-                                        </paper-item-body>
-                                    </paper-item>
+                                    <img class="photo" src="{{item.photo_url}}"> </img>
+                                    <div class="list">
+                                        <paper-item>
+                                            <paper-item-body two-line>
+                                                <div class="label"> Name: </div>
+                                                <div> <span>{{item.name}}</span>
+                                                </div>
+                                            </paper-item-body>
+                                        </paper-item>
 
-                                    <paper-item>
-                                        <paper-item-body two-line>
-                                            <div class="label"> Party: </div>
-                                            <div> <span>{{item.party_name}}</span></div>
-                                        </paper-item-body>
-                                    </paper-item>
+                                        <paper-item>
+                                            <paper-item-body two-line>
+                                                <div class="label"> Party: </div>
+                                                <div> <span>{{item.party_name}}</span>
+                                                </div>
+                                            </paper-item-body>
+                                        </paper-item>
 
-                                    <paper-item>
-                                        <paper-item-body two-line>
-                                            <div class="label" > Website: </div>
-                                            <div ><a href="{{item.personal_url}}" target="_blank"> <span>{{item.personal_url}}</span> </a></div>
-                                        </paper-item-body>
-                                    </paper-item>
-                                </div>
+                                        <paper-item>
+                                            <paper-item-body two-line>
+                                                <div class="label"> Website: </div>
+                                                <div>
+                                                    <a href="{{item.personal_url}}" target="_blank"> <span>{{item.personal_url}}</span> </a>
+                                                </div>
+                                            </paper-item-body>
+                                        </paper-item>
+                                    </div>
                                 </div>
                             </template>
 
