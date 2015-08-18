@@ -251,10 +251,10 @@ module.exports = function (app, db) {
             var query = {
                 selector: {
                    "token": {
+                             "$exists":true,
                              "$eq": user_token
                          }
                      },
-
                 sort: [{"token":"desc"},
                        {"recordedat": "desc"}],
                 limit: 1,
@@ -286,7 +286,8 @@ module.exports = function (app, db) {
     var storedoc = function (user_token, data, status) {
         var doc = data;
         doc.status = status;
-        doc.token = user_token;
+        if (user_token)
+           doc.token = user_token;
 
         doc.recordedat=new Date().getTime();
 
@@ -317,10 +318,6 @@ module.exports = function (app, db) {
         var user_token = req.session.session_token;
         var status = req.params.status;
 
-        //not store the answer in the case the survey is inprogress and the user is not in signing in state
-        if (!user_token && status == 'submit')
-            user_token = uuid.v4();
-
         console.log('received form data is as ' + JSON.stringify(req.body));
 
         var data={};
@@ -334,12 +331,12 @@ module.exports = function (app, db) {
         validationResults.valid = true;
 
         if (validationResults.valid) {
-            if (user_token) {
+
                 storedoc(user_token, data, status);
 
                 //return ok
                 res.status(200).json({status:"ok"});
-            }
+
         } else {
             console.log('errors: ');
 
