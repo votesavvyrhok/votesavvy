@@ -13,6 +13,8 @@ module.exports= function(app,db) {
 
     var survey = require('./surveymanager.js');
 
+    var logger= app.locals.log4js.getLogger('signin');
+
     //JSON structure of the documents in twitterusers signindb
     /*
     {
@@ -45,14 +47,14 @@ module.exports= function(app,db) {
 
         var signinUrl = 'https://api.twitter.com/oauth/authenticate?oauth_token=';
 
-        console.log("you are at step 1 now");
+        logger.debug("you are at step 1 now");
 
         var usertoken={};
 
         //retrieve the oauth request token
         twitterHdl.getOAuthRequestToken(function (oauth) {
             if (oauth != null) {
-                console.log(oauth);
+                logger.debug(oauth);
 
                 //store the user tokens in the oauthStore temporarily
                 usertoken.token_secret = oauth.token_secret;
@@ -62,12 +64,12 @@ module.exports= function(app,db) {
 
                 //redirect to the Twitter sign in URL
                 signinUrl = signinUrl + oauth.token;
-                console.log('sign in url: ' + signinUrl);
-                console.log('oauthStore: ' + JSON.stringify(oauthStore));
+                logger.debug('sign in url: ' + signinUrl);
+                logger.debug('oauthStore: ' + JSON.stringify(oauthStore));
                 res.redirect(signinUrl);
             }
             else {
-                console.log("error on retrieving request token");
+                logger.debug("error on retrieving request token");
                 res.status(500).send("error on retrieving request token");
 
             }
@@ -81,7 +83,7 @@ module.exports= function(app,db) {
             var user = twitterHdl.getUser({screen_name: username}, function (error) {
                 res.status(500).send("error on retrieving user:" + username);
             }, function (body) {
-                console.log(body);
+                logger.debug(body);
                 res.send(body);
 
             });
@@ -92,16 +94,16 @@ module.exports= function(app,db) {
         twitterHdl.oauth.getOAuthAccessToken(oauth.token, oauth.token_secret, oauth.verifier,
             function (error, oauth_access_token, oauth_access_token_secret, results) {
                 if (error) {
-                    console.log('ERROR: ' + error);
+                    logger.debug('ERROR: ' + error);
                     next();
                 } else {
                     oauth.access_token = oauth_access_token;
                     oauth.access_token_secret = oauth_access_token_secret;
 
-                    console.log('oauth.token: ' + oauth.token);
-                    console.log('oauth.token_secret: ' + oauth.token_secret);
-                    console.log('oauth.access_token: ' + oauth.access_token);
-                    console.log('oauth.access_token_secret: ' + oauth.access_token_secret);
+                    logger.debug('oauth.token: ' + oauth.token);
+                    logger.debug('oauth.token_secret: ' + oauth.token_secret);
+                    logger.debug('oauth.access_token: ' + oauth.access_token);
+                    logger.debug('oauth.access_token_secret: ' + oauth.access_token_secret);
                     next(oauth,results);
                 }
             }
@@ -122,9 +124,9 @@ module.exports= function(app,db) {
             return;
         }
 
-        console.log("you are at step 2 now");
+        logger.debug("you are at step 2 now");
 
-        console.log("oauthStore: " + JSON.stringify(oauthStore));
+        logger.debug("oauthStore: " + JSON.stringify(oauthStore));
 
         var oauthStep2 = {
             "token": oauth_token,
@@ -132,11 +134,11 @@ module.exports= function(app,db) {
             "verifier": oauth_verifier
         }
 
-        console.log("oauthStep2: " + JSON.stringify(oauthStep2));
+        logger.debug("oauthStep2: " + JSON.stringify(oauthStep2));
 
         getOAuthAccessToken(oauthStep2, function (oauth, results) {
             if (oauth == null) {
-                console.log("error on retrieving access token");
+                logger.debug("error on retrieving access token");
                 res.status(500).send("error on retrieving request token");
             }
             else {
@@ -147,8 +149,8 @@ module.exports= function(app,db) {
                 }
 
                 delete  oauthStore[oauth_token];
-                console.log('oauthStore' + JSON.stringify(oauthStore));
-                console.log('twitteruserinfo' + JSON.stringify(twitteruserinfo));
+                logger.debug('oauthStore' + JSON.stringify(oauthStore));
+                logger.debug('twitteruserinfo' + JSON.stringify(twitteruserinfo));
 
                 //if the document of the user is not in the signindb then write it in to the signindb
                 //verify if the user exists in the db or not
@@ -164,7 +166,9 @@ module.exports= function(app,db) {
                         //new user
                         signindb.insert(twitteruserinfo, twitteruserinfo.user_id, function (err, body) {
                             if (!err)
-                                console.log(body);
+                                logger.debug(body);
+                            else
+                                logger.warn(err);
                         });
                         res.redirect("/signintwitters/step3?session=" + twitteruserinfo.user_token
                             + "&screen_name=" + results.screen_name
@@ -186,23 +190,29 @@ module.exports= function(app,db) {
         sess.session_token = req.query.session;
         sess.screen_name = req.query.screen_name;
 
-        console.log("at siginstep3, user's session_token is" + sess.session_token);
-        console.log("at siginstep3, user's screen_name is" + sess.screen_name);
+        logger.debug("at siginstep3, user's session_token is" + sess.session_token);
+        logger.debug("at siginstep3, user's screen_name is" + sess.screen_name);
         //if there is no survey data
 
         //if the user signning up just now
+        logger.info("user " + sess.session_token + " " + sess.screen_name + " has logged in" );
+
         res.redirect('/survey');
 
     });
 
     app.get('/signintwitters/logout', function (req, res) {
 
+        var session_token = req.session.session_token;
+        var screen_name = req.session.screen_name;
+
         req.session.destroy(function(err){
             if(err){
-                console.log(err);
+                logger.warn(err);
             }
             else
             {
+                logger.info("user " + session_token + " " + screen_name + " has logged out" );
                 res.redirect('/');
             }
         });
