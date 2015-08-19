@@ -28,12 +28,12 @@
     "node-uuid": "~1.4.3",
     "express-session":"~1.11.3",
     "bluemixdatacache":"^0.0.6",
-    "fs":"^0.0.2",
-    "mongo-morgan":"^1.0.1"
-    "bluemixdatacache":"^0.0.6",
+    "mongo-morgan":"^1.0.1",
     "heapdump":"^0.3.7",
     "memwatch-next":"^0.2.7",
-    "connect-mongo":"^0.8.2"
+    "connect-mongo":"^0.8.2",
+    "log4js":"^0.6.26",
+    "log4js-node-mongodb":"^0.1.5"
   },
   "repository": {}
 }
