@@ -47,6 +47,7 @@ google-map {
 .nextButton {
     position: relative;
     float: right;
+    padding: 18px;
 }
 
 input:invalid {
@@ -67,11 +68,11 @@ input:invalid {
     @apply(--shadow-elevation-2dp);
 }
 
-.photo{
+.photo {
     max-height: 120px;
 }
 
-.label{
+.label {
     font-weight: bold;
 }
 
@@ -81,7 +82,7 @@ input:invalid {
 
 .pol-widget {
     border: none !important;
-    width:400px;
+    width: 400px;
 }
 
 .pol-divider {
