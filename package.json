@@ -29,7 +29,7 @@
     "express-session":"~1.11.3",
     "bluemixdatacache":"^0.0.6",
     "fs":"^0.0.2",
-    "file-stream-rotator":"^0.0.6"
+    "mongo-morgan":"^1.0.1"
   },
   "repository": {}
 }

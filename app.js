@@ -44,24 +44,11 @@ app.listen(appEnv.port, appEnv.bind, function () {
 });
 
 //set up logging for the request
-var morgan = require('morgan');
+var mongoMorgan = require('mongo-morgan');
 
-/*var fileStreamRotator = require('file-stream-rotator');
-
-var fs = require('fs');
-var logDirectory = __dirname + '/logs';
-fs.existsSync(logDirectory)||fs.mkdirSync(logDirectory);
-
-var logStream = fileStreamRotator.getStream({
-    filename: logDirectory + '/access-%DATE%.log',
-    frequency:'daily',
-    verbose: false
-});
-
-app.use(morgan('combined', {stream:logStream}));
-*/
-
-app.use(morgan('combined',{immediate: true}));
+app.use(mongoMorgan('','combined',{
+                                  immediate: true,
+                                  collection:'morganlogs'}));
 
 //for session management
 var session = require('express-session');
