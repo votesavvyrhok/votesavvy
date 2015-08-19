@@ -1,8 +1,9 @@
 module.exports = function (app, db) {
 
     var surveydb = db.handler;
-
     var indexspec = db.indexes;
+
+    var logger = app.locals.log4js.getLogger('survey');
 
     var uuid = require('node-uuid');
     var bodyParser = require('body-parser');
@@ -230,7 +231,7 @@ module.exports = function (app, db) {
         var user_token = req.session.session_token;
         var screen_name = req.session.screen_name;
 
-        console.log('at survey manager, session_token is' + user_token);
+        logger.debug('at survey manager, session_token is' + user_token);
 
         res.render('app/index.html', {screen_name: screen_name});
 
@@ -241,7 +242,7 @@ module.exports = function (app, db) {
         var user_token = req.session.session_token;
         var screen_name = req.session.screen_name;
 
-        console.log('at survey manager, session_token is' + user_token);
+        logger.debug('at survey manager, session_token is' + user_token);
 
         if (user_token) {
           //retrieved by the index
@@ -261,11 +262,11 @@ module.exports = function (app, db) {
 
             surveydb.find(indexspec.user, query, function (err, results) {
                 if (err) {
-                    console.log("retrieve error" + JSON.stringify(err));
+                    logger.warn("retrieve error" + JSON.stringify(err));
                     res.json(null);
                 } else {
-                    console.log("number of document is %d, first result is %s ", results.docs.length, JSON.stringify(results.docs[0]));
-                    console.log("time of the submissions")
+                    logger.info("number of document is %d, first result is %s ", results.docs.length, JSON.stringify(results.docs[0]));
+                    logger.info("time of the submissions")
                     /*
                     for (var doc in results.docs){
                        console.log (results.docs[doc].formdata.timestamp.end + " ");
@@ -299,15 +300,15 @@ module.exports = function (app, db) {
         }
         */
         //store the doc in db
-        console.log('store the doc' + JSON.stringify(doc));
-        console.log('at surveymanager, session_token is ' + user_token);
+        logger.debug('store the doc' + JSON.stringify(doc));
+        logger.debug('at surveymanager, session_token is ' + user_token);
 
         //the primary key is auto generated to store multiple sets of answers of a user
         surveydb.insert(doc, null, function (err, body) {
              if (!err)
-                 console.log(body);
+                 logger.info(body);
              else
-                 console.log(err);
+                 logger.warn(err);
         });
 
     };
@@ -316,7 +317,7 @@ module.exports = function (app, db) {
         var user_token = req.session.session_token;
         var status = req.params.status;
 
-        console.log('received form data is as ' + JSON.stringify(req.body));
+        logger.debug('received form data is as ' + JSON.stringify(req.body));
 
         var data={};
         for (var i in req.body) {
@@ -338,10 +339,10 @@ module.exports = function (app, db) {
                 res.status(200).json({status:"ok"});
 
         } else {
-            console.log('errors: ');
+            logger.warn('errors: ');
 
             for (var error in validationResults.errors){
-                console.log(validationResults.errors[error]);
+                logger.warn(validationResults.errors[error]);
                 res.status(406).json({status:"validation error"});
             }
         }

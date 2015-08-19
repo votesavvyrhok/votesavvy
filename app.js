@@ -40,13 +40,17 @@ initialMongoDBuri();
 var log4js = require('log4js');
 var mongoAppender = require('log4js-node-mongodb');
 
-log4js.addAppender(
-    mongoAppender.appender({connectionString: mongoDBuri}),
-    'votesavvyapp');
+var categories = ['index','signin','survey','represent','application'];
 
-var logger= log4js.getLogger('votesavvyapp');
+categories.forEach(function(category){
+    log4js.addAppender(
+        mongoAppender.appender({connectionString: mongoDBuri}),
+        category);
+});
 
-app.locals.logger = logger;
+app.locals.log4js = log4js;
+
+var logger = log4js.getLogger('application');
 
 //for the memory watch;
 var memwatch = require('memwatch-next');
@@ -80,7 +84,7 @@ var appEnv = cfenv.getAppEnv();
 app.listen(appEnv.port, appEnv.bind, function () {
 
     // print a message when the server starts listening
-    console.log('server starting on ' + appEnv.url);
+    logger.info('server starting on ' + appEnv.url);
 });
 
 //for session management
@@ -126,9 +130,9 @@ function useDatabase(next) {
     async.forEach(Object.keys(dbCredentials.dbs), function (db, callback) {
         cloudant.db.create(dbCredentials.dbs[db].name, function (err, res) {
             if (err) {
-                console.log('database ' + dbCredentials.dbs[db].name + ' already created');
+                logger.warn('database ' + dbCredentials.dbs[db].name + ' already created');
             } else {
-                console.log('database ' + dbCredentials.dbs[db].name + ' is created');
+                logger.info('database ' + dbCredentials.dbs[db].name + ' is created');
             }
             dbCredentials.dbs[db].handler = cloudant.use(dbCredentials.dbs[db].name);
 
@@ -152,18 +156,18 @@ function useDatabase(next) {
 
         answersdb.index(user, function(err, response) {
                 if (err)
-                    console.log("create index error" + JSON.stringify(err));
+                    logger.warn("create index error" + JSON.stringify(err));
                 else
                     dbCredentials.dbs.survey.indexes.user=response;
 
-             console.log('Index creation result: ', JSON.stringify(response));
+            logger.info('Index creation result: ', JSON.stringify(response));
 
         });
 
         next();
 
         cloudant.db.list(function (err, all_dbs) {
-            console.log('All my databases: %s', all_dbs.join(', '));
+            logger.info('All my databases: %s', all_dbs.join(', '));
         });
     });
 }
@@ -229,4 +233,4 @@ function apiMapping() {
 
 initializeDatabase(apiMapping);
 
-console.log('votesavvy application running');
+logger.info('votesavvy application running');
