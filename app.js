@@ -16,6 +16,17 @@ var cfenv = require('cfenv');
 var https = require('https');
 var JSON = require('JSON');
 
+//for the memory watch;
+var memwatch = require('memwatch-next');
+
+memwatch.on('leak', function(info){
+    console.log("leak:", info);
+});
+
+memwatch.on('stats', function(stats){
+    console.log("stats:", stats);
+});
+
 var datacache = require('./bluemix_datacache.js');
 
 var async = require('async');
@@ -42,6 +53,25 @@ app.listen(appEnv.port, appEnv.bind, function () {
     // print a message when the server starts listening
     console.log('server starting on ' + appEnv.url);
 });
+
+var mongoDBuri;
+
+var initialMongoDBuri = function(){
+
+    var vcapServices;
+    if (process.env.VCAP_SERVICES)
+        vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+
+    if (vcapServices && vcapServices.mongolab){
+            mongoDBuri= vcapServices.mongolab[0].credentials.uri;
+    }else{
+
+          if (process.env.mongodb_uri)
+            mongoDBuri = process.env.mongodb_uri;
+    }
+}
+
+initialMongoDBuri();
 
 //set up logging for the request
 var mongoMorgan = require('mongo-morgan');
