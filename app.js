@@ -16,23 +16,52 @@ var cfenv = require('cfenv');
 var https = require('https');
 var JSON = require('JSON');
 
+var app = express();
+
+var mongoDBuri;
+
+var initialMongoDBuri = function(){
+
+    var vcapServices;
+    if (process.env.VCAP_SERVICES)
+        vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+
+    if (vcapServices && vcapServices.mongolab){
+        mongoDBuri= vcapServices.mongolab[0].credentials.uri;
+    }else{
+
+        if (process.env.mongodb_uri)
+            mongoDBuri = process.env.mongodb_uri;
+    }
+}
+
+initialMongoDBuri();
+
+var log4js = require('log4js');
+var mongoAppender = require('log4js-node-mongodb');
+
+log4js.addAppender(
+    mongoAppender.appender({connectionString: mongoDBuri}),
+    'votesavvyapp');
+
+var logger= log4js.getLogger('votesavvyapp');
+
+app.locals.logger = logger;
+
 //for the memory watch;
 var memwatch = require('memwatch-next');
 
 memwatch.on('leak', function(info){
-    console.log("leak:", info);
+    logger.error("leak:" + JSON.stringify(info));
 });
 
 memwatch.on('stats', function(stats){
-    console.log("stats:", stats);
+    logger.info("stats:" + JSON.stringify(stats));
 });
-
-var datacache = require('./bluemix_datacache.js');
 
 var async = require('async');
 
 // create a new express server
-var app = express();
 
 require('./routes/index')(app);
 // routing
@@ -54,25 +83,6 @@ app.listen(appEnv.port, appEnv.bind, function () {
     console.log('server starting on ' + appEnv.url);
 });
 
-var mongoDBuri;
-
-var initialMongoDBuri = function(){
-
-    var vcapServices;
-    if (process.env.VCAP_SERVICES)
-        vcapServices = JSON.parse(process.env.VCAP_SERVICES);
-
-    if (vcapServices && vcapServices.mongolab){
-            mongoDBuri= vcapServices.mongolab[0].credentials.uri;
-    }else{
-
-          if (process.env.mongodb_uri)
-            mongoDBuri = process.env.mongodb_uri;
-    }
-}
-
-initialMongoDBuri();
-
 //for session management
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
@@ -85,8 +95,14 @@ app.use(session({
     ttl:5*24*60*60 //5 days expiration
 }));
 
+//set up logging for the request
+var mongoMorgan = require('mongo-morgan');
+
+app.use(mongoMorgan(mongoDBuri,'combined',{immediate: true,
+                                           collection:'morganlogs'}));
 
 //DataCache
+var datacache = require('./bluemix_datacache.js');
 app.locals.datacache = datacache;
 
 var dbCredentials = {
@@ -171,7 +187,6 @@ function initializeDatabase(callback) {
         cloudant = require('cloudant')(dbCredentials.url);
 
         useDatabase(callback);
-
     } else {
 
         if (process.env.cloudant_hostname && process.env.cloudant_username && process.env.cloudant_password) {
