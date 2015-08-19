@@ -1,7 +1,7 @@
 module.exports = function (app) {
     app.get('/', function (req, res) {
 
-       res.render('app/index.html', {screen_name: null});
+        res.render('app/index.html', {screen_name: null});
 
     });
 };
