@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A tool to help people vote",
   "scripts": {
-    "start": "node --expose-gc app.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "JSON": "^1.0.0",
