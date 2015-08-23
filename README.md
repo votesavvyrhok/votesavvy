@@ -14,22 +14,15 @@ Need and independent account for:
 - [x] Github
 - [x] Zapier
 
-Current features of APIs
+Current features of app
 
-1) vote API
+1) users' sign in with twitter
 
-  Request example:
-   POST /api/vote HTTP/1.1
-   Host: localhost:8080
-   Content-Type: application/json; charset=utf-8
-   Cache-Control: no-cache
+2) users' session management with mongodb
 
-   {"voter": "kitten", "postcode": "k2n" }
+3) survey data stored in cloudant db
 
- Response:
-  {
-      "voter": "kitten",
-      "postcode": "k2n"
-  }
-  
-  
+4) caching with datacache for the used fields contained in the responses of requests to the represent
+
+5) logging with mongodb
+
