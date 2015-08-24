@@ -33,7 +33,8 @@
     "memwatch-next":"^0.2.7",
     "connect-mongo":"^0.8.2",
     "log4js":"^0.6.26",
-    "log4js-node-mongodb":"^0.1.5"
+    "log4js-node-mongodb":"^0.1.5",
+    "twitter":"^1.2.5"
   },
   "repository": {}
 }

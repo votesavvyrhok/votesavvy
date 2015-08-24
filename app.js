@@ -109,29 +109,23 @@ app.use(mongoMorgan(mongoDBuri,'combined',{immediate: true,
 var datacache = require('./bluemix_datacache.js');
 app.locals.datacache = datacache;
 
-//twitter handler is moved here
+//using a different twitter library
+var Twitter = require('twitter');
 
-var twitterLibrary = require('twitter-node-client');
-
-var myConfig = {
-    "consumerKey": "vf1TA6dx62BgDVIskWmILJKmb",
-    "consumerSecret": "j54aUNcQWiWye5uR0QC6KfcTS3LNdDmj9PEfdQp9XwCIiO3tF5",
-    "accessToken": "3252950317-fD19eCuzop2soZtO9ZjE47sGxJxCxreMvdfIN5G",
-    "accessTokenSecret": "yHQgYCvz3P3L3ckfJFZBFaro5mGfMPxYf5Hyiw6ZHyggt",
-    "callBackUrl": appEnv.url + "/signintwitters/step2"
-};
-
-var twitterHdl = new twitterLibrary.Twitter(myConfig);
-
-app.locals.twitterHdl = twitterHdl;
+var twitterHdl = new Twitter({
+    consumer_key: 'vf1TA6dx62BgDVIskWmILJKmb',
+    consumer_secret: 'j54aUNcQWiWye5uR0QC6KfcTS3LNdDmj9PEfdQp9XwCIiO3tF5',
+    access_token_key: '3252950317-fD19eCuzop2soZtO9ZjE47sGxJxCxreMvdfIN5G',
+    access_token_secret: 'yHQgYCvz3P3L3ckfJFZBFaro5mGfMPxYf5Hyiw6ZHyggt'
+});
 
 //setting the timer for checking the memory usage with a period of 1 hour
 //
 var init="init";
-
+/*
 var memStateTypes={
     init:{
-        key: "init",
+        key: "INIT",
         range: [0]
     },
     normal:{
@@ -143,12 +137,36 @@ var memStateTypes={
         range: [750, 950]
     },
     alarm1:{
-        key : "alarm1",
+        key : "ALARM-1",
         range: [950, 1050]
     },
     alarm2:{
-        key : "alarm2",
+        key : "ALARM-2",
         range: [1050, 1150]
+    }
+}
+*/
+//testing
+var memStateTypes={
+    init:{
+        key: "INIT",
+        range: [0]
+    },
+    normal:{
+        key: "NORMAL",
+        range: [0,140]
+    },
+    warning: {
+        key : "WARNING",
+        range: [140, 180]
+    },
+    alarm1:{
+        key : "ALARM-1",
+        range: [180, 220]
+    },
+    alarm2:{
+        key : "ALARM-2",
+        range: [220, 250]
     }
 }
 
@@ -171,23 +189,28 @@ var updateMonitorState = function(previous, current, frequency){
 
     //send a message if the memory usage keeps increasing in the last 10 periods
     if (memMonitor.messages == 0) {
-        var message = current + ": memory has increaed "+ memMonitor.increasedtimes
-            + " times since the latest message of " + memMonitor.state.key
-            + ", and the memory usage is at " + JSON.stringify(memMonitor.recordedusage);
+        var message = memMonitor.state.key + ": memory has increaed "+ memMonitor.increasedtimes
+            + " times since the latest message sent at " + memMonitor.state.key
+            + ", and the memory usage is " + memMonitor.recordedusage + "MB";
+        twitterHdl.post('statuses/update', {status: message},  function(error, body, response){
+            if(error)
+                logger.error("tweet message error + " + JSON.stringify(body));
+            else
+                logger.info("tweet message success " + JSON.stringify(body));
 
-        twitterHdl.postTweet(message,function(err, response, body){
-            logger.error("tweet message error + " + JSON.stringify(body));
-        }, function(success){
-            logger.info("tweet message success " + JSON.stringfy(success));
-        })
+        });
 
         memMonitor.messages = frequency;
         memMonitor.increasedtimes = 0;
     }
 }
 
-if (memMonitor.state === memStateTypes.init)
+if (memMonitor.state === memStateTypes.init){
+
+    var initmem = process.memoryUsage();
+    memMonitor.recordedusage = Math.ceil(initmem.rss/1000/1000);
     updateMonitorState(memStateTypes.init,memStateTypes.normal, 1);
+}
 
 setInterval(function(){
 
@@ -195,19 +218,19 @@ setInterval(function(){
 
     //no need to handle the situation in the case
     //that the memory usage is lower than 700MB
-    if (mem.res <= memStateTypes.normal.range[1]) {
+    if (mem.rss <= memStateTypes.normal.range[1]) {
         //test sending
         return;
     }
 
-    if (mem.res > memMonitor.recordedusage ){
+    if (mem.rss > memMonitor.recordedusage ){
         memMonitor.increasedtimes++ ;
     }else
         memMonitor.imcreasedtimes=0;
 
-    memMonitor.recordedusage = mem.res;
+    memMonitor.recordedusage = mem.rss;
 
-    var memInt = Math.ceil(mem.res/1000/1000);
+    var memInt = Math.ceil(memMonitor.recordedusage/1000/1000);
 
     //if the memory usage is in the range of warning
     //send a warning message through twitter @votesavvyrhok
