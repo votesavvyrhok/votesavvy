@@ -149,7 +149,7 @@ function addPartyData(topic, anchor) {
 /* Unhappy about loading this dynamically - we should ask for a method */
 
 function loadPollenize() {
-    var oldScript = document.getElementById("pollenize");
+    var oldScript = document.getElementById('pollenize');
 
     if (oldScript)
         oldScript.remove();
@@ -157,7 +157,7 @@ function loadPollenize() {
     var headID = document.getElementsByTagName("head")[0];
     var newScript = document.createElement('script');
     newScript.type = 'text/javascript';
-    newScript.src = '//staging.pollenize.org/widget.js';
+    newScript.src = '//pollenize.org/widget.js';
     newScript.id='pollenize';
     headID.appendChild(newScript);
 }

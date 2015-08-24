@@ -109,6 +109,108 @@ app.use(mongoMorgan(mongoDBuri,'combined',{immediate: true,
 var datacache = require('./bluemix_datacache.js');
 app.locals.datacache = datacache;
 
+//twitter handler is moved here
+
+var twitterLibrary = require('twitter-node-client').Twitter;
+
+var myConfig = {
+    "consumerKey": "vf1TA6dx62BgDVIskWmILJKmb",
+    "consumerSecret": "j54aUNcQWiWye5uR0QC6KfcTS3LNdDmj9PEfdQp9XwCIiO3tF5",
+    "accessToken": "3252950317-fD19eCuzop2soZtO9ZjE47sGxJxCxreMvdfIN5G",
+    "accessTokenSecret": "yHQgYCvz3P3L3ckfJFZBFaro5mGfMPxYf5Hyiw6ZHyggt",
+    "callBackUrl": appEnv.url + "/signintwitters/step2"
+};
+
+var twitterHdl = new Twitter(myConfig);
+
+app.locals.twitterHdl = twitterHdl;
+
+//setting the timer for checking the memory usage with a period of 1 hour
+//
+var init="init";
+var normal = "NORMAL";
+var warning = "WARNING";
+var alarm1 = "ALARM-1";
+var alarm2 = "ALARM-2";
+
+var memMonitor={
+    staus: init,
+    messages: 0,
+    recordedusage: 0,
+    increasedtimes:0
+};
+
+var updateMonitorStatus = function(previous, current, frequency){
+
+    //progress the status first
+    if (memMonitor.status === previous) {
+        memMonitor.status = current;
+        memMonitor.messages = frequency;
+    }
+
+    memMonitor.messages--;
+
+    //send a message if the memory usage keeps increasing in the last 10 periods
+    if (memMonitor.messages == 0) {
+        var message = current + ": memory has increaed "+ memMonitor.increasedtimes + " times since the latest message of " + memMonitor.status +", and the memory usage is at " + JSON.stringify(res);
+
+        twitterHdl.postTweet(message,function(err, response, body){
+            logger.error("tweet message error + " + JSON.stringify(body));
+        }, function(success){
+            logger.info("tweet message success " + JSON.stringfy(success));
+        })
+
+        memMonitor.messages = frequency;
+        memMonito.increasedtimes = 0;
+    }
+}
+
+setInterval(function(){
+
+    var mem = process.memoryUsage();
+
+    if (memMonitor.status === init)
+        updateMonitorStatus(init,normal, 1);
+
+    //no need to handle the situation in the case
+    //that the memory usage is lower than 700MB
+    if (mem.res <= 700*1000*1000) {
+        //test sending
+        return;
+    }
+
+    if (mem.res > recordedusage ){
+        increasedtimes++ ;
+    }else
+        imcreasedtimes=0;
+
+    recordedusage = mem.res;
+
+    //if the memory usage is hight than 1.1G
+    //send an alarm2 message through twitter @votesavvyrhok
+    if (mem.res > 1050*1000*1000)
+    {
+        updateMonitorStatus(alarm1, alarm2, 2);
+        return;
+    }
+
+    //if the memory usage is higher than 900MB
+    //send a alarm1 message through twitter @votesavvyrhok
+    if (mem.res > 950*1000*1000)
+    {
+        updateMonitorStatus(warning, alarm1, 5);
+        return;
+    }
+
+    //if the memory usage is higher than 700MB
+    //send a warning message through twitter @votesavvyrhok
+    if (mem.res > 700*1000*1000)
+    {
+        updateMonitorStatus(normal,warning, 10);
+        return;
+    }
+}, 60*60*1000);
+
 var dbCredentials = {
     dbs: {
         survey: {
