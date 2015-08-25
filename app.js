@@ -166,7 +166,7 @@ var memStateTypes={
     },
     alarm2:{
         key : "ALARM-2",
-        range: [220, 250]
+        range: [220, 400]
     }
 }
 
@@ -178,20 +178,26 @@ var memMonitor={
 };
 
 var updateMonitorState = function(previous, current, frequency){
-
+    var message = null;
     //progress the status first
-    if (memMonitor.state === previous) {
+    //either a normal case or the case where the state has jumped
+    if (memMonitor.state === previous || memMonitor.state != current){
+        message = current.key + ": the state of the monitor has been changed from " + memMonitor.state.key
+            + " with the memory usage around " + memMonitor.recordedusage + "MB";
         memMonitor.state = current;
         memMonitor.messages = frequency;
     }
 
-    memMonitor.messages--;
-
     //send a message if the memory usage keeps increasing in the last 10 periods
     if (memMonitor.messages == 0) {
-        var message = memMonitor.state.key + ": memory has increaed "+ memMonitor.increasedtimes
-            + " times since the latest message sent at " + memMonitor.state.key
-            + ", and the memory usage is " + memMonitor.recordedusage + "MB";
+        message = memMonitor.state.key + ": memory has increaed "+ memMonitor.increasedtimes
+            + " times since the latest " + memMonitor.state.key + " message,"
+            + " and the memory usage is around " + memMonitor.recordedusage + "MB";
+        memMonitor.messages = frequency;
+        memMonitor.increasedtimes = 0;
+    }
+
+    if (message)
         twitterHdl.post('statuses/update', {status: message},  function(error, body, response){
             if(error)
                 logger.error("tweet message error + " + JSON.stringify(body));
@@ -200,9 +206,7 @@ var updateMonitorState = function(previous, current, frequency){
 
         });
 
-        memMonitor.messages = frequency;
-        memMonitor.increasedtimes = 0;
-    }
+    memMonitor.messages--;
 }
 
 if (memMonitor.state === memStateTypes.init){
