@@ -63,7 +63,7 @@ var formdata = {
     }
 };
 
-var issuesName=[
+var issuesName = [
     "Crime and Justice",
     "Government and Transparancy",
     "Defense and International Affairs",
@@ -76,34 +76,33 @@ var issuesName=[
     "Housing"
 ]
 
-var issuesTable ={
-    "Crime and Justice":"justice",
-    "Government and Transparancy":"government-and-transparency",
+var issuesTable = {
+    "Crime and Justice": "justice",
+    "Government and Transparancy": "government-and-transparency",
     "Defense and International Affairs": "foreign-policy",
-    "Environment":"environment",
-    "Economy":"economy",
-    "Healthcare":"healthcare",
-    "Immigration":"immigration",
+    "Environment": "environment",
+    "Economy": "economy",
+    "Healthcare": "healthcare",
+    "Immigration": "immigration",
     "Aboriginal Affairs": "aboriginal-affairs",
-    "Privacy":"privacy",
-    "Housing":"housing"
+    "Privacy": "privacy",
+    "Housing": "housing"
 }
 
-var getRandomIssuesName=function(){
+var getRandomIssuesName = function () {
 
     var temp = issuesName.slice();
 
-    var randomIssues=[];
+    var randomIssues = [];
     var randomIndex;
 
     var rangeStart = 0;
-    var rangeEnd = temp.length-1;
+    var rangeEnd = temp.length - 1;
 
-    while (rangeEnd)
-    {
-        randomIndex = Math.floor(Math.random()*(rangeEnd-rangeStart+1))+rangeStart;
+    while (rangeEnd) {
+        randomIndex = Math.floor(Math.random() * (rangeEnd - rangeStart + 1)) + rangeStart;
         randomIssues.push(temp[randomIndex]);
-        temp.splice(randomIndex,1);
+        temp.splice(randomIndex, 1);
         rangeEnd--;
     }
 
@@ -116,7 +115,7 @@ var getRandomIssuesName=function(){
 
 }
 
-var removePartyElement = function(anchor){
+var removePartyElement = function (anchor) {
 
     parties = document.getElementById(anchor);
 
@@ -128,7 +127,7 @@ var removePartyElement = function(anchor){
 
 function addPartyData(topic, anchor) {
 
-    var partyData = ['conservative','new-democratic','liberal','green'];
+    var partyData = ['conservative', 'new-democratic', 'liberal', 'green'];
 
     parties = document.getElementById(anchor);
     var dataStance = '<div class="pol-widget" data-stance="canada/';
@@ -169,7 +168,7 @@ var questions = {
         prefix: "How often do you receive political information from the following sources:",
         keyword: " ",
         suffix: " ",
-        tips:["Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations.",
+        tips: ["Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations.",
             "From left to right: never to very frequently."]
     },
     "familyFriend": {
@@ -339,7 +338,7 @@ var configureSources = function () {
     }
 };
 
-var configureSourcesdata=function(){
+var configureSourcesdata = function () {
     configureSources();
 };
 
@@ -489,24 +488,24 @@ function sendData() {
     formSubmit.parms = formdata;
 }
 
-var formdataAdjustment = function(){
-  //adjust the postcode;
-   formdata.personal.postalCode = formdata.personal.postalCode.toUpperCase().replace(/\s+/g, '');
+var formdataAdjustment = function () {
+    //adjust the postcode;
+    formdata.personal.postalCode = formdata.personal.postalCode.toUpperCase().replace(/\s+/g, '');
 
 };
 
 
-var retrieveCandidate=function(candidateInfo){
+var retrieveCandidate = function (candidateInfo) {
 
-    var temp={};
-    var partyList=["Conservative", "NDP","Liberal","Green Party"];
-    var orderedList =[];
+    var temp = {};
+    var partyList = ["Conservative", "NDP", "Liberal", "Green Party"];
+    var orderedList = [];
 
-    candidateInfo.forEach(function(candidate) {
+    candidateInfo.forEach(function (candidate) {
         temp[candidate["party_name"]] = candidate;
     });
 
-    partyList.forEach(function(party){
+    partyList.forEach(function (party) {
         if (temp[party])
             orderedList.push(temp[party]);
     });
@@ -514,17 +513,17 @@ var retrieveCandidate=function(candidateInfo){
     return orderedList;
 }
 
-var SUBMITTED="submitted";
-var INIT="init";
-var VALID="valid";
-var INVALID="invalid";
-var EMPTY="empty";
+var SUBMITTED = "submitted";
+var INIT = "init";
+var VALID = "valid";
+var INVALID = "invalid";
+var EMPTY = "empty";
 
-var surveystate={
+var surveystate = {
     formdata: null,
-    infopack:{
-        topic:null,
-        postcode:null
+    infopack: {
+        topic: null,
+        postcode: null
     }
 };
 
@@ -552,7 +551,7 @@ var surveystate={
 
     configureSourcesdata();
 
-    surveystate["formdata"]=INIT;
+    surveystate["formdata"] = INIT;
 
     // See https://github.com/Polymer/polymer/issues/1381
     window.addEventListener('WebComponentsReady', function () {
@@ -587,7 +586,7 @@ var surveystate={
 
         var pages = document.querySelector('iron-pages');
 
-        var surveypage="home";
+        var surveypage = "home";
 
         var firstpage = "issues";
 
@@ -609,17 +608,17 @@ var surveystate={
 
         Array.prototype.forEach.call(nextButtons, function (button) {
             button.addEventListener('click', function () {
-                if (consent){
+                if (consent) {
                     app.switch();
 
                     //scrollup
-                    scrollHeadPanel.scroller.scrollTop=0;
+                    scrollHeadPanel.scroller.scrollTop = 0;
 
                     surveypage = pages.selected;
-                    if (surveypage === infopackpage){
+                    if (surveypage === infopackpage) {
                         categorySelect.selected = 1;
                     }
-                    if (surveypage === firstpage){
+                    if (surveypage === firstpage) {
                         categorySelect.selected = 0;
                     }
                 }
@@ -628,26 +627,24 @@ var surveystate={
 
         var categorySelect = document.querySelector('#categoryTab');
 
-        categorySelect.addEventListener('click',function(event){
+        categorySelect.addEventListener('click', function (event) {
 
-            if (categorySelect.selected == 0){
-                if (surveypage == infopackpage)
-                {
+            if (categorySelect.selected == 0) {
+                if (surveypage == infopackpage) {
                     //the infopack is opened after form submission
                     //return to the first page
                     pages.selected = firstpage;
                     surveypage = firstpage;
-                }else {
+                } else {
                     pages.selected = surveypage;
                 }
-            }else
-                if (categorySelect.selected == 1)
-                   if (surveypage != infopackpage)
-                    {
-                        pages.selected = infopackpage;
-                        openInfoPack();
-                    }
-            scrollHeadPanel.scroller.scrollTop=0;
+            } else
+            if (categorySelect.selected == 1)
+                if (surveypage != infopackpage) {
+                    pages.selected = infopackpage;
+                    openInfoPack();
+                }
+            scrollHeadPanel.scroller.scrollTop = 0;
         });
 
         // imports are loaded and elements have been registered
@@ -676,24 +673,24 @@ var surveystate={
             for (var category in storeddata) {
                 for (var subcategory in storeddata[category]) {
                     if ((category in formdata) && (subcategory in formdata[category]))
-                            formdata[category][subcategory] = storeddata[category][subcategory];
-                    }
+                        formdata[category][subcategory] = storeddata[category][subcategory];
+                }
             }
             //set up the formdata at the beginning
             formdataOperation(setDataForSubcategory);
-            surveystate["formdata"]=SUBMITTED;
+            surveystate["formdata"] = SUBMITTED;
         });
 
         app.issues = getRandomIssuesName();
 
-        app.sources=sources;
+        app.sources = sources;
 
         //initiate the options of the birthDate select
         var birthDay = document.querySelector("#yearOfBirth");
 
         var years = [null];
 
-        for (var year = 1997; year>= 1910; year--) {
+        for (var year = 1997; year >= 1910; year--) {
             years.push(year);
         };
 
@@ -732,28 +729,29 @@ var surveystate={
             console.log(app.markerlat + "," + app.markerlng);
 
             //display the postal code
-            var latlng = new mapAPI.api.LatLng(lat,lng);
+            var latlng = new mapAPI.api.LatLng(lat, lng);
 
-            var postcodefounded=false;
+            var postcodefounded = false;
 
             var postcodeFromLatLng;
-            geocoder.geocode({'location':latlng}, function(results, status){
+            geocoder.geocode({
+                'location': latlng
+            }, function (results, status) {
 
                 console.log(JSON.stringify(results));
 
-                if (status === mapAPI.api.GeocoderStatus.OK)
-                {
+                if (status === mapAPI.api.GeocoderStatus.OK) {
                     var components = results[0]["address_components"];
 
-                    components.forEach(function(item){
-                        item.types.forEach(function(type){
+                    components.forEach(function (item) {
+                        item.types.forEach(function (type) {
                             if (type === "postal_code") {
                                 postcodeFromLatLng = item.long_name;
                                 formdata.personal.postalCode = postcodeFromLatLng;
                                 setDataForSubcategory("personal", "postalCode");
                                 return;
                             }
-                       });
+                        });
                     });
                 }
             });
@@ -764,9 +762,9 @@ var surveystate={
 
         var geocoder;
 
-        mapAPI.addEventListener('api-load', function(e) {
+        mapAPI.addEventListener('api-load', function (e) {
 
-            var api=mapAPI.api;
+            var api = mapAPI.api;
             geocoder = new mapAPI.api.Geocoder();
 
             console.log("geocoder " + JSON.stringify(geocoder));
@@ -774,16 +772,17 @@ var surveystate={
 
         var postcodeInput = document.querySelector('#postalCode');
 
-        postcodeInput.addEventListener('keyup', function(event){
+        postcodeInput.addEventListener('keyup', function (event) {
             if (postcodeInput.invalid)
                 return;
 
-            var address=postcodeInput.value.concat('+CA');
+            var address = postcodeInput.value.concat('+CA');
 
-            geocoder.geocode({'address':address}, function(results, status){
+            geocoder.geocode({
+                'address': address
+            }, function (results, status) {
 
-                if (status == mapAPI.api.GeocoderStatus.OK)
-                {
+                if (status == mapAPI.api.GeocoderStatus.OK) {
                     app.markerlat = results[0].geometry.location.G;
                     app.markerlng = results[0].geometry.location.K;
                     console.log(app.markerlat + "," + app.markerlng);
@@ -800,7 +799,7 @@ var surveystate={
 
         var formSubmission = function () {
             //retrieve the data from the form
-            formdataOperation(getDataForSubcategory,formdataAdjustment);
+            formdataOperation(getDataForSubcategory, formdataAdjustment);
 
             endingTime = new Date();
             formdata.timestamp.end = endingTime.getFullYear() + "-" + endingTime.getMonth() + "-" + endingTime.getDate() + " " +
@@ -809,7 +808,7 @@ var surveystate={
             console.log(formdata);
             formSubmitCall.body = JSON.stringify(formdata);
             console.log(formSubmitCall.body);
-            surveystate["formdata"]=SUBMITTED;
+            surveystate["formdata"] = SUBMITTED;
             formSubmitCall.generateRequest();
         };
 
@@ -819,42 +818,41 @@ var surveystate={
 
         var getCandidateCall = document.querySelector('#getCandidateCall');
 
-        var getCandidate = function(){
+        var getCandidate = function () {
 
             app.candidates = [];
             //get the postal code
-            var postcode = getDataForSubcategory("personal","postalCode");
+            var postcode = getDataForSubcategory("personal", "postalCode");
 
             //build the url of the call
-            if (postcode)
-            {
+            if (postcode) {
                 postcode = postcode.toUpperCase().replace(/\s+/g, '');
                 app.yourpostcode = postcode;
-                getCandidateCall.url="/represent/postcode/".concat(postcode);
+                getCandidateCall.url = "/represent/postcode/".concat(postcode);
 
-                surveystate["infopack"]["postcode"]= VALID;
+                surveystate["infopack"]["postcode"] = VALID;
                 //ajax call
                 getCandidateCall.generateRequest();
-            }else
-                surveystate["infopack"]["postcode"]=INVALID;
+            } else
+                surveystate["infopack"]["postcode"] = INVALID;
 
         };
 
-        getCandidateCall.addEventListener('response', function(event){
+        getCandidateCall.addEventListener('response', function (event) {
             console.log(event.detail.response);
             if (event.detail.response)
-                app.candidates=retrieveCandidate(event.detail.response.candidates_centroid);
-            else{
+                app.candidates = retrieveCandidate(event.detail.response.candidates_centroid);
+            else {
                 app.attentionVisible = true;
-                app.attention="There is an error while retrieving the information of canadidates in your location... Try again!"
+                app.attention = "There is an error while retrieving the information of canadidates in your location... Try again!"
             }
         });
 
-        var getPollenizeIssues = function(){
-            var yourissue = getDataForSubcategory("issues","selected");
+        var getPollenizeIssues = function () {
+            var yourissue = getDataForSubcategory("issues", "selected");
 
-            if (!yourissue){
-                surveystate["infopack"]["topic"]=EMPTY;
+            if (!yourissue) {
+                surveystate["infopack"]["topic"] = EMPTY;
                 return;
             }
 
@@ -863,13 +861,12 @@ var surveystate={
             //remove the elements of partyInfo
             removePartyElement('partyInfo');
 
-            if (!topic)
-            {
-                surveystate["infopack"]["topic"]=INVALID;
-            }else{
+            if (!topic) {
+                surveystate["infopack"]["topic"] = INVALID;
+            } else {
                 addPartyData(topic, 'partyInfo');
                 loadPollenize();
-                surveystate["infopack"]["topic"]=VALID;
+                surveystate["infopack"]["topic"] = VALID;
             }
         }
 
@@ -880,13 +877,13 @@ var surveystate={
             openInfoPack();
         });
 
-        var openInfoPack = function(){
+        var openInfoPack = function () {
 
             app.attentionVisible = false;
 
-            var notes=[];
+            var notes = [];
 
-            if (surveystate["formdata"]!=SUBMITTED){
+            if (surveystate["formdata"] != SUBMITTED) {
                 app.attentionVisible = true;
                 if (app.signinvisible)
                     notes.push("You may see your voting information after submitting your response!");
@@ -897,21 +894,21 @@ var surveystate={
             }
 
             getPollenizeIssues();
-            if (surveystate["infopack"]["topic"]!=VALID){
+            if (surveystate["infopack"]["topic"] != VALID) {
                 app.attentionVisible = true;
-                if (surveystate["infopack"]["topic"]===EMPTY)
+                if (surveystate["infopack"]["topic"] === EMPTY)
                     notes.push("Your response should contain a valid issue!");
                 else
                     notes.push("There is no information on your issue temporarily!");
             }
 
             getCandidate();
-            if (surveystate["infopack"]["postcode"]!=VALID){
+            if (surveystate["infopack"]["postcode"] != VALID) {
                 app.attentionVisible = true;
                 notes.push("Your response should contain a valid location!");
             }
 
-            app.attentions=notes;
+            app.attentions = notes;
 
         }
     });

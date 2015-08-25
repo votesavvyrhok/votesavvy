@@ -121,8 +121,7 @@ var twitterHdl = new Twitter({
 
 //setting the timer for checking the memory usage with a period of 1 hour
 //
-var init="init";
-/*
+
 var memStateTypes={
     init:{
         key: "INIT",
@@ -142,13 +141,15 @@ var memStateTypes={
     },
     alarm2:{
         key : "ALARM-2",
-        range: [1050, 1150]
+        range: [1050, 1300]
     }
-}
-*/
+};
+
 //testing
+
+/*
 var memStateTypes={
-    init:{
+     init:{
         key: "INIT",
         range: [0]
     },
@@ -169,6 +170,7 @@ var memStateTypes={
         range: [220, 400]
     }
 }
+*/
 
 var memMonitor={
     state: memStateTypes.init,
@@ -183,7 +185,6 @@ var updateMonitorState = function(previous, current, frequency){
     //either a normal case or the case where the state has jumped
     if (memMonitor.state === previous || memMonitor.state != current){
         message = current.key + ": the state of the monitor has been changed from " + memMonitor.state.key
-            + " with the memory usage around " + Math.ceil(memMonitor.recordedusage/1000)/1000 + "MB";
         memMonitor.state = current;
         memMonitor.messages = frequency;
     }
@@ -191,20 +192,23 @@ var updateMonitorState = function(previous, current, frequency){
     //send a message if the memory usage keeps increasing in the last 10 periods
     if (memMonitor.messages == 0) {
         message = memMonitor.state.key + ": memory has increaed "+ memMonitor.increasedtimes
-            + " times since the latest " + memMonitor.state.key + " message,"
-            + " and the memory usage is around " + memMonitor.recordedusage + "MB";
+            + " times since the latest " + memMonitor.state.key + " message"
         memMonitor.messages = frequency;
         memMonitor.increasedtimes = 0;
     }
 
-    if (message)
-        twitterHdl.post('statuses/update', {status: message},  function(error, body, response){
-            if(error)
+    if (message) {
+        message += ". The memory usage is around " + Math.ceil(memMonitor.recordedusage/1000)/1000+ "MB" +
+            " at " + appEnv.url;
+
+        twitterHdl.post('statuses/update', {status: message}, function (error, body, response) {
+            if (error)
                 logger.error("tweet message error + " + JSON.stringify(body));
             else
                 logger.info("tweet message success " + JSON.stringify(body));
 
         });
+    }
 
     memMonitor.messages--;
 }
@@ -212,7 +216,7 @@ var updateMonitorState = function(previous, current, frequency){
 if (memMonitor.state === memStateTypes.init){
 
     var initmem = process.memoryUsage();
-    memMonitor.recordedusage = Math.ceil(initmem.rss/1000/1000);
+    memMonitor.recordedusage = initmem.rss;
     updateMonitorState(memStateTypes.init,memStateTypes.normal, 1);
 }
 
