@@ -183,7 +183,7 @@ var updateMonitorState = function(previous, current, frequency){
     //either a normal case or the case where the state has jumped
     if (memMonitor.state === previous || memMonitor.state != current){
         message = current.key + ": the state of the monitor has been changed from " + memMonitor.state.key
-            + " with the memory usage around " + memMonitor.recordedusage + "MB";
+            + " with the memory usage around " + Math.ceil(memMonitor.recordedusage/1000)/1000 + "MB";
         memMonitor.state = current;
         memMonitor.messages = frequency;
     }
