@@ -162,6 +162,9 @@ function loadPollenize() {
     newScript.type = 'text/javascript';
     newScript.src = '//pollenize.org/widget.js';
     newScript.id = 'pollenize';
+    newScript.onerror=function(){
+        app.getPollenizeError = true;
+    };
     headID.appendChild(newScript);
 }
 
@@ -172,32 +175,31 @@ var questions = {
         prefix: "How often do you receive political information from the following sources:",
         keyword: " ",
         suffix: " ",
-        tips: ["Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations.",
-            "From left to right: never to very frequently."]
+        tips: ["Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations."]
     },
     "familyFriend": {
         prefix: "If you get political information from ",
         keyword: "Family and Friends",
         suffix: ", how often do you get it via the following channels?",
-        tips: [generalTip]
+        tips: []
     },
     "politicianParty": {
         prefix: "If you get political information from ",
         keyword: "Politicians or Political Parties",
         suffix: ", how often do you get it via the following channels?",
-        tips: [generalTip]
+        tips: []
     },
     "traditionalMedia": {
         prefix: "If you get political information from ",
         keyword: "Traditional Media",
         suffix: ", how often do you get it via the following channels?",
-        tips: [generalTip]
+        tips: []
     },
     "civilSociety": {
         prefix: "If you get political information from ",
         keyword: "Civil Society",
         suffix: " (including charities, nonprofits and grassroots organizations), how often do you get it via the following channels?",
-        tips: [generalTip]
+        tips: []
     }
 };
 
@@ -334,6 +336,7 @@ var configureSources = function () {
 
         //configure the sources
         var sourceItem = {
+            key:key,
             question: questions[key],
             evaluations: evaluations[key]
         };
@@ -395,18 +398,14 @@ function getDataForSubcategory(category, subcategory) {
             value = element.value;
         }
 
-        if (subcategory === 'markedLocation') {
-            formdata[category][subcategory].lat = element.latitude;
-            formdata[category][subcategory].lng = element.longitude;
-        } else {
-            if (category in formdata) {
-                if (subcategory in formdata[category]) {
-                    formdata[category][subcategory] = value;
-                } else {
-                    formdata[category] = value;
-                }
+        if (category in formdata) {
+            if (subcategory in formdata[category]) {
+               formdata[category][subcategory] = value;
+            } else {
+               formdata[category] = value;
             }
         }
+
         return value;
     }
 }
@@ -467,14 +466,6 @@ function setDataForSubcategory(category, subcategory) {
             element.value = value;
         }
 
-        if (element.localName === 'google-map-marker') {
-            if (value) {
-                if (value.lat)
-                    element.latitude = value.lat;
-                if (value.lng)
-                    element.longitude = value.lng;
-            }
-        }
     }
 }
 
@@ -567,6 +558,7 @@ var surveystate = {
 
     surveystate["formdata"] = INIT;
 
+    app.getPollenizeError=false;
     // See https://github.com/Polymer/polymer/issues/1381
     window.addEventListener('WebComponentsReady', function () {
 
@@ -697,7 +689,11 @@ var surveystate = {
 
         app.issues = getRandomIssuesName();
 
-        app.sources = sources;
+        app.sources = sources[0];
+        app.familyFriend = sources[1];
+        app.politicianParty = sources[2];
+        app.traditionalMedia = sources[3];
+        app.civilSociety = sources[4];
 
         //initiate the options of the birthDate select
         var birthDay = document.querySelector("#yearOfBirth");
@@ -800,14 +796,14 @@ var surveystate = {
 
         };
 
+        getCandidateCall.addEventListener('error', function (event) {
+            app.getCandidatesError = true;
+            app.candidates=[];
+        });
+
         getCandidateCall.addEventListener('response', function (event) {
-            console.log(event.detail.response);
             if (event.detail.response)
                 app.candidates = retrieveCandidate(event.detail.response.candidates_centroid);
-            else {
-                app.getCandidatesError = true;
-                app.candidates=[];
-            }
         });
 
         var getPollenizeIssues = function () {
@@ -817,6 +813,8 @@ var surveystate = {
                 surveystate["infopack"]["topic"] = EMPTY;
                 return;
             }
+
+            app.getPollenizeError=false;
 
             app.yourissue = yourissue;
             var topic = issuesTable[yourissue];

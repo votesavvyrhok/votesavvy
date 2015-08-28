@@ -19,14 +19,14 @@ module.exports = function (app) {
             if (!err) {
                 //in the cache
                 logger.info("cache retrieved");
-                res.send(data);
+                res.status(200).json(data);
             }
             else{
 
                 represent.postalCode(req.params.code, function (err, data) {
                 if (err) {
-                    logger.info("represent error" + JSON.stringify(err));
-                    res.send(null);
+                    logger.error("represent error" + err);
+                    res.status(400).json({status:err});
                 }
                 else {
                     //store the candidate information in the cache only
@@ -56,7 +56,8 @@ module.exports = function (app) {
                             logger.info("cache stored: " + JSON.stringify(body));
                         }
                     });
-                    res.send(usedInfo);
+                   // res.status(200).json(usedInfo);
+                    res.status(400).json({status:err});
                 }
                 });
             }
