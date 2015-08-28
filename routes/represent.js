@@ -56,8 +56,7 @@ module.exports = function (app) {
                             logger.info("cache stored: " + JSON.stringify(body));
                         }
                     });
-                   // res.status(200).json(usedInfo);
-                    res.status(400).json({status:err});
+                   res.status(200).json(usedInfo);
                 }
                 });
             }
