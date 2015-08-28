@@ -109,6 +109,166 @@ app.use(mongoMorgan(mongoDBuri,'combined',{immediate: true,
 var datacache = require('./bluemix_datacache.js');
 app.locals.datacache = datacache;
 
+//using a different twitter library
+var Twitter = require('twitter');
+
+var twitterHdl = new Twitter({
+    consumer_key: 'vf1TA6dx62BgDVIskWmILJKmb',
+    consumer_secret: 'j54aUNcQWiWye5uR0QC6KfcTS3LNdDmj9PEfdQp9XwCIiO3tF5',
+    access_token_key: '3252950317-fD19eCuzop2soZtO9ZjE47sGxJxCxreMvdfIN5G',
+    access_token_secret: 'yHQgYCvz3P3L3ckfJFZBFaro5mGfMPxYf5Hyiw6ZHyggt'
+});
+
+//setting the timer for checking the memory usage with a period of 1 hour
+//
+
+var memStateTypes={
+    init:{
+        key: "INIT",
+        range: [0]
+    },
+    normal:{
+        key: "NORMAL",
+        range: [0,750]
+    },
+    warning: {
+        key : "WARNING",
+        range: [750, 950]
+    },
+    alarm1:{
+        key : "ALARM-1",
+        range: [950, 1050]
+    },
+    alarm2:{
+        key : "ALARM-2",
+        range: [1050, 1300]
+    }
+};
+
+//testing
+
+/*
+var memStateTypes={
+     init:{
+        key: "INIT",
+        range: [0]
+    },
+    normal:{
+        key: "NORMAL",
+        range: [0,140]
+    },
+    warning: {
+        key : "WARNING",
+        range: [140, 180]
+    },
+    alarm1:{
+        key : "ALARM-1",
+        range: [180, 220]
+    },
+    alarm2:{
+        key : "ALARM-2",
+        range: [220, 400]
+    }
+}
+*/
+
+var memMonitor={
+    state: memStateTypes.init,
+    messages: 0,
+    recordedusage: 0,
+    increasedtimes:0
+};
+
+var updateMonitorState = function(previous, current, frequency){
+    var message = null;
+    //progress the status first
+    //either a normal case or the case where the state has jumped
+    if (memMonitor.state === previous || memMonitor.state != current){
+        message = current.key + ": the state of the monitor has been changed from " + memMonitor.state.key
+        memMonitor.state = current;
+        memMonitor.messages = frequency;
+    }
+
+    //send a message if the memory usage keeps increasing in the last 10 periods
+    if (memMonitor.messages == 0) {
+        message = memMonitor.state.key + ": memory has increaed "+ memMonitor.increasedtimes
+            + " times since the latest " + memMonitor.state.key + " message"
+        memMonitor.messages = frequency;
+        memMonitor.increasedtimes = 0;
+    }
+
+    if (message) {
+        message += ". The memory usage is around " + Math.ceil(memMonitor.recordedusage/1000)/1000+ "MB" +
+            " at " + appEnv.url;
+
+        twitterHdl.post('statuses/update', {status: message}, function (error, body, response) {
+            if (error)
+                logger.error("tweet message error + " + JSON.stringify(body));
+            else
+                logger.info("tweet message success " + JSON.stringify(body));
+
+        });
+    }
+
+    memMonitor.messages--;
+}
+
+if (memMonitor.state === memStateTypes.init){
+
+    var initmem = process.memoryUsage();
+    memMonitor.recordedusage = initmem.rss;
+    updateMonitorState(memStateTypes.init,memStateTypes.normal, 1);
+}
+
+setInterval(function(){
+
+    var mem = process.memoryUsage();
+
+    //no need to handle the situation in the case
+    //that the memory usage is lower than 700MB
+    if (mem.rss <= memStateTypes.normal.range[1]) {
+        //test sending
+        return;
+    }
+
+    if (mem.rss > memMonitor.recordedusage ){
+        memMonitor.increasedtimes++ ;
+    }else
+        memMonitor.imcreasedtimes=0;
+
+    memMonitor.recordedusage = mem.rss;
+
+    var memInt = Math.ceil(memMonitor.recordedusage/1000/1000);
+
+    //if the memory usage is in the range of warning
+    //send a warning message through twitter @votesavvyrhok
+    if (memInt > memStateTypes.warning.range[0] &&
+        memInt <= memStateTypes.warning.range[1])
+    {
+        updateMonitorState(memStateTypes.normal,memStateTypes.warning, 10);
+        return;
+    }
+
+    //if the memory usage is in the range of alarm1
+    //send a alarm1 message through twitter @votesavvyrhok
+    if (memInt > memStateTypes.alarm1.range[0] &&
+        memInt <= memStateTypes.alarm1.range[1])
+    {
+        updateMonitorState(memStateTypes.warning,memStateTypes.alarm1, 5);
+        return;
+    }
+
+    //if the memory usage is in the range of alarm2
+    //send a alarm1 message through twitter @votesavvyrhok
+    if (memInt > memStateTypes.alarm2.range[0] &&
+        memInt <= memStateTypes.alarm2.range[1])
+    {
+        updateMonitorState(memStateTypes.alarm1,memStateTypes.alarm2, 2);
+        return;
+    }
+
+}, 60*60*1000);
+
 var dbCredentials = {
     dbs: {
         survey: {

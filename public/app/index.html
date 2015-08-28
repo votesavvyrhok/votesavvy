@@ -120,7 +120,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                             <p class="paper-font-body2">The quiz is part of an academic study led by researchers at Carleton University and the University of Oxford. The study aims to uncover how young Canadians collect political information, how they participate in politics, and the political issues Canadian youth are concerned with. The quiz should take less than 5 minutes to complete.</p>
                             <p class="paper-font-body2">Participation is voluntary and responses will be kept confidential. You are free to not respond to any questions you choose with no penalty.</p>
-                            <p class="paper-font-body2">If you have questions at any time about the study or the procedures, you may contact Elizabeth Dubois: <a href="mailto:elizabeth.dubois@oii.ox.ac.uk">elizabeth.dubois@oii.ox.ac.uk</a> .</p>
+                            <p class="paper-font-body2">If you have questions at any time about the study or the procedures, you may contact Elizabeth Dubois: <a href="mailto:elizabeth.dubois@oii.ox.ac.uk">elizabeth.dubois@oii.ox.ac.uk</a>.</p>
                         </paper-material>
 
                         <template is='dom-if' id="twittersignin" if="{{signinvisible}}">
@@ -147,7 +147,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                         <!-- SECTION 1 -->
 
-                        <div class="subject"> Please choose the political issue you care about the most from this list:</div>
+                        <div class="subject"> If you had to pick a single political issue that you care about the most from the following list, what would it be?</div>
                         <paper-material elevation="1">
                             <paper-item>
                                 <paper-radio-group id="selected">
@@ -161,7 +161,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-fab id="issuesButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="interest" animateInitialSelection="true" id="interest">
+                    <section data-route="interest" animateInitialSelection="true">
                         <div class="subject ">How frequently do you actively look for information about the 2015 federal election?</div>
                         <paper-material elevation="1 ">
 
@@ -180,26 +180,99 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-fab id="interestButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="sources" id="sources">
-
-                        <template is="dom-repeat" items="{{sources}}">
-                            <div class="subject ">{{item.question.prefix}}<span style="font-style: italic">{{item.question.keyword}}</span>{{item.question.suffix}}</div>
-                            <template is="dom-repeat" items="{{item.question.tips}}">
+                    <section data-route="sources">
+                            <div class="subject ">{{sources.question.prefix}}<span style="font-style: italic">{{sources.question.keyword}}</span>{{sources.question.suffix}}</div>
+                            <template is="dom-repeat" items="{{sources.question.tips}}">
                                 <div class="ratinginfo">{{item}}</div>
                             </template>
                             <paper-material elevation="1 ">
                                 <paper-item>
                                     <paper-item-body two-line>
-                                        <template is="dom-repeat" items="{{item.evaluations}}">
+                                        <template is="dom-repeat" items="{{sources.evaluations}}">
                                             <div class="mediaitem">{{item.title}}</div>
                                             <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
                                         </template>
                                     </paper-item-body>
                                 </paper-item>
                             </paper-material>
-                        </template>
 
-                        <paper-fab id="sourcesButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                        <paper-fab class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="familyFriend">
+                        <div class="subject ">{{familyFriend.question.prefix}}<span style="font-style: italic">{{familyFriend.question.keyword}}</span>{{familyFriend.question.suffix}}</div>
+                        <template is="dom-repeat" items="{{familyFriend.question.tips}}">
+                            <div class="ratinginfo">{{item}}</div>
+                        </template>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <template is="dom-repeat" items="{{familyFriend.evaluations}}">
+                                        <div class="mediaitem">{{item.title}}</div>
+                                        <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
+                                    </template>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="politicianParty">
+                        <div class="subject ">{{politicianParty.question.prefix}}<span style="font-style: italic">{{politicianParty.question.keyword}}</span>{{politicianParty.question.suffix}}</div>
+                        <template is="dom-repeat" items="{{politicanParty.question.tips}}">
+                            <div class="ratinginfo">{{item}}</div>
+                        </template>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <template is="dom-repeat" items="{{politicianParty.evaluations}}">
+                                        <div class="mediaitem">{{item.title}}</div>
+                                        <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
+                                    </template>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="traditionalMedia">
+                        <div class="subject ">{{traditionalMedia.question.prefix}}<span style="font-style: italic">{{traditionalMedia.question.keyword}}</span>{{traditionalMedia.question.suffix}}</div>
+                        <template is="dom-repeat" items="{{traditionalMedia.question.tips}}">
+                            <div class="ratinginfo">{{item}}</div>
+                        </template>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <template is="dom-repeat" items="{{traditionalMedia.evaluations}}">
+                                        <div class="mediaitem">{{item.title}}</div>
+                                        <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
+                                    </template>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="civilSociety">
+                        <div class="subject ">{{civilSociety.question.prefix}}<span style="font-style: italic">{{civilSociety.question.keyword}}</span>{{civilSociety.question.suffix}}</div>
+                        <template is="dom-repeat" items="{{civilSociety.question.tips}}">
+                            <div class="ratinginfo">{{item}}</div>
+                        </template>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <template is="dom-repeat" items="{{civilSociety.evaluations}}">
+                                        <div class="mediaitem">{{item.title}}</div>
+                                        <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
+                                    </template>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
                     <section data-route="activity" id="activity">
@@ -238,7 +311,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     <paper-checkbox class="choice" id="mastersStudent" label="Large ">Master's student</paper-checkbox>
                                     <paper-checkbox class="choice" id="phdStudent" label="Large ">PhD/post-doctoral students</paper-checkbox>
                                     <paper-checkbox class="choice" id="collegeStudentApprentice" label="Large ">College student or other training (e.g. full-time apprenticeship)</paper-checkbox>
-                                    <paper-checkbox class="choice" id="home" label="Large ">Full-time doing housework, looking after children or other persons</paper-checkbox>
+                                    <paper-checkbox class="choice" id="house" label="Large ">Full-time doing housework, looking after children or other persons</paper-checkbox>
                                     <paper-checkbox class="choice" id="retired" label="Large ">Retired</paper-checkbox>
                                     <paper-checkbox class="choice" id="undisclosed" label="Large ">Prefer not to disclose</paper-checkbox>
                                 </paper-item-body>
@@ -272,20 +345,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <div class="subject ">Please enter your postal code on the line below (e.g. K1A 0A9)</div>
                         <div class="ratinginfo ">Tip: This helps researchers understand differences across the country and helps Vote Savvy give you information about candidates in your area.</div>
                         <paper-material elevation="1 ">
-                            <paper-input auto-capitalize="characters" auto-validate id="postalCode" char-counter pattern="^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]( )?\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="7" error-message="Please follow the format of canadian postal code!">
+                            <paper-input auto-validate id="postalCode" char-counter pattern="^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]( )?\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="7" error-message="Please follow the format of canadian postal code!">
                             </paper-input>
 
-                            <p>Or, select a location in the following map: </p>
                             <google-maps-api api-key="AIzaSyClOfzJ1sj6XSB4WRm7_oHGEG0M8Z1FFxk" id="mapAPI"></google-maps-api>
-                            <google-map api-key="AIzaSyClOfzJ1sj6XSB4WRm7_oHGEG0M8Z1FFxk" click-events="true" mouse-events="true" latitude="{{lat}}" longitude="{{lng}}">
-                                <google-map-marker id="markedLocation" latitude="{{markerlat}}" longitude="{{markerlng}}" draggable="true">
-                                </google-map-marker>
-                            </google-map>
+                            <template is='dom-if' id="map" if="{{mapdisplay}}">
+                                <google-map api-key="AIzaSyClOfzJ1sj6XSB4WRm7_oHGEG0M8Z1FFxk" >
+                                </google-map>
+                            </template>
                         </paper-material>
                         <paper-fab id="personalButton" class="nextButton" icon="arrow-forward"></paper-fab>
                     </section>
 
-                    <section data-route="email" id="email">
+                    <section data-route="email" id="emailroute">
                         <div class="subject ">What is your email address?</div>
                         <div class="ratinginfo ">Tip: Your email address will be kept confidential and you will only be contacted for research purposes.</div>
                         <paper-material elevation="1">
@@ -317,7 +389,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
 
                         <div class="subject ">How likely are you to vote in the 2015 federal election? </div>
-                        <div class="ratinginfo ">Tip: From left to right: Very unlikely to very likely</div>
                         <paper-material elevation="1">
                             <paper-item>
                                 <paper-item-body>
@@ -340,16 +411,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </template>
 
                         <div class="subject ">You said <span style="font-style: italic">{{yourissue}}</span> was your top issue. This is where each of the major parties stands on this issue :</div>
+                        <div class="ratinginfo">Tip: Want to learn what other parties (not currently represented in the House of Commons) think? Check out <a href="http://www.pollenize.org"> Pollenize.org </a>. You can also find information about other crucial issues in the election with Pollenize!</div>
                         <paper-material elevation="1">
-                            <div id="partyInfo"></div>
+                            <template is="dom-if" if="{{getPollenizeError}}">
+                                <p> Looks like we are having some troubles connecting with Pollenize. You can browse the issues directly from <a href="https://pollenize.org/">the website</a>.</p>
+                            </template>
+
+                            <template is="dom-if" if="{{!getPollenizeError}}">
+                                <div id="partyInfo"></div>
+                            </template>
+
                             <div style="font-size:small">Powered by Pollenize</div>
                         </paper-material>
 
                         <div class="subject ">Based on your postal code <span style="font-style: italic">{{yourpostcode}}</span>, these are the candidates that you can vote for in the election :</div>
+                        <div class="ratinginfo">Tip: Many candidates are not confirmed yet so be sure to check back or see the <a href="http://www.elections.ca/content2.aspx?section=can&dir=cand/lst&document=index&lang=e">official list</a> from Elections Canada.</div>
                         <paper-material elevation="1">
+                            <template is="dom-if" if="{{getCandidatesError}}">
+                                <p> Looks like we are having trouble finding the candidates in your riding, check the <a href="http://www.elections.ca/scripts/vis/FindED?L=e&PAGEID=20"> Elections Canada website</a> to see if candidates have been announced yet.</p>
+                            </template>
+
                             <template is="dom-repeat" items="{{candidates}}">
                                 <div>
-                                    <img class="photo" src="{{item.photo_url}}"> </img>
+                                    <img class="photo" src="{{item.photo_url}}" onerror="this.src='./images/image-not-available.png';"> </img>
                                     <div class="list">
                                         <paper-item>
                                             <paper-item-body two-line>
@@ -381,11 +465,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                         </paper-material>
 
-                        <div class="subject ">general voting instructions </div>
+                        <div class="subject ">Your voting guide </div>
                         <paper-material elevation="1">
                             <paper-item>
                                 <paper-item-body>
-                                    <p>from Elections Canada</p>
+                                    <p style="font-size:medium">Be prepared to vote in the October 19, 2015 election:</p>
+                                    <ul>
+                                        <li><a href="https://ereg.elections.ca/CWelcome.aspx?lang=e" target="_blank">Register online.</a></li>
+                                        <li><a href="http://www.elections.ca/home.aspx" target="_blank">Find your polling station </a></li>
+                                        <li><a href="http://www.elections.ca/content2.aspx?section=vote&dir=spec&document=index&lang=e">Vote by mail</a></li>
+                                    </ul>
                                 </paper-item-body>
                             </paper-item>
                         </paper-material>

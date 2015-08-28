@@ -64,27 +64,27 @@ var formdata = {
 };
 
 var issuesName = [
-    "Crime and Justice",
-    "Government and Transparancy",
-    "Defense and International Affairs",
+    "Crime and justice",
+    "Government and transparancy",
+    "Foreign policy",
     "Environment",
     "Economy",
     "Healthcare",
     "Immigration",
-    "Aboriginal Affairs",
+    "Aboriginal affairs",
     "Privacy",
     "Housing"
 ]
 
 var issuesTable = {
-    "Crime and Justice": "justice",
-    "Government and Transparancy": "government-and-transparency",
-    "Defense and International Affairs": "foreign-policy",
+    "Crime and justice": "justice",
+    "Government and transparancy": "government-and-transparency",
+    "Foreign policy": "foreign-policy",
     "Environment": "environment",
     "Economy": "economy",
     "Healthcare": "healthcare",
     "Immigration": "immigration",
-    "Aboriginal Affairs": "aboriginal-affairs",
+    "Aboriginal affairs": "aboriginal-affairs",
     "Privacy": "privacy",
     "Housing": "housing"
 }
@@ -124,15 +124,19 @@ var removePartyElement = function (anchor) {
         parties.removeChild(parties.firstChild);
     }
 }
+var province = null;
 
 function addPartyData(topic, anchor) {
 
-    var partyData = ['conservative', 'new-democratic', 'liberal', 'green'];
+    var partyData = ['conservative-party', 'new-democratic-party', 'liberal-party', 'green-party'];
 
     parties = document.getElementById(anchor);
     var dataStance = '<div class="pol-widget" data-stance="canada/';
-    var identifier = '-party/';
+    var identifier = '/';
     var end = '"></div>';
+
+    if (province ==='QC')
+        partyData.push('bloc-quebecois');
 
     for (var p in partyData) {
         var paperItem = document.createElement('paper-item');
@@ -158,6 +162,9 @@ function loadPollenize() {
     newScript.type = 'text/javascript';
     newScript.src = '//pollenize.org/widget.js';
     newScript.id = 'pollenize';
+    newScript.onerror=function(){
+        app.getPollenizeError = true;
+    };
     headID.appendChild(newScript);
 }
 
@@ -168,38 +175,37 @@ var questions = {
         prefix: "How often do you receive political information from the following sources:",
         keyword: " ",
         suffix: " ",
-        tips: ["Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations.",
-            "From left to right: never to very frequently."]
+        tips: ["Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations."]
     },
     "familyFriend": {
         prefix: "If you get political information from ",
         keyword: "Family and Friends",
         suffix: ", how often do you get it via the following channels?",
-        tips: [generalTip]
+        tips: []
     },
     "politicianParty": {
         prefix: "If you get political information from ",
         keyword: "Politicians or Political Parties",
         suffix: ", how often do you get it via the following channels?",
-        tips: [generalTip]
+        tips: []
     },
     "traditionalMedia": {
         prefix: "If you get political information from ",
         keyword: "Traditional Media",
         suffix: ", how often do you get it via the following channels?",
-        tips: [generalTip]
+        tips: []
     },
     "civilSociety": {
         prefix: "If you get political information from ",
         keyword: "Civil Society",
         suffix: " (including charities, nonprofits and grassroots organizations), how often do you get it via the following channels?",
-        tips: [generalTip]
+        tips: []
     }
 };
 
-var evaluations = {
-    "sources": [{
-        title: "Family and Friends",
+var evaluations= {
+    "sources":[{
+        title:"Family and Friends",
         id: "familyFriend"
     }, {
         title: "Politicians, candidates and political parties",
@@ -330,6 +336,7 @@ var configureSources = function () {
 
         //configure the sources
         var sourceItem = {
+            key:key,
             question: questions[key],
             evaluations: evaluations[key]
         };
@@ -391,18 +398,14 @@ function getDataForSubcategory(category, subcategory) {
             value = element.value;
         }
 
-        if (subcategory === 'markedLocation') {
-            formdata[category][subcategory].lat = element.latitude;
-            formdata[category][subcategory].lng = element.longitude;
-        } else {
-            if (category in formdata) {
-                if (subcategory in formdata[category]) {
-                    formdata[category][subcategory] = value;
-                } else {
-                    formdata[category] = value;
-                }
+        if (category in formdata) {
+            if (subcategory in formdata[category]) {
+               formdata[category][subcategory] = value;
+            } else {
+               formdata[category] = value;
             }
         }
+
         return value;
     }
 }
@@ -463,14 +466,6 @@ function setDataForSubcategory(category, subcategory) {
             element.value = value;
         }
 
-        if (element.localName === 'google-map-marker') {
-            if (value) {
-                if (value.lat)
-                    element.latitude = value.lat;
-                if (value.lng)
-                    element.longitude = value.lng;
-            }
-        }
     }
 }
 
@@ -497,7 +492,8 @@ var formdataAdjustment = function () {
 
 var retrieveCandidate = function (candidateInfo) {
 
-    var temp = {};
+    var displayedList = candidateInfo;
+    /*
     var partyList = ["Conservative", "NDP", "Liberal", "Green Party"];
     var orderedList = [];
 
@@ -506,11 +502,20 @@ var retrieveCandidate = function (candidateInfo) {
     });
 
     partyList.forEach(function (party) {
-        if (temp[party])
+        if (temp[party]) {
             orderedList.push(temp[party]);
+            delete temp[party];
+        }
     });
 
-    return orderedList;
+    console.log(temp);
+
+    for (var k in temp){
+        orderedList.push(temp[k]);
+    }
+    */
+
+    return displayedList;
 }
 
 var SUBMITTED = "submitted";
@@ -553,6 +558,7 @@ var surveystate = {
 
     surveystate["formdata"] = INIT;
 
+    app.getPollenizeError=false;
     // See https://github.com/Polymer/polymer/issues/1381
     window.addEventListener('WebComponentsReady', function () {
 
@@ -678,12 +684,17 @@ var surveystate = {
             }
             //set up the formdata at the beginning
             formdataOperation(setDataForSubcategory);
+            setProvince();
             surveystate["formdata"] = SUBMITTED;
         });
 
         app.issues = getRandomIssuesName();
 
-        app.sources = sources;
+        app.sources = sources[0];
+        app.familyFriend = sources[1];
+        app.politicianParty = sources[2];
+        app.traditionalMedia = sources[3];
+        app.civilSociety = sources[4];
 
         //initiate the options of the birthDate select
         var birthDay = document.querySelector("#yearOfBirth");
@@ -703,60 +714,7 @@ var surveystate = {
             birthDay.appendChild(option);
         });
 
-        var gmap = document.querySelector('google-map');
-
-        //initiate the map location
-
-        gmap.addEventListener('api-load', function (e) {
-            app.lat = 45.387372;
-            app.lng = -75.695090;
-
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var location = position.coords;
-                app.lat = location.latitude;
-                app.lng = location.longitude;
-                console.log(location);
-            });
-        });
-
-        gmap.addEventListener('google-map-click', function (event) {
-            var location;
-            console.log(event);
-            var lat = event.detail.latLng.lat();
-            var lng = event.detail.latLng.lng();
-            app.markerlat = lat;
-            app.markerlng = lng;
-            console.log(app.markerlat + "," + app.markerlng);
-
-            //display the postal code
-            var latlng = new mapAPI.api.LatLng(lat, lng);
-
-            var postcodefounded = false;
-
-            var postcodeFromLatLng;
-            geocoder.geocode({
-                'location': latlng
-            }, function (results, status) {
-
-                console.log(JSON.stringify(results));
-
-                if (status === mapAPI.api.GeocoderStatus.OK) {
-                    var components = results[0]["address_components"];
-
-                    components.forEach(function (item) {
-                        item.types.forEach(function (type) {
-                            if (type === "postal_code") {
-                                postcodeFromLatLng = item.long_name;
-                                formdata.personal.postalCode = postcodeFromLatLng;
-                                setDataForSubcategory("personal", "postalCode");
-                                return;
-                            }
-                        });
-                    });
-                }
-            });
-
-        });
+        app.mapdisplay = false;
 
         var mapAPI = document.querySelector('google-maps-api');
 
@@ -772,9 +730,16 @@ var surveystate = {
 
         var postcodeInput = document.querySelector('#postalCode');
 
-        postcodeInput.addEventListener('keyup', function (event) {
+        postcodeInput.addEventListener("change", function(){
             if (postcodeInput.invalid)
                 return;
+            setProvince();
+        });
+
+        var setProvince = function(){
+
+            if (!postcodeInput.value)
+                return null;
 
             var address = postcodeInput.value.concat('+CA');
 
@@ -783,13 +748,13 @@ var surveystate = {
             }, function (results, status) {
 
                 if (status == mapAPI.api.GeocoderStatus.OK) {
-                    app.markerlat = results[0].geometry.location.G;
-                    app.markerlng = results[0].geometry.location.K;
-                    console.log(app.markerlat + "," + app.markerlng);
+                    //get the province of the location from the results
+                    var split= results[0].formatted_address.split(',');
+                    var secondPart = split[1].split(' ');
+                    province = secondPart[1];
                 }
             });
-        });
-
+        }
 
         var formSubmitCall = document.querySelector('#formSubmitCall');
 
@@ -838,14 +803,14 @@ var surveystate = {
 
         };
 
+        getCandidateCall.addEventListener('error', function (event) {
+            app.getCandidatesError = true;
+            app.candidates=[];
+        });
+
         getCandidateCall.addEventListener('response', function (event) {
-            console.log(event.detail.response);
             if (event.detail.response)
                 app.candidates = retrieveCandidate(event.detail.response.candidates_centroid);
-            else {
-                app.attentionVisible = true;
-                app.attention = "There is an error while retrieving the information of canadidates in your location... Try again!"
-            }
         });
 
         var getPollenizeIssues = function () {
@@ -855,6 +820,8 @@ var surveystate = {
                 surveystate["infopack"]["topic"] = EMPTY;
                 return;
             }
+
+            app.getPollenizeError=false;
 
             app.yourissue = yourissue;
             var topic = issuesTable[yourissue];
