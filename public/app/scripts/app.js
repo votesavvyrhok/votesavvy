@@ -64,27 +64,27 @@ var formdata = {
 };
 
 var issuesName = [
-    "Crime and Justice",
-    "Government and Transparancy",
-    "Defense and International Affairs",
+    "Crime and justice",
+    "Government and transparancy",
+    "Foreign policy",
     "Environment",
     "Economy",
     "Healthcare",
     "Immigration",
-    "Aboriginal Affairs",
+    "Aboriginal affairs",
     "Privacy",
     "Housing"
 ]
 
 var issuesTable = {
-    "Crime and Justice": "justice",
-    "Government and Transparancy": "government-and-transparency",
-    "Defense and International Affairs": "foreign-policy",
+    "Crime and justice": "justice",
+    "Government and transparancy": "government-and-transparency",
+    "Foreign policy": "foreign-policy",
     "Environment": "environment",
     "Economy": "economy",
     "Healthcare": "healthcare",
     "Immigration": "immigration",
-    "Aboriginal Affairs": "aboriginal-affairs",
+    "Aboriginal affairs": "aboriginal-affairs",
     "Privacy": "privacy",
     "Housing": "housing"
 }
@@ -124,15 +124,19 @@ var removePartyElement = function (anchor) {
         parties.removeChild(parties.firstChild);
     }
 }
+var province = null;
 
 function addPartyData(topic, anchor) {
 
-    var partyData = ['conservative', 'new-democratic', 'liberal', 'green'];
+    var partyData = ['conservative-party', 'new-democratic-party', 'liberal-party', 'green-party'];
 
     parties = document.getElementById(anchor);
     var dataStance = '<div class="pol-widget" data-stance="canada/';
-    var identifier = '-party/';
+    var identifier = '/';
     var end = '"></div>';
+
+    if (province ==='QC')
+        partyData.push('bloc-quebecois');
 
     for (var p in partyData) {
         var paperItem = document.createElement('paper-item');
@@ -497,7 +501,8 @@ var formdataAdjustment = function () {
 
 var retrieveCandidate = function (candidateInfo) {
 
-    var temp = {};
+    var displayedList = candidateInfo;
+    /*
     var partyList = ["Conservative", "NDP", "Liberal", "Green Party"];
     var orderedList = [];
 
@@ -506,11 +511,20 @@ var retrieveCandidate = function (candidateInfo) {
     });
 
     partyList.forEach(function (party) {
-        if (temp[party])
+        if (temp[party]) {
             orderedList.push(temp[party]);
+            delete temp[party];
+        }
     });
 
-    return orderedList;
+    console.log(temp);
+
+    for (var k in temp){
+        orderedList.push(temp[k]);
+    }
+    */
+
+    return displayedList;
 }
 
 var SUBMITTED = "submitted";
@@ -703,60 +717,7 @@ var surveystate = {
             birthDay.appendChild(option);
         });
 
-        var gmap = document.querySelector('google-map');
-
-        //initiate the map location
-
-        gmap.addEventListener('api-load', function (e) {
-            app.lat = 45.387372;
-            app.lng = -75.695090;
-
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var location = position.coords;
-                app.lat = location.latitude;
-                app.lng = location.longitude;
-                console.log(location);
-            });
-        });
-
-        gmap.addEventListener('google-map-click', function (event) {
-            var location;
-            console.log(event);
-            var lat = event.detail.latLng.lat();
-            var lng = event.detail.latLng.lng();
-            app.markerlat = lat;
-            app.markerlng = lng;
-            console.log(app.markerlat + "," + app.markerlng);
-
-            //display the postal code
-            var latlng = new mapAPI.api.LatLng(lat, lng);
-
-            var postcodefounded = false;
-
-            var postcodeFromLatLng;
-            geocoder.geocode({
-                'location': latlng
-            }, function (results, status) {
-
-                console.log(JSON.stringify(results));
-
-                if (status === mapAPI.api.GeocoderStatus.OK) {
-                    var components = results[0]["address_components"];
-
-                    components.forEach(function (item) {
-                        item.types.forEach(function (type) {
-                            if (type === "postal_code") {
-                                postcodeFromLatLng = item.long_name;
-                                formdata.personal.postalCode = postcodeFromLatLng;
-                                setDataForSubcategory("personal", "postalCode");
-                                return;
-                            }
-                        });
-                    });
-                }
-            });
-
-        });
+        app.mapdisplay = false;
 
         var mapAPI = document.querySelector('google-maps-api');
 
@@ -783,13 +744,14 @@ var surveystate = {
             }, function (results, status) {
 
                 if (status == mapAPI.api.GeocoderStatus.OK) {
-                    app.markerlat = results[0].geometry.location.G;
-                    app.markerlng = results[0].geometry.location.K;
-                    console.log(app.markerlat + "," + app.markerlng);
+                    //get the province of the location from the results
+                    var split= results[0].formatted_address.split(',');
+                    var secondPart = split[1].split(' ');
+                    province=secondPart[1];
+                    console.log("province: " + province);
                 }
             });
         });
-
 
         var formSubmitCall = document.querySelector('#formSubmitCall');
 
@@ -843,8 +805,8 @@ var surveystate = {
             if (event.detail.response)
                 app.candidates = retrieveCandidate(event.detail.response.candidates_centroid);
             else {
-                app.attentionVisible = true;
-                app.attention = "There is an error while retrieving the information of canadidates in your location... Try again!"
+                app.getCandidatesError = true;
+                app.candidates=[];
             }
         });
 
