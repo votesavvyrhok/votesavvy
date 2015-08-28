@@ -684,6 +684,7 @@ var surveystate = {
             }
             //set up the formdata at the beginning
             formdataOperation(setDataForSubcategory);
+            setProvince();
             surveystate["formdata"] = SUBMITTED;
         });
 
@@ -729,9 +730,16 @@ var surveystate = {
 
         var postcodeInput = document.querySelector('#postalCode');
 
-        postcodeInput.addEventListener('keyup', function (event) {
+        postcodeInput.addEventListener("change", function(){
             if (postcodeInput.invalid)
                 return;
+            setProvince();
+        });
+
+        var setProvince = function(){
+
+            if (!postcodeInput.value)
+                return null;
 
             var address = postcodeInput.value.concat('+CA');
 
@@ -743,11 +751,10 @@ var surveystate = {
                     //get the province of the location from the results
                     var split= results[0].formatted_address.split(',');
                     var secondPart = split[1].split(' ');
-                    province=secondPart[1];
-                    console.log("province: " + province);
+                    province = secondPart[1];
                 }
             });
-        });
+        }
 
         var formSubmitCall = document.querySelector('#formSubmitCall');
 

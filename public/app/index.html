@@ -389,7 +389,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
 
                         <div class="subject ">How likely are you to vote in the 2015 federal election? </div>
-                        <div class="ratinginfo ">Tip: From left to right: Very unlikely to very likely</div>
                         <paper-material elevation="1">
                             <paper-item>
                                 <paper-item-body>
@@ -426,7 +425,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-material>
 
                         <div class="subject ">Based on your postal code <span style="font-style: italic">{{yourpostcode}}</span>, these are the candidates that you can vote for in the election :</div>
-                        <div class="ratinginfo">Tip: Many candidates are not confirmed yet so be sure to check back or see the <a href="http://www.elections.ca/content2.aspx?section=can&dir=cand/lst&document=index&lang=e">official list</a> from Elections Canada.
+                        <div class="ratinginfo">Tip: Many candidates are not confirmed yet so be sure to check back or see the <a href="http://www.elections.ca/content2.aspx?section=can&dir=cand/lst&document=index&lang=e">official list</a> from Elections Canada.</div>
                         <paper-material elevation="1">
                             <template is="dom-if" if="{{getCandidatesError}}">
                                 <p> Looks like we are having trouble finding the candidates in your riding, check the <a href="http://www.elections.ca/scripts/vis/FindED?L=e&PAGEID=20"> Elections Canada website</a> to see if candidates have been announced yet.</p>
