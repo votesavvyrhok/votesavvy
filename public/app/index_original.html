@@ -1,0 +1,508 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="VoteSavvy Survey" />
+    <title>VoteSavvy Survey</title>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- Chrome for Android theme color -->
+    <meta name="theme-color" content="#303F9F">
+
+    <!-- Web Application Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Tile color for Win8 -->
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="VoteSavvy Survey">
+    <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="VoteSavvy Survey">
+    <link rel="apple-touch-icon" href="./images/touch/apple-touch-icon.png">
+
+    <!-- Tile icon for Win8 (144x144) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="../app/styles/main.css">
+    <!-- endbuild-->
+
+    <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+    <script src="../app/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- endbuild -->
+
+    <!-- will be replaced with elements/elements.vulcanized.html -->
+    <link rel="import" href="../app/elements/elements.html">
+    <!-- endreplace-->
+</head>
+
+<body unresolved class="fullbleed layout vertical">
+    <span id="browser-sync-binding"></span>
+    <template is="dom-bind" id="app">
+
+        <paper-scroll-header-panel class="flex" fixed="true">
+
+
+            <!-- Main Toolbar -->
+            <paper-toolbar class="standard" id="mainToolbar">
+
+                <span class="flex"></span>
+                <span class="bottom">
+                    <a href="http://www.votesavvy.ca"><img src="http://static1.squarespace.com/static/5596a2f8e4b0f75fd2971413/t/55a7f472e4b0bd72ffa3c1ce/1438448341501/?format=1500w"> </a>
+                </span>
+
+                <!-- Application name -->
+                <div class="middle paper-font-display2 app-name">
+                </div>
+
+                <!-- Application sub title -->
+                <div class="middle">
+                </div>
+
+                <span id="screenName" class="vslogo"><%= screen_name %></span>
+                <!-- Toolbar icons -->
+
+                <div class="horizontal-section-container" style="color:white;">
+                    <div class="horizontal-section">
+                        <paper-menu-button>
+                            <paper-icon-button icon="account-circle" class="dropdown-trigger"></paper-icon-button>
+                            <paper-menu id="avatarMenu" class="dropdown-content">
+                                <template is='dom-if' id="menuTemplate" if="{{!signinvisible}}">
+                                    <paper-item onclick="location.href='signintwitters/logout'">Logout</paper-item>
+                                </template>
+                                <template is='dom-if' id="menuTemplate" if="{{signinvisible}}">
+                                    <paper-item onclick="location.href='signintwitters/step1'">Signin</paper-item>
+                                </template>
+                            </paper-menu>
+                        </paper-menu-button>
+                    </div>
+                </div>
+
+                <paper-tabs id="categoryTab" selected="0" class="bottom self-end" style=" margin-bottom:0;color:white;font-size:14px;">
+                    <paper-tab>SURVEY</paper-tab>
+                    <paper-tab>INFO PACK</paper-tab>
+                </paper-tabs>
+
+                <!--                <div class="bottom flex self-start"></div>-->
+            </paper-toolbar>
+
+
+            <!-- Main Content -->
+            <div class="content" id="mainContent">
+                <iron-pages attr-for-selected="data-route" selected="home">
+
+                    <section data-route="home" animateInitialSelection="true" id="home">
+                        <div class="subject"> Thanks for stopping by! Are you ready to get Vote Savvy? This quiz helps you identify the information you need.</div>
+                        <paper-material elevation="1">
+                            <!-- my-greeting></my-greeting -->
+
+                            <!-- p class="paper-font-subhead">You now have:</p -->
+                            <!-- my-list></my-list -->
+
+                            <p class="paper-font-body2">The quiz is part of an academic study led by researchers at Carleton University and the University of Oxford. The study aims to uncover how young Canadians collect political information, how they participate in politics, and the political issues Canadian youth are concerned with. The quiz should take less than 5 minutes to complete.</p>
+                            <p class="paper-font-body2">Participation is voluntary and responses will be kept confidential. You are free to not respond to any questions you choose with no penalty.</p>
+                            <p class="paper-font-body2">If you have questions at any time about the study or the procedures, you may contact Elizabeth Dubois: <a href="mailto:elizabeth.dubois@oii.ox.ac.uk">elizabeth.dubois@oii.ox.ac.uk</a>.</p>
+                        </paper-material>
+
+                        <template is='dom-if' id="twittersignin" if="{{signinvisible}}">
+                            <paper-material elevation="1">
+                                <p class="paper-font-body2">If you want, you can sign in to Twitter now to speed up the quiz later. Don’t have Twitter? No problem! You don’t need it for the quiz.</p>
+                                <p class="paper-font-body2">Tip: By connecting with Twitter you are allowing the researcher to gain contextual information which can help us better understand young voters in Canada. Your data will remain confidential and will not be shared with anyone beyond the research team.</p>
+                                <input type="image" src="../images/sign-in-with-twitter-gray.png" onclick="location.href='signintwitters/step1'" />
+                            </paper-material>
+                        </template>
+
+                        <paper-material elevation="1">
+                            <p class="paper-font-body2">By ticking the box below you are stating ‘I have read the above information and agree to participate in this research project. I am at least 18 years of age.'</p>
+                            <paper-checkbox id="consentCheckbox">I Consent</paper-checkbox>
+                        </paper-material>
+
+                        <paper-fab id="consentButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                        <p class="nextButton">Start Quiz! &nbsp </p>
+                        <paper-toast id="toaster" text="We need your consent to continue!"></paper-toast>
+
+
+                    </section>
+
+                    <section data-route="issues" animateInitialSelection="true" id="issues">
+
+                        <!-- SECTION 1 -->
+
+                        <div class="subject"> If you had to pick a single political issue that you care about the most from the following list, what would it be?</div>
+                        <paper-material elevation="1">
+                            <paper-item>
+                                <paper-radio-group id="selected">
+                                    <template is="dom-repeat" items="{{issues}}">
+                                        <paper-radio-button class="choice" name="{{item}}" label="{{item}}">{{item}}</paper-radio-button>
+                                    </template>
+                                </paper-radio-group>
+                            </paper-item>
+
+                        </paper-material>
+                        <paper-fab id="issuesButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="interest" animateInitialSelection="true">
+                        <div class="subject ">How frequently do you actively look for information about the 2015 federal election?</div>
+                        <paper-material elevation="1 ">
+
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <paper-radio-group id="interest">
+                                        <paper-radio-button class="choice " name="1" label="Never">Never</paper-radio-button>
+                                        <paper-radio-button class="choice " name="2" label="Little">A little (less than weekly)</paper-radio-button>
+                                        <paper-radio-button class="choice " name="3" label="Frequently">Frequently (weekly to several times a week)</paper-radio-button>
+                                        <paper-radio-button class="choice " name="4" label="Very frequently">Very frequently (daily or more)</paper-radio-button>
+                                    </paper-radio-group>
+                                </paper-item-body>
+                            </paper-item>
+
+                        </paper-material>
+                        <paper-fab id="interestButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="sources">
+                            <div class="subject ">{{sources.question.prefix}}<span style="font-style: italic">{{sources.question.keyword}}</span>{{sources.question.suffix}}</div>
+                            <template is="dom-repeat" items="{{sources.question.tips}}">
+                                <div class="ratinginfo">{{item}}</div>
+                            </template>
+                            <paper-material elevation="1 ">
+                                <paper-item>
+                                    <paper-item-body two-line>
+                                        <template is="dom-repeat" items="{{sources.evaluations}}">
+                                            <div class="mediaitem">{{item.title}}</div>
+                                            <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
+                                        </template>
+                                    </paper-item-body>
+                                </paper-item>
+                            </paper-material>
+
+                        <paper-fab class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="familyFriend">
+                        <div class="subject ">{{familyFriend.question.prefix}}<span style="font-style: italic">{{familyFriend.question.keyword}}</span>{{familyFriend.question.suffix}}</div>
+                        <template is="dom-repeat" items="{{familyFriend.question.tips}}">
+                            <div class="ratinginfo">{{item}}</div>
+                        </template>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <template is="dom-repeat" items="{{familyFriend.evaluations}}">
+                                        <div class="mediaitem">{{item.title}}</div>
+                                        <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
+                                    </template>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="politicianParty">
+                        <div class="subject ">{{politicianParty.question.prefix}}<span style="font-style: italic">{{politicianParty.question.keyword}}</span>{{politicianParty.question.suffix}}</div>
+                        <template is="dom-repeat" items="{{politicanParty.question.tips}}">
+                            <div class="ratinginfo">{{item}}</div>
+                        </template>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <template is="dom-repeat" items="{{politicianParty.evaluations}}">
+                                        <div class="mediaitem">{{item.title}}</div>
+                                        <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
+                                    </template>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="traditionalMedia">
+                        <div class="subject ">{{traditionalMedia.question.prefix}}<span style="font-style: italic">{{traditionalMedia.question.keyword}}</span>{{traditionalMedia.question.suffix}}</div>
+                        <template is="dom-repeat" items="{{traditionalMedia.question.tips}}">
+                            <div class="ratinginfo">{{item}}</div>
+                        </template>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <template is="dom-repeat" items="{{traditionalMedia.evaluations}}">
+                                        <div class="mediaitem">{{item.title}}</div>
+                                        <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
+                                    </template>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="civilSociety">
+                        <div class="subject ">{{civilSociety.question.prefix}}<span style="font-style: italic">{{civilSociety.question.keyword}}</span>{{civilSociety.question.suffix}}</div>
+                        <template is="dom-repeat" items="{{civilSociety.question.tips}}">
+                            <div class="ratinginfo">{{item}}</div>
+                        </template>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <template is="dom-repeat" items="{{civilSociety.evaluations}}">
+                                        <div class="mediaitem">{{item.title}}</div>
+                                        <paper-slider id="{{item.id}}" snaps="true" pin min="0 " max="5 " step="1 "></paper-slider>
+                                    </template>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="activity" id="activity">
+
+                        <div class="subject ">During the past 12 months I have:</div>
+                        <div class="ratinginfo ">Tip: Please select all that apply.</div>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-item-body two-line>
+                                    <paper-checkbox id="face">Discussed a political or societal issue face-to-face or over the phone</paper-checkbox>
+                                    <paper-checkbox id="message">Used email or instant messaging to discuss a political or societal issue</paper-checkbox>
+                                    <paper-checkbox id="social">Circulated, (re)posted or embedded political information or content on social media such as Facebook, Twitter, blogging site or other social media</paper-checkbox>
+                                    <paper-checkbox id="petition">Signed a petition</paper-checkbox>
+                                    <paper-checkbox id="protest">Participated in a protest or demonstration</paper-checkbox>
+                                    <paper-checkbox id="volunteerPolitical">Volunteered for a political party</paper-checkbox>
+                                    <paper-checkbox id="donatePolitical">Donated to a political party</paper-checkbox>
+                                    <paper-checkbox id="volunteerCharity">Volunteered for a charity, community organization or cause</paper-checkbox>
+                                    <paper-checkbox id="donateCharity">Raised money for, or donated money to, a charity, community organization or cause</paper-checkbox>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+                        <paper-fab id="activityButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="work" id="work">
+                        <div class="subject ">What's your current working situation:</div>
+                        <div class="ratinginfo ">Tip: Please select all that apply.</div>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-item-body data-route="work">
+                                    <paper-checkbox class="choice" id="fullTime" label="Small ">Working full time (30+ hours a week)</paper-checkbox>
+                                    <paper-checkbox class="choice" id="partTime" label="Medium ">Working part time (8-29 hours a week)</paper-checkbox>
+                                    <paper-checkbox class="choice" id="unemployed" label="Large ">Unemployed</paper-checkbox>
+                                    <paper-checkbox class="choice" id="disabled" label="Large ">Permanently sick or disabled</paper-checkbox>
+                                    <paper-checkbox class="choice" id="undergradStudent" label="Large ">Undergraduate student</paper-checkbox>
+                                    <paper-checkbox class="choice" id="mastersStudent" label="Large ">Master's student</paper-checkbox>
+                                    <paper-checkbox class="choice" id="phdStudent" label="Large ">PhD/post-doctoral students</paper-checkbox>
+                                    <paper-checkbox class="choice" id="collegeStudentApprentice" label="Large ">College student or other training (e.g. full-time apprenticeship)</paper-checkbox>
+                                    <paper-checkbox class="choice" id="house" label="Large ">Full-time doing housework, looking after children or other persons</paper-checkbox>
+                                    <paper-checkbox class="choice" id="retired" label="Large ">Retired</paper-checkbox>
+                                    <paper-checkbox class="choice" id="undisclosed" label="Large ">Prefer not to disclose</paper-checkbox>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+                        <paper-fab id="workButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+
+                    <section data-route="personal" id="personal">
+                        <div class="subject ">Gender (self identified):</div>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <paper-radio-group id="gender">
+                                    <paper-radio-button class="choice " name="female" label="Small ">Female</paper-radio-button>
+                                    <paper-radio-button class="choice " name="male" label="Medium ">Male</paper-radio-button>
+                                    <paper-radio-button class="choice " name="other" label="Large ">Other</paper-radio-button>
+                                    <paper-radio-button class="choice " name="undisclosed" label="Large ">Prefer not to state</paper-radio-button>
+                                </paper-radio-group>
+                            </paper-item>
+                        </paper-material>
+                        <div class="subject ">What year were you born?</div>
+                        <paper-material elevation="1 ">
+                            <paper-item>
+                                <select id="yearOfBirth">
+                                </select>
+                                <br>
+                            </paper-item>
+
+                        </paper-material>
+                        <div class="subject ">Please enter your postal code on the line below (e.g. K1A 0A9)</div>
+                        <div class="ratinginfo ">Tip: This helps researchers understand differences across the country and helps Vote Savvy give you information about candidates in your area.</div>
+                        <paper-material elevation="1 ">
+                            <paper-input auto-validate id="postalCode" char-counter pattern="^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]( )?\d[abceghjklmnprstvxyzABCEGHJKLMNPRSTVWXYZ]\d$" maxlength="7" error-message="Please follow the format of canadian postal code!">
+                            </paper-input>
+
+                            <google-maps-api api-key="AIzaSyClOfzJ1sj6XSB4WRm7_oHGEG0M8Z1FFxk" id="mapAPI"></google-maps-api>
+                            <template is='dom-if' id="map" if="{{mapdisplay}}">
+                                <google-map api-key="AIzaSyClOfzJ1sj6XSB4WRm7_oHGEG0M8Z1FFxk" >
+                                </google-map>
+                            </template>
+                        </paper-material>
+                        <paper-fab id="personalButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="email" id="emailroute">
+                        <div class="subject ">What is your email address?</div>
+                        <div class="ratinginfo ">Tip: Your email address will be kept confidential and you will only be contacted for research purposes.</div>
+                        <paper-material elevation="1">
+                            <paper-item>
+                                <paper-input id="email" char-counter auto-validate pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$" maxlength="40" error-message="Please enter a valid email address!"></paper-input>
+                            </paper-item>
+                        </paper-material>
+
+                        <div class="subject ">If you have Twitter, what is your Twitter handle? (e.g. @VoteSavvy)</div>
+                        <div class="ratinginfo ">Tip: By connecting with Twitter you are allowing the researcher to gain contextual information which can help us better understand young voters in Canada. Your data will remain confidential and will not be shared with anyone beyond the research team.</div>
+                        <paper-material elevation="1">
+                            <paper-item>
+                                <paper-input id="twitter" char-counter auto-validate pattern="^@?(\w){1,15}$" maxlength="20" error-message="Please enter a valid twitter user name!"></paper-input>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab id="emailButton" class="nextButton" icon="arrow-forward"></paper-fab>
+                    </section>
+
+                    <section data-route="lastPage" id="lastPage">
+                        <div class="subject ">Young people are amongst the least likely to vote in Canadian elections. Why do you think this is the case?</div>
+                        <paper-material elevation="1">
+                            <paper-input id="youthVoting"></paper-input>
+                        </paper-material>
+
+                        <div class="subject ">What do you think is the most important issue facing Canadians today? </div>
+                        <paper-material elevation="1">
+                            <paper-input id="proposedIssue"></paper-input>
+                        </paper-material>
+
+                        <div class="subject ">How likely are you to vote in the 2015 federal election? </div>
+                        <paper-material elevation="1">
+                            <paper-item>
+                                <paper-item-body>
+                                    <paper-slider id="yourParticipation" snaps="true" pin="true" min="0 " max="4 " step="1 "></paper-slider>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+
+                        <paper-fab id="endButton" class="nextButton" icon="file-upload"></paper-fab>
+                        <p class="nextButton">All done! Click here to submit your responses and get your custom information kit for the 2015 election! &nbsp </p>
+
+                    </section>
+
+                    <section data-route="infopack" id="infopack">
+
+                        <template is='dom-if' id="infoAttention" if="{{attentionVisible}}">
+                            <template is="dom-repeat" items="{{attentions}}">
+                                <div class="subject ">{{item}}</div>
+                            </template>
+                        </template>
+
+                        <div class="subject ">You said <span style="font-style: italic">{{yourissue}}</span> was your top issue. This is where each of the major parties stands on this issue :</div>
+                        <div class="ratinginfo">Tip: Want to learn what other parties (not currently represented in the House of Commons) think? Check out <a href="http://www.pollenize.org"> Pollenize.org </a>. You can also find information about other crucial issues in the election with Pollenize!</div>
+                        <paper-material elevation="1">
+                            <template is="dom-if" if="{{getPollenizeError}}">
+                                <p> Looks like we are having some troubles connecting with Pollenize. You can browse the issues directly from <a href="https://pollenize.org/">the website</a>.</p>
+                            </template>
+
+                            <template is="dom-if" if="{{!getPollenizeError}}">
+                                <div id="partyInfo"></div>
+                            </template>
+
+                            <div style="font-size:small">Powered by Pollenize</div>
+                        </paper-material>
+
+                        <div class="subject ">Based on your postal code <span style="font-style: italic">{{yourpostcode}}</span>, these are the candidates that you can vote for in the election :</div>
+                        <div class="ratinginfo">Tip: Many candidates are not confirmed yet so be sure to check back or see the <a href="http://www.elections.ca/content2.aspx?section=can&dir=cand/lst&document=index&lang=e">official list</a> from Elections Canada.</div>
+                        <paper-material elevation="1">
+                            <template is="dom-if" if="{{getCandidatesError}}">
+                                <p> Looks like we are having trouble finding the candidates in your riding, check the <a href="http://www.elections.ca/scripts/vis/FindED?L=e&PAGEID=20"> Elections Canada website</a> to see if candidates have been announced yet.</p>
+                            </template>
+
+                            <template is="dom-repeat" items="{{candidates}}">
+                                <div>
+                                    <img class="photo" src="{{item.photo_url}}" onerror="this.src='./images/image-not-available.png';"> </img>
+                                    <div class="list">
+                                        <paper-item>
+                                            <paper-item-body two-line>
+                                                <div class="label"> Name: </div>
+                                                <div> <span>{{item.name}}</span>
+                                                </div>
+                                            </paper-item-body>
+                                        </paper-item>
+
+                                        <paper-item>
+                                            <paper-item-body two-line>
+                                                <div class="label"> Party: </div>
+                                                <div> <span>{{item.party_name}}</span>
+                                                </div>
+                                            </paper-item-body>
+                                        </paper-item>
+
+                                        <paper-item>
+                                            <paper-item-body two-line>
+                                                <div class="label"> Website: </div>
+                                                <div>
+                                                    <template is="dom-if" if="{{item.personalurlfield}}">
+                                                    <a href="{{item.personal_url}}" target="_blank"> <span>{{item.personal_url}}</span> </a>
+                                                    </template>
+                                                    <template is="dom-if" if="{{!item.personalurlfield}}">
+                                                        <a href="http://www.elections.ca/content2.aspx?section=can&dir=cand/lst&document=index&lang=e" target="_blank"> <span>search the offical list</span> </a>
+                                                    </template>
+                                                </div>
+                                            </paper-item-body>
+                                        </paper-item>
+                                    </div>
+                                </div>
+                            </template>
+
+                        </paper-material>
+
+                        <div class="subject ">Your voting guide </div>
+                        <paper-material elevation="1">
+                            <paper-item>
+                                <paper-item-body>
+                                    <p style="font-size:medium">Be prepared to vote in the October 19, 2015 election:</p>
+                                    <ul>
+                                        <li><a href="https://ereg.elections.ca/CWelcome.aspx?lang=e" target="_blank">Register online.</a></li>
+                                        <li><a href="http://www.elections.ca/home.aspx" target="_blank">Find your polling station </a></li>
+                                        <li><a href="http://www.elections.ca/content2.aspx?section=vote&dir=spec&document=index&lang=e">Vote by mail</a></li>
+                                    </ul>
+                                </paper-item-body>
+                            </paper-item>
+                        </paper-material>
+                    </section>
+
+                    <iron-ajax method="GET" id="getCandidateCall" contentType="application/json" handle-as="json" debounce-duration="300">
+                    </iron-ajax>
+
+                    <iron-ajax method="GET" id="formRetrieveCall" url="/survey/data" contentType="application/json" handle-as="json" debounce-duration="300">
+                    </iron-ajax>
+
+                    <iron-ajax method="POST" id="formSubmitCall" url="../survey/submit" contentType="application/json" handle-as="json" debounce-duration="300">
+                    </iron-ajax>
+
+                </iron-pages>
+
+            </div>
+        </paper-scroll-header-panel>
+
+    </template>
+    <!-- build:js scripts/app.js -->
+    <script src="../app/scripts/app.js "></script>
+    <!-- endbuild-->
+</body>
+
+</html>
