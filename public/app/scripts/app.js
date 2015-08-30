@@ -323,13 +323,13 @@ var configureSources = function () {
     for (var key in questions) {
         var formItem = {};
 
-        evaluations[key].forEach(function (eval) {
+        evaluations[key].forEach(function (item) {
             //configure the formdata
-            formItem[eval.id] = null;
+            formItem[item.id] = null;
 
             //configure the sourcedata
             //the id is as <question.key><evaluation.id>
-            eval.id = key.concat(eval.id);
+            item.id = key.concat(item.id);
         });
 
         formdata[key] = formItem;
@@ -493,27 +493,16 @@ var formdataAdjustment = function () {
 var retrieveCandidate = function (candidateInfo) {
 
     var displayedList = candidateInfo;
-    /*
-    var partyList = ["Conservative", "NDP", "Liberal", "Green Party"];
-    var orderedList = [];
 
-    candidateInfo.forEach(function (candidate) {
-        temp[candidate["party_name"]] = candidate;
-    });
-
-    partyList.forEach(function (party) {
-        if (temp[party]) {
-            orderedList.push(temp[party]);
-            delete temp[party];
+    candidateInfo.forEach(function(item){
+        if (!item.personal_url)
+        {
+            item.personalurlfield = false;
+        }
+        else{
+            item.personalurlfield=true;
         }
     });
-
-    console.log(temp);
-
-    for (var k in temp){
-        orderedList.push(temp[k]);
-    }
-    */
 
     return displayedList;
 }
