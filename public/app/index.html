@@ -126,6 +126,11 @@ input:invalid {
     width: 400px;
 }
 
+.slide-example {
+     width: 100%;
+     height: auto
+}
+
 .pol-divider {
     padding: 10px;
 }
@@ -27945,7 +27950,7 @@ Fired whenever the directions service returns a result.
                 <div class="middle">
                 </div>
 
-                <span id="screenName" class="vslogo"><%= screen_name %></span>
+                <span id="screenName" class="vslogo">&lt;%= screen_name %&gt;</span>
                 <!-- Toolbar icons -->
 
                 <div class="horizontal-section-container" style="color:white;">
@@ -28051,6 +28056,7 @@ Fired whenever the directions service returns a result.
                             <div class="subject ">{{sources.question.prefix}}<span style="font-style: italic">{{sources.question.keyword}}</span>{{sources.question.suffix}}</div>
                             <template is="dom-repeat" items="{{sources.question.tips}}">
                                 <div class="ratinginfo">{{item}}</div>
+                                <img class="slide-example" src="../images/slide-bar-survey.png" style="width:600px;height:100px">
                             </template>
                             <paper-material elevation="1 ">
                                 <paper-item>
