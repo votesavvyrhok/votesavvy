@@ -85,6 +85,12 @@ input:invalid {
     width: 400px;
 }
 
+.slide-example {
+     width: 100%;
+     height: auto;
+     padding:10px
+}
+
 .pol-divider {
     padding: 10px;
 }
