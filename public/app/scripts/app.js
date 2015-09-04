@@ -673,8 +673,8 @@ var surveystate = {
             }
             //set up the formdata at the beginning
             formdataOperation(setDataForSubcategory);
-            setProvince();
             surveystate["formdata"] = SUBMITTED;
+            setProvince();
         });
 
         app.issues = getRandomIssuesName();
@@ -709,12 +709,13 @@ var surveystate = {
 
         var geocoder;
 
+        var mapLoaded = false;
         mapAPI.addEventListener('api-load', function (e) {
 
             var api = mapAPI.api;
             geocoder = new mapAPI.api.Geocoder();
 
-            console.log("geocoder " + JSON.stringify(geocoder));
+            mapLoaded = true;
         });
 
         var postcodeInput = document.querySelector('#postalCode');
@@ -728,7 +729,10 @@ var surveystate = {
         var setProvince = function(){
 
             if (!postcodeInput.value)
-                return null;
+                return;
+
+            if (!mapLoaded)
+                return;
 
             var address = postcodeInput.value.concat('+CA');
 
@@ -848,6 +852,8 @@ var surveystate = {
                 app.attentions = notes;
                 return;
             }
+
+            setProvince();
 
             getPollenizeIssues();
             if (surveystate["infopack"]["topic"] != VALID) {
