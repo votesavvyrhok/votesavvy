@@ -86,9 +86,9 @@ input:invalid {
 }
 
 .slide-example {
-     width: 100%;
+     max-width: 95%;
      height: auto;
-     padding:10px
+     padding: 18px 30px
 }
 
 .pol-divider {

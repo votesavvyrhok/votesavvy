@@ -168,38 +168,38 @@ function loadPollenize() {
     headID.appendChild(newScript);
 }
 
-var generalTip = "Tip: From left to right: never to very frequently.";
+var generalTip = "For example: ";
 
 var questions = {
     "sources": {
         prefix: "How often do you receive political information from the following sources:",
         keyword: " ",
         suffix: " ",
-        tips: ["Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations."]
+        tips: ["Tip: Think specifically about this election period starting August 2015. And remember, this includes both online and offline situations.", generalTip]
     },
     "familyFriend": {
         prefix: "If you get political information from ",
         keyword: "Family and Friends",
         suffix: ", how often do you get it via the following channels?",
-        tips: []
+        tips: [generalTip]
     },
     "politicianParty": {
         prefix: "If you get political information from ",
         keyword: "Politicians or Political Parties",
         suffix: ", how often do you get it via the following channels?",
-        tips: []
+        tips: [generalTip]
     },
     "traditionalMedia": {
         prefix: "If you get political information from ",
         keyword: "Traditional Media",
         suffix: ", how often do you get it via the following channels?",
-        tips: []
+        tips: [generalTip]
     },
     "civilSociety": {
         prefix: "If you get political information from ",
         keyword: "Civil Society",
         suffix: " (including charities, nonprofits and grassroots organizations), how often do you get it via the following channels?",
-        tips: []
+        tips: [generalTip]
     }
 };
 
