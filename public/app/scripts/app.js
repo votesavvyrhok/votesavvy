@@ -710,12 +710,15 @@ var surveystate = {
         var geocoder;
 
         var mapLoaded = false;
+
         mapAPI.addEventListener('api-load', function (e) {
 
             var api = mapAPI.api;
             geocoder = new mapAPI.api.Geocoder();
-
             mapLoaded = true;
+
+            if (!province)
+                setProvince();
         });
 
         var postcodeInput = document.querySelector('#postalCode');
@@ -852,8 +855,6 @@ var surveystate = {
                 app.attentions = notes;
                 return;
             }
-
-            setProvince();
 
             getPollenizeIssues();
             if (surveystate["infopack"]["topic"] != VALID) {
