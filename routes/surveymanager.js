@@ -5,8 +5,6 @@ module.exports = function (app, db) {
 
     var logger = app.locals.log4js.getLogger('survey');
 
-    var uuid = require('node-uuid');
-    var bodyParser = require('body-parser');
     var jsck = require('jsck');
 
     var surveySchema = new jsck.draft4({
@@ -216,12 +214,6 @@ module.exports = function (app, db) {
         }
     });
 
-// configure app to use bodyParser()
-// this will let us get the data from a POST
-    app.use(bodyParser.urlencoded({extended: true}));
-    app.use(bodyParser.json());
-
-
     //retrieve the indexes of surveydb
 
     app.get('/survey', function (req, res) {
@@ -306,7 +298,7 @@ module.exports = function (app, db) {
         //the primary key is auto generated to store multiple sets of answers of a user
         surveydb.insert(doc, null, function (err, body) {
              if (!err)
-                 logger.info(body);
+                 logger.info('stored correctl with information as ' + body);
              else
                  logger.warn(err);
         });

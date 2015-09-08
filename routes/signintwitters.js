@@ -5,13 +5,10 @@
 module.exports= function(app,db) {
 
     var signindb = db.handler;
-    // get the app environment from Cloud Foundry
-    var cfenv = require('cfenv');
-    var appEnv = cfenv.getAppEnv();
 
     var uuid = require('node-uuid');
 
-    var survey = require('./surveymanager.js');
+   // var survey = require('./surveymanager.js');
 
     var logger= app.locals.log4js.getLogger('signin');
 
@@ -27,11 +24,11 @@ module.exports= function(app,db) {
     //in twitter application management
 
     var myConfig = {
-        "consumerKey": "vf1TA6dx62BgDVIskWmILJKmb",
-        "consumerSecret": "j54aUNcQWiWye5uR0QC6KfcTS3LNdDmj9PEfdQp9XwCIiO3tF5",
-        "accessToken": "3252950317-fD19eCuzop2soZtO9ZjE47sGxJxCxreMvdfIN5G",
-        "accessTokenSecret": "yHQgYCvz3P3L3ckfJFZBFaro5mGfMPxYf5Hyiw6ZHyggt",
-        "callBackUrl": appEnv.url + "/signintwitters/step2"
+        "consumerKey": app.locals.twitterConfig.consumer_key,
+        "consumerSecret": app.locals.twitterConfig.consumer_secret,
+        "accessToken": app.locals.twitterConfig.access_token_key,
+        "accessTokenSecret": app.locals.twitterConfig.access_token_secret,
+        "callBackUrl": app.locals.url + "/signintwitters/step2"
     };
 
     //stores the temporarily information of a user during the signing in procedure
