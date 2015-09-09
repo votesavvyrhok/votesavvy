@@ -380,7 +380,6 @@ function initializeDatabase(callback) {
             useDatabase(callback);
         }
     }
-
 }
 
 function apiMapping() {
@@ -396,7 +395,6 @@ function apiMapping() {
 
         }
     };
-
 
     for (var api in apis)
     {
