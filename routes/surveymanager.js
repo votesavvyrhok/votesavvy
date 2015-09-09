@@ -298,7 +298,7 @@ module.exports = function (app, db) {
         //the primary key is auto generated to store multiple sets of answers of a user
         surveydb.insert(doc, null, function (err, body) {
              if (!err)
-                 logger.info('stored correctl with information as ' + body);
+                 logger.info('stored correctly with information as ' + body);
              else
                  logger.warn(err);
         });
