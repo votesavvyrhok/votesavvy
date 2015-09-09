@@ -16,8 +16,10 @@ var cfenv = require('cfenv');
 var https = require('https');
 var JSON = require('JSON');
 
+// create a new express server
 var app = express();
 
+//using a mongoDB as the storage for the logger and session management
 var mongoDBuri;
 
 var initialMongoDBuri = function(){
@@ -65,10 +67,8 @@ memwatch.on('stats', function(stats){
 
 var async = require('async');
 
-// create a new express server
-
-require('./routes/index')(app);
 // routing
+require('./routes/index')(app);
 require('./routes/represent')(app);
 
 // serve the files out of ./public as our main files
@@ -77,8 +77,17 @@ app.set('views', __dirname + '/public');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
+var bodyParser = require('body-parser');
+
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
+
+app.locals.url = appEnv.url;
 
 // start server on the specified port and binding host
 app.listen(appEnv.port, appEnv.bind, function () {
@@ -112,12 +121,16 @@ app.locals.datacache = datacache;
 //using a different twitter library
 var Twitter = require('twitter');
 
-var twitterHdl = new Twitter({
+var twitterConfig = {
     consumer_key: 'vf1TA6dx62BgDVIskWmILJKmb',
     consumer_secret: 'j54aUNcQWiWye5uR0QC6KfcTS3LNdDmj9PEfdQp9XwCIiO3tF5',
     access_token_key: '3252950317-fD19eCuzop2soZtO9ZjE47sGxJxCxreMvdfIN5G',
     access_token_secret: 'yHQgYCvz3P3L3ckfJFZBFaro5mGfMPxYf5Hyiw6ZHyggt'
-});
+};
+
+app.locals.twitterConfig = twitterConfig;
+
+var twitterHdl = new Twitter(twitterConfig);
 
 //setting the timer for checking the memory usage with a period of 1 hour
 //
@@ -367,7 +380,6 @@ function initializeDatabase(callback) {
             useDatabase(callback);
         }
     }
-
 }
 
 function apiMapping() {
@@ -383,7 +395,6 @@ function apiMapping() {
 
         }
     };
-
 
     for (var api in apis)
     {
