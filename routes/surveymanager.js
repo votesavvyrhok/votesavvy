@@ -282,6 +282,7 @@ module.exports = function (app, db) {
 
         doc.recordedat=new Date().getTime();
 
+        doc.formatedtime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
         /*the data is stored as
         {
         token:     //token as index, for the sigined user, the token is the user_token
