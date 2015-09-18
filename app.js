@@ -406,9 +406,9 @@ initializeDatabase(apiMapping);
 
 var retrievingAdmin = function(){
 
-    if (process.env.admin)
-       return process.env.admin;
-
+    if (process.env.admin) {
+       return process.env.admin.split(",");
+    }
     return null;
 }
 
