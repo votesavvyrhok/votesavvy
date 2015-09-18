@@ -194,7 +194,10 @@ module.exports= function(app,db) {
         //if the user signning up just now
         logger.info("user " + sess.session_token + " " + sess.screen_name + " has logged in" );
 
-        res.redirect('/survey');
+        if (!app.locals.admin || app.locals.admin.indexOf(sess.screen_name) == -1)
+               res.redirect('/survey');
+        else
+               res.redirect('/dashboard');
 
     });
 

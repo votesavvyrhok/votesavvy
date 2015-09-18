@@ -404,4 +404,16 @@ function apiMapping() {
 
 initializeDatabase(apiMapping);
 
+var retrievingAdmin = function(){
+
+    if (process.env.admin)
+       return process.env.admin;
+
+    return null;
+}
+
+app.locals.admin = retrievingAdmin();
+
+require('./routes/dashboard')(app);
+
 logger.info('votesavvy application running');
