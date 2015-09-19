@@ -384,8 +384,7 @@ function quickAnalysis(feedback) {
             var count = rows.length;
             var combined = [];
             var postcodecount = 0;
-
-
+            var gender = [];
 
             logger.info("Number of responses: " + count);
 
@@ -397,6 +396,7 @@ function quickAnalysis(feedback) {
                     if (doc && doc.formdata) {
 
 
+
                         var short = {};
                         //                        combined.push(doc.formdata);
                         short.gender = doc.formdata.personal.gender;
@@ -405,7 +405,15 @@ function quickAnalysis(feedback) {
                         short.selected = doc.formdata.issues.selected;
                         short.timestamp = doc.formatedtime
 
+                        logger.info(short);
+
                         combined.push(short);
+
+                        if (!gender[doc.formdata.personal.gender]) {
+                            gender[short.gender = doc.formdata.personal.gender] = 1;
+                        } else {
+                            gender[short.gender = doc.formdata.personal.gender] ++;
+                        }
 
                         if (!selected[doc.formdata.issues.selected]) {
                             selected[doc.formdata.issues.selected] = 1;
@@ -426,18 +434,18 @@ function quickAnalysis(feedback) {
 
                     if (count === 0) {
 
-                        console.log(analysis);
+
 
                         var analysis = {
                             "count": rows.length,
                             "list": combined,
                             "postcodes": postcodes,
                             "postcodecount": postcodecount,
-                            "selected": selected
+                            "selected": selected,
+                            "gender": gender
                         }
-
+                        console.log(analysis);
                         feedback(analysis);
-
                     }
                 });
 
@@ -570,29 +578,21 @@ app.get('/geo', function (request, response) {
 
                         uniquecodes.forEach(function (code) {
 
-                            setTimeout(function () {
+                            geocoder.geocode(code, function (err, data) {
 
-                                geocoder.geocode(code, function (err, data) {
+                                if (data && data.status == 'OK' && data.results[0].geometry.bounds) {
+                                    latlong.push(data.results[0].geometry.bounds.northeast);
+                                }
 
-                                    if (data) {
-                                        if (data.status == 'OK') {
+                                uniquecount--;
 
-                                            if (data.results[0].geometry.bounds) {
-                                                latlong.push(data.results[0].geometry.bounds.northeast);
-                                            }
-                                        }
-                                    }
+                                if (uniquecount === 0) {
+                                    console.log(latlong);
+                                    response.end(JSON.stringify(latlong));
+                                }
 
-                                    uniquecount--;
+                            });
 
-                                    if (uniquecount === 0) {
-                                        console.log(latlong);
-                                        response.end(JSON.stringify(latlong));
-                                    }
-
-                                });
-
-                            }, 300);
                         });
                     }
                 });
