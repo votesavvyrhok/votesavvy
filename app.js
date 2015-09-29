@@ -74,7 +74,6 @@ var async = require('async');
 // routing
 require('./routes/index')(app);
 require('./routes/represent')(app);
-require('./routes/dashboard')(app);
 
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
@@ -507,10 +506,22 @@ function apiMapping() {
     for (var api in apis) {
         require('./routes/' + apis[api].name)(app, apis[api].db);
     }
+
+    installErrorMiddleware();
 }
 
-initializeDatabase(apiMapping);
+var installErrorMiddleware = function() {
+    app.use(function (err, req, res, next) {
+        if (err.status == 403)
+            res.render('403.html',{message:err.message});
+        else
+            next(err);
+    });
+}
 
+require('./routes/dashboard')(app);
+
+initializeDatabase(apiMapping);
 
 var latlong;
 
@@ -602,6 +613,7 @@ app.get('/geo', function (request, response) {
 });
 
 
+
 var retrievingAdmin = function(){
 
     if (process.env.admin) {
@@ -611,7 +623,5 @@ var retrievingAdmin = function(){
 }
 
 app.locals.admin = retrievingAdmin();
-
-require('./routes/dashboard')(app);
 
 logger.info('votesavvy application running');
