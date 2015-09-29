@@ -323,6 +323,7 @@ var configureSources = function () {
     for (var key in questions) {
         var formItem = {};
 
+<<<<<<< Updated upstream
         evaluations[key].forEach(function (item) {
             //configure the formdata
             formItem[item.id] = null;
@@ -330,6 +331,15 @@ var configureSources = function () {
             //configure the sourcedata
             //the id is as <question.key><evaluation.id>
             item.id = key.concat(item.id);
+=======
+        evaluations[key].forEach(function (evaltion) {
+            //configure the formdata
+            formItem[evaluation.id] = null;
+
+            //configure the sourcedata
+            //the id is as <question.key><evaluation.id>
+            eval.id = key.concat(evaluation.id);
+>>>>>>> Stashed changes
         });
 
         formdata[key] = formItem;

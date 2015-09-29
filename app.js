@@ -15,6 +15,8 @@ var express = require('express');
 var cfenv = require('cfenv');
 var https = require('https');
 var JSON = require('JSON');
+var geocoder = require('geocoder');
+//var json2csv = require('json2csv');
 
 // create a new express server
 var app = express();
@@ -22,15 +24,15 @@ var app = express();
 //using a mongoDB as the storage for the logger and session management
 var mongoDBuri;
 
-var initialMongoDBuri = function(){
+var initialMongoDBuri = function () {
 
     var vcapServices;
     if (process.env.VCAP_SERVICES)
         vcapServices = JSON.parse(process.env.VCAP_SERVICES);
 
-    if (vcapServices && vcapServices.mongolab){
-        mongoDBuri= vcapServices.mongolab[0].credentials.uri;
-    }else{
+    if (vcapServices && vcapServices.mongolab) {
+        mongoDBuri = vcapServices.mongolab[0].credentials.uri;
+    } else {
 
         if (process.env.mongodb_uri)
             mongoDBuri = process.env.mongodb_uri;
@@ -42,11 +44,13 @@ initialMongoDBuri();
 var log4js = require('log4js');
 var mongoAppender = require('log4js-node-mongodb');
 
-var categories = ['index','signin','survey','represent','application'];
+var categories = ['index', 'signin', 'survey', 'represent', 'application'];
 
-categories.forEach(function(category){
+categories.forEach(function (category) {
     log4js.addAppender(
-        mongoAppender.appender({connectionString: mongoDBuri}),
+        mongoAppender.appender({
+            connectionString: mongoDBuri
+        }),
         category);
 });
 
@@ -57,11 +61,11 @@ var logger = log4js.getLogger('application');
 //for the memory watch;
 var memwatch = require('memwatch-next');
 
-memwatch.on('leak', function(info){
+memwatch.on('leak', function (info) {
     logger.error("leak:" + JSON.stringify(info));
 });
 
-memwatch.on('stats', function(stats){
+memwatch.on('stats', function (stats) {
     logger.info("stats:" + JSON.stringify(stats));
 });
 
@@ -70,6 +74,7 @@ var async = require('async');
 // routing
 require('./routes/index')(app);
 require('./routes/represent')(app);
+require('./routes/dashboard')(app);
 
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
@@ -81,7 +86,9 @@ var bodyParser = require('body-parser');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 
 // get the app environment from Cloud Foundry
@@ -104,15 +111,19 @@ app.use(session({
     secret: "thisisasecret",
     saveUninitialized: false,
     resave: false,
-    store: new MongoStore({url:mongoDBuri}),
-    ttl:5*24*60*60 //5 days expiration
+    store: new MongoStore({
+        url: mongoDBuri
+    }),
+    ttl: 5 * 24 * 60 * 60 //5 days expiration
 }));
 
 //set up logging for the request
 var mongoMorgan = require('mongo-morgan');
 
-app.use(mongoMorgan(mongoDBuri,'combined',{immediate: true,
-                                           collection:'morganlogs'}));
+app.use(mongoMorgan(mongoDBuri, 'combined', {
+    immediate: true,
+    collection: 'morganlogs'
+}));
 
 //DataCache
 var datacache = require('./bluemix_datacache.js');
@@ -135,25 +146,25 @@ var twitterHdl = new Twitter(twitterConfig);
 //setting the timer for checking the memory usage with a period of 1 hour
 //
 
-var memStateTypes={
-    init:{
+var memStateTypes = {
+    init: {
         key: "INIT",
         range: [0]
     },
-    normal:{
+    normal: {
         key: "NORMAL",
-        range: [0,750]
+        range: [0, 750]
     },
     warning: {
-        key : "WARNING",
+        key: "WARNING",
         range: [750, 950]
     },
-    alarm1:{
-        key : "ALARM-1",
+    alarm1: {
+        key: "ALARM-1",
         range: [950, 1050]
     },
-    alarm2:{
-        key : "ALARM-2",
+    alarm2: {
+        key: "ALARM-2",
         range: [1050, 1300]
     }
 };
@@ -185,18 +196,18 @@ var memStateTypes={
 }
 */
 
-var memMonitor={
+var memMonitor = {
     state: memStateTypes.init,
     messages: 0,
     recordedusage: 0,
-    increasedtimes:0
+    increasedtimes: 0
 };
 
-var updateMonitorState = function(previous, current, frequency){
+var updateMonitorState = function (previous, current, frequency) {
     var message = null;
     //progress the status first
     //either a normal case or the case where the state has jumped
-    if (memMonitor.state === previous || memMonitor.state != current){
+    if (memMonitor.state === previous || memMonitor.state != current) {
         message = current.key + ": the state of the monitor has been changed from " + memMonitor.state.key
         memMonitor.state = current;
         memMonitor.messages = frequency;
@@ -204,17 +215,18 @@ var updateMonitorState = function(previous, current, frequency){
 
     //send a message if the memory usage keeps increasing in the last 10 periods
     if (memMonitor.messages == 0) {
-        message = memMonitor.state.key + ": memory has increaed "+ memMonitor.increasedtimes
-            + " times since the latest " + memMonitor.state.key + " message"
+        message = memMonitor.state.key + ": memory has increaed " + memMonitor.increasedtimes + " times since the latest " + memMonitor.state.key + " message"
         memMonitor.messages = frequency;
         memMonitor.increasedtimes = 0;
     }
 
     if (message) {
-        message += ". The memory usage is around " + Math.ceil(memMonitor.recordedusage/1000)/1000+ "MB" +
+        message += ". The memory usage is around " + Math.ceil(memMonitor.recordedusage / 1000) / 1000 + "MB" +
             " at " + appEnv.url;
 
-        twitterHdl.post('statuses/update', {status: message}, function (error, body, response) {
+        twitterHdl.post('statuses/update', {
+            status: message
+        }, function (error, body, response) {
             if (error)
                 logger.error("tweet message error + " + JSON.stringify(body));
             else
@@ -339,9 +351,105 @@ function useDatabase(next) {
 
         next();
 
-        cloudant.db.list(function (err, all_dbs) {
-            logger.info('All my databases: %s', all_dbs.join(', '));
+        cloudant.db.create('latlong', function (err, res) {
+            if (err) {
+                logger.warn('latlong database already created');
+            } else {
+                logger.info('latlong database is created');
+            }
         });
+
+        cloudant.db.list(function (err, all_dbs) {
+            logger.info('All my databases: %s', all_dbs);
+        });
+
+        //        quickAnalysis(cloudant);
+    });
+}
+
+function quickAnalysis(feedback) {
+
+    logger.info('Quick Analysis ...');
+
+    var answers = cloudant.db.use('answers');
+    var selected = {};
+    var postcodes = [];
+    answers.list(function (err, body) {
+        if (err) {
+            logger.error(err);
+        } else {
+
+            var rows = body.rows;
+            var count = rows.length;
+            var combined = [];
+            var postcodecount = 0;
+            var gender = [];
+
+            logger.info("Number of responses: " + count);
+
+            rows.forEach(function (answer) {
+                answers.get(answer.id, {
+                    revs_info: true
+                }, function (err, doc) {
+
+                    if (doc && doc.formdata) {
+
+
+
+                        var short = {};
+                        //                        combined.push(doc.formdata);
+                        short.gender = doc.formdata.personal.gender;
+                        short.yob = doc.formdata.personal.yearOfBirth;
+                        short.postcode = doc.formdata.personal.postalCode;
+                        short.selected = doc.formdata.issues.selected;
+                        short.timestamp = doc.formatedtime
+
+                        logger.info(short);
+
+                        combined.push(short);
+
+                        if (!gender[doc.formdata.personal.gender]) {
+                            gender[short.gender = doc.formdata.personal.gender] = 1;
+                        } else {
+                            gender[short.gender = doc.formdata.personal.gender] ++;
+                        }
+
+                        if (!selected[doc.formdata.issues.selected]) {
+                            selected[doc.formdata.issues.selected] = 1;
+                        } else {
+                            selected[doc.formdata.issues.selected] ++;
+                        }
+
+                        if (doc.formdata.personal.postalCode != '') {
+                            postcodes.push(doc.formdata.personal.postalCode);
+                            postcodecount++;
+                        }
+                    } else {
+                        logger.warn('Found an undefined answer document');
+                    }
+
+                    count--;
+
+
+                    if (count === 0) {
+
+
+
+                        var analysis = {
+                            "count": rows.length,
+                            "list": combined,
+                            "postcodes": postcodes,
+                            "postcodecount": postcodecount,
+                            "selected": selected,
+                            "gender": gender
+                        }
+                        console.log(analysis);
+                        feedback(analysis);
+                    }
+                });
+
+            });
+        }
     });
 }
 
@@ -384,25 +492,115 @@ function initializeDatabase(callback) {
 
 function apiMapping() {
 
-    var apis={
-        survey:{
+    var apis = {
+        survey: {
             name: "surveymanager.js",
             db: dbCredentials.dbs.survey
         },
-        signintwitters:{
-            name:"signintwitters.js",
-            db:dbCredentials.dbs.signintwitters
+        signintwitters: {
+            name: "signintwitters.js",
+            db: dbCredentials.dbs.signintwitters
 
         }
     };
 
-    for (var api in apis)
-    {
+    for (var api in apis) {
         require('./routes/' + apis[api].name)(app, apis[api].db);
     }
 }
 
 initializeDatabase(apiMapping);
+
+
+var latlong;
+
+function unique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
+app.get('/analysis', function (request, response) {
+
+    response.setHeader('Content-Type', 'application/json');
+
+    quickAnalysis(function (data) {
+        response.end(JSON.stringify(data));
+    });
+});
+
+
+app.get('/geo', function (request, response) {
+
+    logger.info('Building geo data ...');
+
+    response.setHeader('Content-Type', 'application/json');
+
+    var answers = cloudant.db.use('answers');
+    var selected = [];
+    var postcodes = [];
+    answers.list(function (err, body) {
+        if (err) {
+            logger.error(err);
+        } else {
+
+            var rows = body.rows;
+            var count = rows.length;
+            var combined = [];
+            var postcodecount = 0;
+            var latlong = [];
+
+            logger.info("Number of responses: " + count);
+
+            rows.forEach(function (answer) {
+                answers.get(answer.id, {
+                    revs_info: true
+                }, function (err, doc) {
+
+                    if (doc.formdata) {
+
+                        if (doc.formdata.personal.postalCode != '') {
+                            postcodes.push(doc.formdata.personal.postalCode);
+                            postcodecount++;
+                        }
+                    } else {
+                        logger.warn('Found an undefined answer document');
+                    }
+
+                    count--;
+
+                    if (count === 0) {
+
+                        var uniquecodes = postcodes.filter(unique);
+
+                        var uniquecount = uniquecodes.length;
+
+                        logger.info('Unique postcodes: ' + uniquecodes.length);
+
+                        uniquecodes.forEach(function (code) {
+
+                            geocoder.geocode(code, function (err, data) {
+
+                                if (data && data.status == 'OK' && data.results[0].geometry.bounds) {
+                                    latlong.push(data.results[0].geometry.bounds.northeast);
+                                }
+
+                                uniquecount--;
+
+                                if (uniquecount === 0) {
+                                    console.log(latlong);
+                                    response.end(JSON.stringify(latlong));
+                                }
+
+                            });
+
+                        });
+                    }
+                });
+
+            });
+        }
+    });
+});
+
 
 var retrievingAdmin = function(){
 
