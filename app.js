@@ -72,7 +72,7 @@ memwatch.on('stats', function (stats) {
 var async = require('async');
 
 // routing
-require('./routes/index')(app);
+
 require('./routes/represent')(app);
 
 // serve the files out of ./public as our main files
@@ -519,6 +519,7 @@ var installErrorMiddleware = function() {
     });
 }
 
+require('./routes/index')(app);
 require('./routes/dashboard')(app);
 
 initializeDatabase(apiMapping);
