@@ -216,9 +216,16 @@ module.exports = function (app, db) {
 
     //retrieve the indexes of surveydb
 
-    app.get('/survey', function (req, res) {
+    app.get('/survey', function (req, res, next) {
 
         //render the blank survey form in the case that no session has been defined
+
+        if (!req.session.session_token)
+        {
+            var err = new Error('You are not allowed to access this page without having signed in');
+            err.status = 403;
+            return next(err);
+        }
 
         var user_token = req.session.session_token;
         var screen_name = req.session.screen_name;
