@@ -237,14 +237,14 @@ var updateMonitorState = function (previous, current, frequency) {
     memMonitor.messages--;
 }
 
-if (memMonitor.state === memStateTypes.init){
+if (memMonitor.state === memStateTypes.init) {
 
     var initmem = process.memoryUsage();
     memMonitor.recordedusage = initmem.rss;
-    updateMonitorState(memStateTypes.init,memStateTypes.normal, 1);
+    updateMonitorState(memStateTypes.init, memStateTypes.normal, 1);
 }
 
-setInterval(function(){
+setInterval(function () {
 
     var mem = process.memoryUsage();
 
@@ -255,43 +255,40 @@ setInterval(function(){
         return;
     }
 
-    if (mem.rss > memMonitor.recordedusage ){
-        memMonitor.increasedtimes++ ;
-    }else
-        memMonitor.imcreasedtimes=0;
+    if (mem.rss > memMonitor.recordedusage) {
+        memMonitor.increasedtimes++;
+    } else
+        memMonitor.imcreasedtimes = 0;
 
     memMonitor.recordedusage = mem.rss;
 
-    var memInt = Math.ceil(memMonitor.recordedusage/1000/1000);
+    var memInt = Math.ceil(memMonitor.recordedusage / 1000 / 1000);
 
     //if the memory usage is in the range of warning
     //send a warning message through twitter @votesavvyrhok
     if (memInt > memStateTypes.warning.range[0] &&
-        memInt <= memStateTypes.warning.range[1])
-    {
-        updateMonitorState(memStateTypes.normal,memStateTypes.warning, 10);
+        memInt <= memStateTypes.warning.range[1]) {
+        updateMonitorState(memStateTypes.normal, memStateTypes.warning, 10);
         return;
     }
 
     //if the memory usage is in the range of alarm1
     //send a alarm1 message through twitter @votesavvyrhok
     if (memInt > memStateTypes.alarm1.range[0] &&
-        memInt <= memStateTypes.alarm1.range[1])
-    {
-        updateMonitorState(memStateTypes.warning,memStateTypes.alarm1, 5);
+        memInt <= memStateTypes.alarm1.range[1]) {
+        updateMonitorState(memStateTypes.warning, memStateTypes.alarm1, 5);
         return;
     }
 
     //if the memory usage is in the range of alarm2
     //send a alarm1 message through twitter @votesavvyrhok
     if (memInt > memStateTypes.alarm2.range[0] &&
-        memInt <= memStateTypes.alarm2.range[1])
-    {
-        updateMonitorState(memStateTypes.alarm1,memStateTypes.alarm2, 2);
+        memInt <= memStateTypes.alarm2.range[1]) {
+        updateMonitorState(memStateTypes.alarm1, memStateTypes.alarm2, 2);
         return;
     }
 
-}, 60*60*1000);
+}, 60 * 60 * 1000);
 
 var dbCredentials = {
     dbs: {
@@ -332,17 +329,21 @@ function useDatabase(next) {
             type: 'json',
             index: {
                 fields: [
-                    {"token": "desc"},
-                    {"recordedat": "desc"}
+                    {
+                        "token": "desc"
+                    },
+                    {
+                        "recordedat": "desc"
+                    }
                 ]
             }
         };
 
-        answersdb.index(user, function(err, response) {
-                if (err)
-                    logger.warn("create index error" + JSON.stringify(err));
-                else
-                    dbCredentials.dbs.survey.indexes.user=response;
+        answersdb.index(user, function (err, response) {
+            if (err)
+                logger.warn("create index error" + JSON.stringify(err));
+            else
+                dbCredentials.dbs.survey.indexes.user = response;
 
             logger.info('Index creation result: ', JSON.stringify(response));
 
@@ -510,17 +511,18 @@ function apiMapping() {
     installErrorMiddleware();
 }
 
-var installErrorMiddleware = function() {
+var installErrorMiddleware = function () {
     app.use(function (err, req, res, next) {
         if (err.status == 403)
-            res.render('403.html',{message:err.message});
+            res.render('403.html', {
+                message: err.message
+            });
         else
             next(err);
     });
 }
 
 require('./routes/index')(app);
-require('./routes/dashboard')(app);
 
 initializeDatabase(apiMapping);
 
@@ -615,10 +617,10 @@ app.get('/geo', function (request, response) {
 
 
 
-var retrievingAdmin = function(){
+var retrievingAdmin = function () {
 
     if (process.env.admin) {
-       return process.env.admin.split(",");
+        return process.env.admin.split(",");
     }
     return null;
 }
