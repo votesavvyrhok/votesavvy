@@ -36,7 +36,7 @@ module.exports= function(app,db) {
     //the client token is a random number
     var oauthStore = {};
 
-    var twitterLibrary = require('twitter-node-client');
+    var twitterLibrary = require('twitter-js-client');
 
     var twitterHdl = new twitterLibrary.Twitter(myConfig);
 
