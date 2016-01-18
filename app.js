@@ -132,10 +132,10 @@ app.locals.datacache = datacache;
 var Twitter = require('twitter');
 
 var twitterConfig = {
-    consumer_key: 'vf1TA6dx62BgDVIskWmILJKmb',
-    consumer_secret: 'j54aUNcQWiWye5uR0QC6KfcTS3LNdDmj9PEfdQp9XwCIiO3tF5',
-    access_token_key: '3252950317-fD19eCuzop2soZtO9ZjE47sGxJxCxreMvdfIN5G',
-    access_token_secret: 'yHQgYCvz3P3L3ckfJFZBFaro5mGfMPxYf5Hyiw6ZHyggt'
+    consumer_key: process.env.twitter_consumer_key,
+    consumer_secret: process.env.twitter_consumer_secret,
+    access_token_key: process.env.twitter_access_token_key,
+    access_token_secret: process.env.twitter_access_token_secret
 };
 
 app.locals.twitterConfig = twitterConfig;
